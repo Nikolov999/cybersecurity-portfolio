@@ -1,7 +1,16 @@
-# 🛡️ My Cybersecurity Portfolio
+# 🛡️ Bobo Nikolov — Blue Team Portfolio  
+**SOC Analyst | Threat Detection | Security Automation | Incident Response**
 
-Hi, I'm Bobo — an aspiring **Blue Team Analyst** passionate about incident detection, threat hunting, and network defense.  
-This portfolio showcases my **hands-on labs**, **certifications**, and **learning projects** as I grow in cybersecurity.
+![Banner](https://github.com/Nikolov999/cybersecurity-portfolio/blob/main/Assets/banner.png?raw=true)
+
+Welcome to my cybersecurity portfolio!  
+This repository documents my **Blue Team journey**, including defensive labs, automation tools, and technical writeups focused on detection engineering, network forensics, and SOC operations.
+
+---
+
+## 🌐 Live Portfolio
+👉 **Visit my website:** [nikolov999.github.io/cybersecurity-portfolio](https://nikolov999.github.io/cybersecurity-portfolio)  
+📄 **Resume:** [Download PDF](./Resume/Bobo_Nikolov_CV.pdf)
 
 ---
 
