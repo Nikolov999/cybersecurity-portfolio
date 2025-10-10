@@ -29,11 +29,11 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 
 | Script | Description | Primary Use |
 |---------|--------------|--------------|
-| [`ioc_enricher.py`](./Tools/Automation/ioc_enricher.py) | Enriches IPs/domains/hashes via VirusTotal + AbuseIPDB APIs | Threat Intel |
-| [`failed_login_triage.py`](./Tools/Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
-| [`zeek_conn_summary.py`](./Tools/Automation/zeek_conn_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
+| [`ioc_enricher.py`](./Tools/Python-Automation/ioc_enricher.py) | Enriches IPs/domains/hashes via VirusTotal + AbuseIPDB APIs | Threat Intel |
+| [`failed_login_triage.py`](./Tools/Python-Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
+| [`zeek_conn_summary.py`](./Tools/Python-Automation/zeek_conn_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
 
-👉 Full docs: [Automation README](./Tools/Automation/README.md)
+👉 Full docs: [Automation README](./Tools/Python-Automation/README.md)
 
 ---
 
@@ -63,9 +63,9 @@ You can read my technical notes and blue-team reflections here:
 ---
 
 ## 📫 Contact
-**Email:** [yourname@proton.me](mailto:yourname@proton.me)  
-**LinkedIn:** [linkedin.com/in/yourname](https://linkedin.com/in/yourname)  
-**GitHub:** [github.com/Nikolov999](https://github.com/Nikolov999)
+**Email:** bobonikolov02@gmail.com ([mailto:bobonikolov02@gmail.com])  
+**LinkedIn:** https://linkedin.com/in/bobonikolov/([https://linkedin.com/in/bobonikolov/])  
+**GitHub:** Nikolov999([https://github.com/Nikolov999])
 
 ---
 
