@@ -82,6 +82,6 @@ This portfolio is built to demonstrate:
 ---
 
 ## 📫 Contact
-- **LinkedIn:** https://www.linkedin/na/bobonikolov/
-- **GitHub:** [github.com/yourusername](#)
-- **Email:** bobonikolov02@gmail.com
+- **LinkedIn:** https://www.linkedin.com/na/bobonikolov/([ https://www.linkedin.com/na/bobonikolov/])
+- **GitHub:** (https://github.com/Nikolov999/)[(#)]
+- **Email:** bobonikolov02@gmail.com([bobonikolov02@gmail.com])
