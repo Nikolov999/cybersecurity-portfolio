@@ -35,6 +35,6 @@ This portfolio showcases my **hands-on labs**, **certifications**, and **learnin
 ---
 
 ## 📫 Contact
-- **LinkedIn:** [linkedin.com/in/yourprofile](#)
+- **LinkedIn:** https://www.linkedin/na/bobonikolov/
 - **GitHub:** [github.com/yourusername](#)
-- **Email:** yourname@proton.me
+- **Email:** bobonikolov02@gmail.com
