@@ -20,7 +20,7 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 |-----------|-------------|--------|------|
 | **Network Traffic Analysis** | PCAP triage, malware beaconing | Wireshark, Zeek | [View](./Labs/Network-Analysis/README.md) |
 | **Splunk Investigation** | Brute-force detection, dashboards | Splunk, Sysmon | [View](./Labs/Splunk-Investigation/README.md) |
-| **Incident Response** | Process chain, containment | Event Viewer, Sysmon | [View](./Labs/Incident Response/README.md) |
+| **Incident Response** | Process chain, containment | Event Viewer, Sysmon | [View](./Labs/Incident-Response/README.md) |
 | **Honeypot (Cowrie)** | Attacker behavior, IOCs | Cowrie, ELK, AbuseIPDB | [View](./Labs/Honeypot/README.md) |
 
 ---
@@ -29,11 +29,11 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 
 | Script | Description | Primary Use |
 |---------|--------------|--------------|
-| [`ioc_enricher.py`](./Tools/Python Automation/ioc_enricher.py) | Enriches IPs/domains/hashes via VirusTotal + AbuseIPDB APIs | Threat Intel |
-| [`failed_login_triage.py`](./Tools/Python Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
-| [`zeek_conn_summary.py`](./Tools/Python Automation/zeek_conn_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
+| [`ioc_enricher.py`](./Tools/Python-Automation/ioc_enricher.py) | Enriches IPs/domains/hashes via VirusTotal + AbuseIPDB APIs | Threat Intel |
+| [`failed_login_triage.py`](./Tools/Python-Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
+| [`zeek_conn_summary.py`](./Tools/Python-Automation/zeek_conn_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
 
-👉 Full docs: Automation README][(./Tools/Python Automation/README.md)
+👉 Full docs: Automation README(./Tools/Python-Automation/README.md)
 
 ---
 
