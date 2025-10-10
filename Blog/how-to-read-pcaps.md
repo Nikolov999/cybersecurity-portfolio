@@ -162,6 +162,8 @@ index=http method=POST
 | eval urilen=len(uri_query)
 | where urilen>200 AND like(uri, "%/api/%")
 
+---
+
 ## 🧯 Phase 7 — Ruling Out False Positives
 
 Not every spike of weird traffic is an attacker. Sometimes, it’s just Windows being Windows — or Chrome pinging ten telemetry endpoints you didn’t know existed.
@@ -180,6 +182,8 @@ The truth is, most of your job as an analyst isn’t finding evil — it’s pro
 Anyone can flag anomalies, but the skill lies in knowing when not to panic.
 False positives teach you just as much about your environment as true detections do.
 
+---
+
 ## 📸 What I Capture (for Reports)
 
 When I finish an analysis, I document it like I’m explaining it to someone who wasn’t there.
@@ -196,6 +200,8 @@ Finally, I write a short narrative:
 
 The goal isn’t to impress anyone — it’s to make it reproducible.
 Anyone reading the report should be able to follow your logic, recreate your findings, and reach the same conclusion.
+
+---
 
 ## 🧱 My Mental Checklist
 
