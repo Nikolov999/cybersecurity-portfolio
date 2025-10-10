@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab Viewer</title>
+<style>
+  :root{ --bg1:#070013; --bg2:#120026; --card:#1a0e2b; --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; }
+  *{box-sizing:border-box;margin:0}
+  body{min-height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+  header{padding:18px 22px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08)}
+  a{color:#a78bfa}
+  .wrap{max-width:1000px;margin:0 auto;padding:22px}
+  .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:14px;border:1px solid rgba(255,255,255,0.08)}
+  .md h1{font-size:30px;margin:12px 0 8px}
+  .md h2{font-size:22px;margin:18px 0 6px}
+  .md h3{font-size:18px;margin:14px 0 6px}
+  .md p,.md li{color:var(--muted);line-height:1.65}
+  .md pre{overflow:auto;background:#1f1432;padding:12px;border-radius:10px}
+  .md img{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,0.08)}
+</style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← Back to portfolio</a>
+  </header>
+  <div class="wrap">
+    <div class="card md" id="content">Loading…</div>
+  </div>
+
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // Usage: viewer.html?md=Labs/Network-Analysis/README.md
+    const params = new URLSearchParams(location.search);
+    const mdPath = params.get("md");
+    const target = document.getElementById("content");
+
+    if(!mdPath){ target.innerHTML = "<p>No markdown file specified.</p>"; }
+    else{
+      // fetch raw file from the same repo/branch (works on Pages)
+      fetch(mdPath).then(r=>{
+        if(!r.ok) throw new Error("Not found");
+        return r.text();
+      }).then(txt=>{
+        target.innerHTML = marked.parse(txt);
+      }).catch(()=> target.innerHTML = "<p>Could not load file.</p>");
+    }
+  </script>
+</body>
+</html>
