@@ -1,19 +1,19 @@
-# 🚨 Incident Response: Compromised Workstation
+# Incident Response: Compromised Workstation
 
 **Goal:** Perform triage, containment, and documentation after detecting a compromised Windows host.
 
-## 🧰 Tools Used
+## Tools Used
 - Sysmon  
 - Windows Event Viewer  
 - Splunk  
 - Autoruns / Process Explorer  
 - PowerShell  
 
-## 🧾 Scenario
+## Scenario
 SOC received an alert for suspicious PowerShell activity (`cmd.exe` spawning `powershell.exe`).  
 The host was reportedly sending traffic to external IPs on unusual ports.
 
-## 🧠 Investigation Steps
+## Investigation Steps
 1. Pulled Sysmon logs (Event IDs 1, 3, 11) and Windows Security Logs (4624, 4688).  
 2. Discovered process chain: `outlook.exe → powershell.exe → certutil.exe`.  
 3. Extracted persistence entries from the Registry (Run keys).  
