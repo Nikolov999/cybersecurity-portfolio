@@ -3,7 +3,7 @@ A collection of my cybersecurity labs, projects, and notes focusing on Blue Team
 
 # 🛡️ My Cybersecurity Portfolio
 
-Hi, I'm [Your Name] — an aspiring **Blue Team Analyst** passionate about incident detection, threat hunting, and network defense.  
+Hi, I'm Bobo — an aspiring **Blue Team Analyst** passionate about incident detection, threat hunting, and network defense.  
 This portfolio showcases my **hands-on labs**, **certifications**, and **learning projects** as I grow in cybersecurity.
 
 ---
