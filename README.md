@@ -33,7 +33,7 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 | [`failed_login_triage.py`](./Labs/Python-Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
 | [`zeek_conn_summary.py`](./Labs/Python-Automation/zeek_con_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
 
-👉 Full docs: Automation README(./Labs/Python-Automation/README.md)
+👉 Full docs: [Automation README](./Labs/Python-Automation/README.md)
 
 ---
 
