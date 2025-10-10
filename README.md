@@ -1,6 +1,3 @@
-# cybersecurity-portfolio
-A collection of my cybersecurity labs, projects, and notes focusing on Blue Team operations, threat detection, and incident response.
-
 # 🛡️ My Cybersecurity Portfolio
 
 Hi, I'm Bobo — an aspiring **Blue Team Analyst** passionate about incident detection, threat hunting, and network defense.  
