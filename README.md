@@ -63,9 +63,9 @@ You can read my technical notes and blue-team reflections here:
 ---
 
 ## 📫 Contact
-**Email:** [bobonikolov02@gmail.com] 
-**LinkedIn:** [https://linkedin.com/in/bobonikolov/ ] 
-**GitHub:** [https://github.com/Nikolov999]
+**Email:** bobonikolov02@gmail.com
+**LinkedIn:** https://linkedin.com/in/bobonikolov/ 
+**GitHub:** https://github.com/Nikolov999
 
 ---
 
