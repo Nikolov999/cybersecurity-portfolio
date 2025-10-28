@@ -7,7 +7,6 @@
   <meta name="description" content="Blue Team cybersecurity portfolio: labs, certs, writeups, contact." />
   <style>
     :root{
-      /* Darker purple theme */
       --bg1:#070013; --bg2:#120026; --bg3:#1b0733;
       --card:#1a0e2b; --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; --accent-2:#a78bfa; --glass: rgba(255,255,255,0.05);
       --radius:16px;
@@ -22,7 +21,6 @@
                   linear-gradient(180deg,var(--bg1),var(--bg2));
       position:relative;
     }
-    /* animated soft glow */
     body::before{
       content:"";position:fixed;inset:-40%;z-index:-1;
       background: radial-gradient(40% 40% at 70% 20%, rgba(167,139,250,0.15), transparent 60%),
@@ -42,7 +40,6 @@
     main{flex:1;display:flex;flex-direction:column;gap:28px;padding:32px 40px}
 
     .section{background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:24px;box-shadow:0 6px 22px rgba(15,0,40,0.6);border:1px solid rgba(255,255,255,0.06)}
-
     .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
     .about p{margin:10px 0;color:var(--muted);line-height:1.6}
     .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -51,14 +48,10 @@
     .skills{display:flex;gap:10px;flex-wrap:wrap}
     .chip{background:#22083f;border:1px solid rgba(255,255,255,0.07);padding:8px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
 
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:16px}
     .project{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.02);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
     .project .thumb{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#241040,#341a5f);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800}
     .project h3{margin:0;font-size:16px}
     .project p{margin:6px 0 0;color:var(--muted);font-size:13px}
-
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
-    .filter{cursor:pointer} .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#1b0733;border-color:transparent}
 
     .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
     .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
@@ -68,7 +61,6 @@
     .post p{color:var(--muted);font-size:13px;line-height:1.5}
 
     footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.06)}
-
     a.link{color:var(--accent-2);text-decoration:none}
 
     @media(max-width:900px){
@@ -90,7 +82,7 @@
     <nav>
       <a class="btn" href="#about">About</a>
       <a class="btn" href="#skills">Skills</a>
-      <a class="btn" href="#projects">Projects</a>
+      <a class="btn" href="projects.html">Projects</a>
       <a class="btn" href="#certs">Certs</a>
       <a class="btn" href="#blog">Blog</a>
       <a class="btn" href="#contact">Contact</a>
@@ -102,11 +94,12 @@
     <section id="about" class="section hero">
       <div class="about">
         <h2>About Me</h2>
-        <p>Hi — I'm <strong>Bobo Nikolov</strong>. I focus on Blue Team operations: log analysis, threat hunting and incident response. I build detection use‑cases, parse telemetry, and document investigations clearly for teams.</p>
+        <p>Hi — I'm <strong>Bobo Nikolov</strong>. I focus on Blue Team operations: log analysis, threat hunting and incident response. I build detection use-cases, parse telemetry, and document investigations clearly for teams.</p>
         <div class="badges">
-          <div class="badge">Google Cyber Certificate</div>
+          <div class="badge">Google Cybersecurity</div>
           <div class="badge">ISC2 CC (in progress)</div>
-          <div class="badge">BTL1 (upcoming)</div>
+          <div class="badge">Cisco Ethical Hacker</div>
+          <div class="badge">Fortinet Cybersecurity Associate</div>
         </div>
         <p style="margin-top:10px">📁 <a class="link" href="https://github.com/Nikolov999/cybersecurity-portfolio">View the full repository</a></p>
       </div>
@@ -114,7 +107,7 @@
         <h2>Quick Stats</h2>
         <div class="grid-3" style="margin-top:10px">
           <div class="card"><strong>4</strong><br/><span style="color:var(--muted)">Projects</span></div>
-          <div class="card"><strong>3</strong><br/><span style="color:var(--muted)">Certs (incl. in progress)</span></div>
+          <div class="card"><strong>4</strong><br/><span style="color:var(--muted)">Certs (incl. in progress)</span></div>
           <div class="card"><strong>100+</strong><br/><span style="color:var(--muted)">THM/BTLO hours</span></div>
         </div>
         <div style="margin-top:12px"><a class="btn" href="Resume/Bobo_Nikolov_CV.pdf" download>Download Resume</a></div>
@@ -131,46 +124,13 @@
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="section">
-      <h2>Projects</h2>
-      <div class="filters">
-        <span class="chip filter active" data-tag="all">All</span>
-        <span class="chip filter" data-tag="siem">SIEM</span>
-        <span class="chip filter" data-tag="network">Network</span>
-        <span class="chip filter" data-tag="ir">IR</span>
-        <span class="chip filter" data-tag="ti">Threat Intel</span>
-      </div>
-      <div class="projects" id="projectGrid">
-        <div class="project" data-tags="network">
-          <div class="thumb">NA</div>
-          <div>
-            <h3>Network Traffic Analysis</h3>
-            <p>Analyzed PCAP files to identify suspicious C2 traffic. Tools: Wireshark, Zeek. <a class="link" href="viewer.html?md=Labs/Network-Analysis/README.md">Read writeup</a></p>
-          </div>
-        </div>
-        <div class="project" data-tags="siem">
-          <div class="thumb">SI</div>
-          <div>
-            <h3>SIEM Brute‑force Detection</h3>
-            <p>Built Splunk dashboards and alerts to detect credential stuffing and brute‑force activity. <a class="link" href="viewer.html?md=Labs/Splunk-Investigation/README.md">Read writeup</a></p>
-          </div>
-        </div>
-        <div class="project" data-tags="ir">
-          <div class="thumb">IR</div>
-          <div>
-            <h3>Incident Response Timeline</h3>
-            <p>Documented an IR playbook and timeline for an internal compromise, including containment and recovery steps. <a class="link" href="viewer.html?md=Labs/Incident-Response/README.md">Read writeup</a></p>
-          </div>
-        </div>
-        <div class="project" data-tags="ti">
-          <div class="thumb">TI</div>
-          <div>
-            <h3>Threat Intelligence Automation</h3>
-            <p>Automated with Python IOC enricher, Windows Failed-login Triage and Zeek summarizer. <a class="link" href="viewer.html?md=Labs/Python-Automations/README.md">Read writeup</a></p>
-          </div>
-        </div>
-      </div>
+    <!-- LATEST PROJECT -->
+    <section class="section">
+      <h2 style="display:flex;align-items:center;justify-content:space-between">
+        <span>Latest Project</span>
+        <a class="btn" href="projects.html">View all projects →</a>
+      </h2>
+      <div id="latestProject" style="margin-top:12px"></div>
     </section>
 
     <!-- CERTIFICATIONS -->
@@ -179,7 +139,8 @@
       <div class="grid-3" style="margin-top:10px">
         <div class="card">Google Cybersecurity — <strong>Completed</strong></div>
         <div class="card">ISC2 CC — <strong>In progress</strong></div>
-        <div class="card">BTL1 — <strong>Upcoming</strong></div>
+        <div class="card">Cisco Ethical Hacker — <strong>Completed</strong></div>
+        <div class="card">Fortinet Cybersecurity Associate — <strong>Completed</strong></div>
       </div>
     </section>
 
@@ -188,7 +149,7 @@
       <h2>Blog & Writeups</h2>
       <div class="blog" style="margin-top:10px">
         <article class="card post">
-          <h4>Detecting RDP Brute‑Force in Splunk</h4>
+          <h4>Detecting RDP Brute-Force in Splunk</h4>
           <p>Query examples, notable event tuning, and a detection rule you can copy. <a class="link" href="viewer.html?md=Blog/detection-bruteforce-splunk.md">Read</a></p>
         </article>
         <article class="card post">
@@ -201,7 +162,7 @@
     <!-- CONTACT -->
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <p>Email: <a class="link" href="bobonikolov02@gmail.com">bobonikolov02@gmail.com</a></p>
+      <p>Email: <a class="link" href="mailto:bobonikolov02@gmail.com">bobonikolov02@gmail.com</a></p>
       <p>LinkedIn: <a class="link" href="https://www.linkedin.com/in/bobonikolov/">linkedin.com/in/bobonikolov</a> · GitHub: <a class="link" href="https://github.com/Nikolov999">github.com/Nikolov999</a></p>
     </section>
   </main>
@@ -211,18 +172,85 @@
   </footer>
 
   <script>
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{ e.preventDefault(); const t=document.querySelector(a.getAttribute('href')); if(t) t.scrollIntoView({behavior:'smooth'}); });
-    });
+    // Shared project data
+    const projectsData = [
+      {
+        title:"Attack-Defend Lab (WIP)",
+        slug:"attack-defend-lab",
+        date:"2025-10-25",
+        tags:["network","siem","ir"],
+        summary:"Isolated Kali + Metasploitable; defender (SecurityOnion) coming next.",
+        href:"viewer.html?md=Labs/Attack-Defend-Lab/README.md",
+        thumb:"AD"
+      },
+      {
+        title:"Network Traffic Analysis",
+        slug:"network-traffic-analysis",
+        date:"2025-09-15",
+        tags:["network"],
+        summary:"Analyzed PCAP files to identify suspicious C2 traffic. Tools: Wireshark, Zeek.",
+        href:"viewer.html?md=Labs/Network-Analysis/README.md",
+        thumb:"NA"
+      },
+      {
+        title:"SIEM Brute-force Detection",
+        slug:"siem-bruteforce",
+        date:"2025-08-22",
+        tags:["siem"],
+        summary:"Splunk dashboards & alerts to detect credential stuffing and brute-force activity.",
+        href:"viewer.html?md=Labs/Splunk-Investigation/README.md",
+        thumb:"SI"
+      },
+      {
+        title:"Incident Response Timeline",
+        slug:"incident-response-timeline",
+        date:"2025-07-30",
+        tags:["ir"],
+        summary:"IR playbook and timeline: containment & recovery.",
+        href:"viewer.html?md=Labs/Incident-Response/README.md",
+        thumb:"IR"
+      },
+      {
+        title:"Threat Intelligence Automation",
+        slug:"ti-automation",
+        date:"2025-06-12",
+        tags:["ti"],
+        summary:"Python IOC enricher, Windows failed-login triage & Zeek summarizer.",
+        href:"viewer.html?md=Labs/Python-Automations/README.md",
+        thumb:"TI"
+      }
+    ];
 
-    // Project filtering
-    const filters=[...document.querySelectorAll('.filter')];
-    const cards=[...document.querySelectorAll('.project')];
-    filters.forEach(f=>f.addEventListener('click',()=>{
-      filters.forEach(x=>x.classList.remove('active')); f.classList.add('active');
-      const tag=f.dataset.tag; cards.forEach(c=>{ c.style.display=(tag==='all'||c.dataset.tags.includes(tag))?'flex':'none'; });
-    }));
+    // Render latest project (by most recent date)
+    function renderLatest(){
+      const latest = projectsData.sort((a,b)=> new Date(b.date)-new Date(a.date))[0];
+      const wrap = document.getElementById('latestProject');
+      wrap.innerHTML = `
+        <div class="project">
+          <div class="thumb">${latest.thumb}</div>
+          <div>
+            <h3>${latest.title}</h3>
+            <p>${latest.summary} <a class="link" href="${latest.href}">Read writeup</a></p>
+            <div style="margin-top:8px;color:var(--muted);font-size:12px">
+              <span>📅 ${new Date(latest.date).toLocaleDateString()}</span>
+              · <span>Tags: ${latest.tags.join(', ')}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+    renderLatest();
+
+    // Smooth scroll (still works for internal sections)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const href=a.getAttribute('href');
+        if(href==="#"||href.startsWith("#")){
+          e.preventDefault();
+          const t=document.querySelector(href);
+          if(t) t.scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
   </script>
 </body>
 </html>
