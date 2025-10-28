@@ -6,13 +6,14 @@
   <title>Projects — Bobo Nikolov</title>
   <meta name="description" content="Cybersecurity projects by Bobo Nikolov." />
   <style>
-    /* === shared theme (trimmed to what's needed) === */
     :root{
       --bg1:#070013; --bg2:#120026; --bg3:#1b0733;
       --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; --accent-2:#a78bfa; --glass: rgba(255,255,255,0.05);
       --radius:16px;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img,video{max-width:100%;height:auto}
+
     body{
       font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       color:var(--text);
@@ -35,8 +36,16 @@
     .logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#180032;font-weight:800}
     h1{font-size:22px;margin:0}
     .subtitle{color:var(--muted);font-size:13px}
-    nav{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{background:var(--glass);padding:10px 14px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,0.06)}
+
+    nav{display:flex;gap:12px;flex-wrap:wrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .btn{background:var(--glass);padding:10px 14px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,0.06);min-height:40px;line-height:1}
+
+    /* mobile menu button */
+    .menu-toggle{
+      display:none;background:var(--glass);color:var(--muted);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:10px 12px;border-radius:12px;font-size:18px;cursor:pointer;
+    }
 
     main{flex:1;display:flex;flex-direction:column;gap:20px;padding:32px 40px}
     .section{background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:24px;box-shadow:0 6px 22px rgba(15,0,40,0.6);border:1px solid rgba(255,255,255,0.06)}
@@ -51,11 +60,50 @@
     .status{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#1b0733;border:0}
     a.link{color:var(--accent-2);text-decoration:none}
 
+    /* actions (download) */
+    .actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .download-btn{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#1b0733;text-decoration:none;border:0;
+      padding:10px 14px;border-radius:12px;font-weight:600;display:inline-flex;align-items:center;gap:8px;
+    }
+    .hash{font-size:11px;color:var(--muted)}
+
     footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.06)}
 
+    /* Tablet */
     @media(max-width:900px){
       header{padding:18px 20px}
       main{padding:24px 20px}
+      h1{font-size:20px}
+      .section{padding:20px}
+      .thumb{width:48px;height:48px}
+    }
+
+    /* Phones */
+    @media(max-width:700px){
+      .menu-toggle{display:block}
+      header{flex-wrap:wrap;gap:12px;padding:16px}
+
+      nav{
+        width:100%;
+        display:none;
+        flex-direction:column;
+        gap:8px;
+        padding-top:8px;
+      }
+      body.nav-open nav{display:flex}
+
+      nav .btn{width:100%;text-align:center;padding:12px}
+      main{padding:18px 16px}
+      .item{padding:12px}
+      .actions .download-btn{width:100%;justify-content:center}
+    }
+
+    /* Very small phones */
+    @media(max-width:400px){
+      body{font-size:16px}
+      h1{font-size:18px}
     }
   </style>
 </head>
@@ -68,6 +116,10 @@
         <div class="subtitle">Newest first • Vertical list</div>
       </div>
     </div>
+
+    <!-- burger for mobile -->
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+
     <nav>
       <a class="btn" href="index.html">← Home</a>
     </nav>
@@ -91,7 +143,7 @@
   </footer>
 
   <script>
-    /* Single source of truth; same vibe as index, but with status */
+    /* Single source of truth; add 'report' and optional 'report_hash' to show the button */
     const projects = [
       // === current / now (show newest first) ===
       {
@@ -102,6 +154,8 @@
         tags:["network","siem","ir"],
         summary:"Isolated Kali + Metasploitable; adding SecurityOnion defender next.",
         href:"viewer.html?md=Labs/Attack-Defend-Lab/README.md",
+        report:"projects/attack-defend-lab/report/attack-defend-lab_report_v0.1_2025-10-28.pdf",
+        // report_hash:"3f5b...optional sha256",
         thumb:"AD",
         bucket:"now"
       },
@@ -191,6 +245,14 @@
       const status = `<span class="tag status">${p.status}</span>`;
       const date = p.date ? `<span>📅 ${new Date(p.date).toLocaleDateString()}</span>` : "";
       const link = p.href && p.href !== "#" ? `<a class="link" href="${p.href}">Read writeup</a>` : `<span style="color:var(--muted);font-size:12px">Writeup coming soon</span>`;
+      const reportBtn = p.report ? `
+        <div class="actions">
+          <a class="download-btn" href="${p.report}" download>
+            ⬇ Download Report (PDF)
+          </a>
+          ${p.report_hash ? `<div class="hash">SHA256: ${p.report_hash}</div>` : ""}
+        </div>` : "";
+
       return `
         <div class="item">
           <div class="thumb">${p.thumb}</div>
@@ -202,6 +264,7 @@
               ${date}
               ${tags}
             </div>
+            ${reportBtn}
           </div>
         </div>`;
     }
@@ -211,7 +274,7 @@
       const upEl = document.getElementById('upcomingList');
 
       const now = projects.filter(p=>p.bucket==='now')
-        .sort((a,b)=> new Date(b.date) - new Date(a.date)); // newest first
+        .sort((a,b)=> new Date(b.date) - new Date(a.date));
       const upcoming = projects.filter(p=>p.bucket==='upcoming')
         .sort((a,b)=> (a.priority||99) - (b.priority||99));
 
@@ -219,6 +282,15 @@
       upEl.innerHTML = upcoming.map(projectItemHTML).join('');
     }
     render();
+
+    // Mobile menu toggle
+    const menuBtn = document.querySelector('.menu-toggle');
+    if(menuBtn){
+      menuBtn.addEventListener('click', ()=>{
+        const open = document.body.classList.toggle('nav-open');
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
   </script>
 </body>
 </html>
