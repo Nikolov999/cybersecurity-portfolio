@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects — Bobo Nikolov</title>
+  <meta name="description" content="Cybersecurity projects by Bobo Nikolov." />
+  <style>
+    /* === shared theme (trimmed to what's needed) === */
+    :root{
+      --bg1:#070013; --bg2:#120026; --bg3:#1b0733;
+      --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; --accent-2:#a78bfa; --glass: rgba(255,255,255,0.05);
+      --radius:16px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+      background: radial-gradient(1200px 800px at 10% -10%, var(--bg3), transparent),
+                  radial-gradient(1200px 800px at 110% 10%, #2a0f4f, transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      position:relative;
+    }
+    body::before{
+      content:"";position:fixed;inset:-40%;z-index:-1;
+      background: radial-gradient(40% 40% at 70% 20%, rgba(167,139,250,0.15), transparent 60%),
+                  radial-gradient(35% 35% at 20% 80%, rgba(139,92,246,0.18), transparent 60%);
+      filter: blur(40px);animation: float 22s ease-in-out infinite alternate;
+    }
+    @keyframes float{from{transform:translateY(-20px)}to{transform:translateY(30px)}}
+
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:24px 40px;background:rgba(255,255,255,0.04);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.06)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#180032;font-weight:800}
+    h1{font-size:22px;margin:0}
+    .subtitle{color:var(--muted);font-size:13px}
+    nav{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{background:var(--glass);padding:10px 14px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,0.06)}
+
+    main{flex:1;display:flex;flex-direction:column;gap:20px;padding:32px 40px}
+    .section{background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:24px;box-shadow:0 6px 22px rgba(15,0,40,0.6);border:1px solid rgba(255,255,255,0.06)}
+
+    /* vertical list styling */
+    .list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .item{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.02);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+    .thumb{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#241040,#341a5f);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800}
+    .item h3{margin:0;font-size:16px}
+    .meta{margin-top:6px;color:var(--muted);font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .tag{background:#22083f;border:1px solid rgba(255,255,255,0.07);padding:4px 8px;border-radius:999px;font-size:11px;color:var(--muted)}
+    .status{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#1b0733;border:0}
+    a.link{color:var(--accent-2);text-decoration:none}
+
+    footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.06)}
+
+    @media(max-width:900px){
+      header{padding:18px 20px}
+      main{padding:24px 20px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">CY</div>
+      <div>
+        <h1>Bobo Nikolov — Projects</h1>
+        <div class="subtitle">Newest first • Vertical list</div>
+      </div>
+    </div>
+    <nav>
+      <a class="btn" href="index.html">← Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>Now</h2>
+      <div id="nowList" class="list"></div>
+    </section>
+
+    <section class="section">
+      <h2>Upcoming</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Planned projects I’ll be adding next.</p>
+      <div id="upcomingList" class="list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with ⚙️ • Edit <code>projects.html</code> to update the list. — © Bobo Nikolov</p>
+  </footer>
+
+  <script>
+    /* Single source of truth; same vibe as index, but with status */
+    const projects = [
+      // === current / now (show newest first) ===
+      {
+        title:"Attack-Defend Lab (WIP)",
+        slug:"attack-defend-lab",
+        date:"2025-10-25",
+        status:"In Progress",
+        tags:["network","siem","ir"],
+        summary:"Isolated Kali + Metasploitable; adding SecurityOnion defender next.",
+        href:"viewer.html?md=Labs/Attack-Defend-Lab/README.md",
+        thumb:"AD",
+        bucket:"now"
+      },
+      {
+        title:"Network Traffic Analysis",
+        slug:"network-traffic-analysis",
+        date:"2025-09-15",
+        status:"Completed",
+        tags:["network"],
+        summary:"Analyzed PCAPs to identify suspicious C2 traffic. Tools: Wireshark, Zeek.",
+        href:"viewer.html?md=Labs/Network-Analysis/README.md",
+        thumb:"NA",
+        bucket:"now"
+      },
+      {
+        title:"SIEM Brute-force Detection",
+        slug:"siem-bruteforce",
+        date:"2025-08-22",
+        status:"Completed",
+        tags:["siem"],
+        summary:"Splunk dashboards & alerts to detect credential stuffing and brute-force.",
+        href:"viewer.html?md=Labs/Splunk-Investigation/README.md",
+        thumb:"SI",
+        bucket:"now"
+      },
+      {
+        title:"Incident Response Timeline",
+        slug:"incident-response-timeline",
+        date:"2025-07-30",
+        status:"Completed",
+        tags:["ir"],
+        summary:"IR playbook and timeline for containment & recovery.",
+        href:"viewer.html?md=Labs/Incident-Response/README.md",
+        thumb:"IR",
+        bucket:"now"
+      },
+      {
+        title:"Threat Intelligence Automation",
+        slug:"ti-automation",
+        date:"2025-06-12",
+        status:"Completed",
+        tags:["ti"],
+        summary:"Python IOC enricher, Windows failed-login triage & Zeek summarizer.",
+        href:"viewer.html?md=Labs/Python-Automations/README.md",
+        thumb:"TI",
+        bucket:"now"
+      },
+
+      // === upcoming (roadmap) ===
+      {
+        title:"SecurityOnion Defender Integration",
+        slug:"securityonion-defender",
+        priority:1,
+        status:"Planned",
+        tags:["siem","network","blue-team"],
+        summary:"Deploy SO sensor/manager; ingest Zeek/Suricata; create alerts; demo detection.",
+        href:"#",
+        thumb:"SO",
+        bucket:"upcoming"
+      },
+      {
+        title:"Detection Engineering Pack",
+        slug:"detection-pack",
+        priority:2,
+        status:"Planned",
+        tags:["siem","sigma"],
+        summary:"Author Sigma rules for SSH brute force, reverse shells, and suspicious PowerShell.",
+        href:"#",
+        thumb:"DE",
+        bucket:"upcoming"
+      },
+      {
+        title:"Purple-Team Walkthrough",
+        slug:"purple-walkthrough",
+        priority:3,
+        status:"Planned",
+        tags:["purple","mitre-attck"],
+        summary:"Adversary simulation steps + mapped detections and mitigations (ATT&CK).",
+        href:"#",
+        thumb:"PT",
+        bucket:"upcoming"
+      }
+    ];
+
+    function projectItemHTML(p){
+      const tags = p.tags.map(t=>`<span class="tag">${t}</span>`).join(' ');
+      const status = `<span class="tag status">${p.status}</span>`;
+      const date = p.date ? `<span>📅 ${new Date(p.date).toLocaleDateString()}</span>` : "";
+      const link = p.href && p.href !== "#" ? `<a class="link" href="${p.href}">Read writeup</a>` : `<span style="color:var(--muted);font-size:12px">Writeup coming soon</span>`;
+      return `
+        <div class="item">
+          <div class="thumb">${p.thumb}</div>
+          <div>
+            <h3>${p.title}</h3>
+            <p style="margin-top:6px;color:var(--muted)">${p.summary} ${link}</p>
+            <div class="meta">
+              ${status}
+              ${date}
+              ${tags}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function render(){
+      const nowEl = document.getElementById('nowList');
+      const upEl = document.getElementById('upcomingList');
+
+      const now = projects.filter(p=>p.bucket==='now')
+        .sort((a,b)=> new Date(b.date) - new Date(a.date)); // newest first
+      const upcoming = projects.filter(p=>p.bucket==='upcoming')
+        .sort((a,b)=> (a.priority||99) - (b.priority||99));
+
+      nowEl.innerHTML = now.map(projectItemHTML).join('');
+      upEl.innerHTML = upcoming.map(projectItemHTML).join('');
+    }
+    render();
+  </script>
+</body>
+</html>
