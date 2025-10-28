@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lab Viewer</title>
 <style>
   :root{ --bg1:#070013; --bg2:#120026; --card:#1a0e2b; --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; }
@@ -18,34 +18,110 @@
   .md p,.md li{color:var(--muted);line-height:1.65}
   .md pre{overflow:auto;background:#1f1432;padding:12px;border-radius:10px}
   .md img{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,0.08)}
+  .status{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .error{color:#ffd6d6;background:#3a0000;padding:10px;border-radius:8px}
+  .tried{font-size:13px;color:#f6f1ff;opacity:0.85;margin-top:8px}
 </style>
 </head>
 <body>
   <header>
     <a href="index.html">← Back to portfolio</a>
   </header>
+
   <div class="wrap">
-    <div class="card md" id="content">Loading…</div>
+    <div class="card">
+      <div class="status" id="status">Loading…</div>
+      <div id="content" class="md">Fetching markdown…</div>
+      <div id="tried" class="tried"></div>
+    </div>
   </div>
 
-  <!-- Markdown renderer -->
+  <!-- marked for markdown -> html -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
-    // Usage: viewer.html?md=Labs/Network-Analysis/README.md
-    const params = new URLSearchParams(location.search);
-    const mdPath = params.get("md");
-    const target = document.getElementById("content");
+    (async function(){
+      // Read md param; if missing, default to attack-defend readme
+      const params = new URLSearchParams(location.search);
+      let mdParam = params.get("md");
 
-    if(!mdPath){ target.innerHTML = "<p>No markdown file specified.</p>"; }
-    else{
-      // fetch raw file from the same repo/branch (works on Pages)
-      fetch(mdPath).then(r=>{
-        if(!r.ok) throw new Error("Not found");
-        return r.text();
-      }).then(txt=>{
-        target.innerHTML = marked.parse(txt);
-      }).catch(()=> target.innerHTML = "<p>Could not load file.</p>");
-    }
+      // Default fallback path — this will show the Attack-Defend Lab by default
+      const defaultPath = "Labs/Attack-Defend-Lab/README.md";
+
+      // Safety helpers
+      function safePath(p){
+        if(!p) return null;
+        if(p.includes('://') || p.startsWith('//') || p.includes('..')) return null;
+        return p.replace(/^\/+/, '');
+      }
+
+      // Generate candidate paths to try (to handle casing variations)
+      function candidates(path){
+        const out = [];
+        if(!path) return out;
+        out.push(path);
+        // add common README variations if the requested path ends with README.md
+        const dir = path.replace(/\/[^\/]*$/, '');
+        if(path.toLowerCase().endsWith('readme.md')){
+          out.push(`${dir}/README.md`);
+          out.push(`${dir}/Readme.md`);
+          out.push(`${dir}/readme.md`);
+        }
+        // if no specific filename, try default README.md variants in same dir
+        if(!path.includes('.md')){
+          out.push(`${path}/README.md`);
+          out.push(`${path}/Readme.md`);
+          out.push(`${path}/readme.md`);
+        }
+        return Array.from(new Set(out));
+      }
+
+      const statusEl = document.getElementById('status');
+      const contentEl = document.getElementById('content');
+      const triedEl = document.getElementById('tried');
+
+      // If no md param provided, use defaultPath
+      if(!mdParam) mdParam = defaultPath;
+
+      // sanitize
+      const safe = safePath(mdParam) || defaultPath;
+      statusEl.textContent = `Requested: ${safe}`;
+
+      // build try list
+      const tryList = candidates(safe);
+      if(tryList.length === 0) tryList.push(safe);
+
+      // Try each path until one works
+      let lastError = null;
+      const triedPaths = [];
+      for(const p of tryList){
+        triedPaths.push(p);
+        try{
+          statusEl.textContent = `Fetching: ${p}`;
+          const res = await fetch(p);
+          if(!res.ok){
+            lastError = `${res.status} ${res.statusText}`;
+            continue;
+          }
+          const mdText = await res.text();
+          const html = marked.parse(mdText, {mangle:false, headerIds:false});
+          contentEl.innerHTML = html;
+          statusEl.textContent = `Rendered: ${p}`;
+          triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
+          return;
+        } catch(err){
+          lastError = err.message || String(err);
+        }
+      }
+
+      // If we get here, everything failed
+      contentEl.innerHTML = `<div class="error"><strong>Could not load the requested markdown.</strong><br/>Make sure the file exists, the path is case-sensitive, and the file was pushed to GitHub Pages branch.</div>
+        <p style="margin-top:8px;color:var(--muted)">Hint: try opening the raw file in browser to verify it exists:</p>
+        <pre style="margin-top:6px;background:#111;padding:8px;border-radius:6px;color:#fff;">/${safe}</pre>
+        <p style="margin-top:8px;color:var(--muted)">Network error / reason: ${lastError}</p>`;
+
+      statusEl.textContent = `Failed to fetch.`;
+      triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
+    })();
   </script>
 </body>
 </html>
