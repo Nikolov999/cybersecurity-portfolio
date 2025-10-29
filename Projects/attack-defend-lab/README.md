@@ -107,7 +107,7 @@ whoami //lead to root
 ---
 
 
-   ### CONCLUSION
+   ## CONCLUSION
 
 This lab demonstrated a complete attacker workflow in an isolated environment: reconnaissance, payload creation and delivery, successful remote code execution, a persistence demonstration, and local privilege escalation (proof-of-concept). The aim was not to cause damage but to produce realistic telemetry and artifacts that a defender can use to tune detections and playbook responses.
 
@@ -125,7 +125,7 @@ The environment was fully isolated and snapshotted before testing; all changes w
 - Creation of sudoers/NOPASSWD entries is a common persistence pattern — monitor `/etc/sudoers.d/` and user creation events.
 - Local privilege escalation vectors (SUID binaries, misconfigured services) remain a rapid path to full compromise — remove unnecessary SUID/privileged binaries and harden kernel/service updates.
 
-  ### Recommended mitigation
+ ### Recommended mitigation
   
 - Block unneeded inbound services; harden public-facing services.
 - Enforce least privilege and MFA for administrative access.
