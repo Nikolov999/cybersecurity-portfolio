@@ -5,22 +5,95 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lab Viewer</title>
 <style>
-  :root{ --bg1:#070013; --bg2:#120026; --card:#1a0e2b; --muted:#d5c7ea; --text:#f6f1ff; --accent:#8b5cf6; }
+  :root{
+    --bg1:#ffffff;
+    --bg2:#f7f8fb;
+    --text:#1a1325;
+    --muted:#5a5670;
+    --accent:#4c1d95;   /* dark purple */
+    --accent-2:#6366f1; /* indigo highlight */
+    --card:#ffffff;
+    --radius:18px;
+  }
+
   *{box-sizing:border-box;margin:0}
-  body{min-height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
-  header{padding:18px 22px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08)}
-  a{color:#a78bfa}
+  body{
+    min-height:100vh;
+    background:linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    line-height:1.65;
+  }
+
+  /* Header */
+  header{
+    padding:18px 22px;
+    background:var(--accent);
+    color:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  }
+  header a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+  }
+  header a:hover{
+    text-decoration:underline;
+  }
+
+  /* Layout */
   .wrap{max-width:1000px;margin:0 auto;padding:22px}
-  .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:14px;border:1px solid rgba(255,255,255,0.08)}
-  .md h1{font-size:30px;margin:12px 0 8px}
-  .md h2{font-size:22px;margin:18px 0 6px}
-  .md h3{font-size:18px;margin:14px 0 6px}
-  .md p,.md li{color:var(--muted);line-height:1.65}
-  .md pre{overflow:auto;background:#1f1432;padding:12px;border-radius:10px}
-  .md img{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,0.08)}
+  .card{
+    background:var(--card);
+    padding:24px;
+    border-radius:var(--radius);
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 4px 18px rgba(0,0,0,0.05);
+  }
+
+  /* Markdown */
+  .md h1{font-size:30px;margin:12px 0 8px;color:var(--text)}
+  .md h2{font-size:22px;margin:18px 0 6px;color:var(--text)}
+  .md h3{font-size:18px;margin:14px 0 6px;color:var(--text)}
+  .md p,.md li{color:var(--muted)}
+  .md pre{
+    overflow:auto;
+    background:#0f1222; /* dark code block for contrast */
+    color:#f5f7ff;
+    padding:12px;border-radius:10px;
+    border:1px solid rgba(0,0,0,0.25);
+  }
+  .md code{
+    background:rgba(76,29,149,0.08);
+    border:1px solid rgba(76,29,149,0.18);
+    padding:2px 6px;border-radius:6px;
+  }
+  .md a{color:var(--accent-2);text-decoration:none;font-weight:600;position:relative}
+  .md a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    transform:scaleX(0);transform-origin:left center;transition:transform .22s ease
+  }
+  .md a:hover::after,.md a:focus-visible::after{transform:scaleX(1)}
+  .md img{
+    max-width:100%;
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,0.08);
+    box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  }
+  .md hr{
+    border:0;border-top:1px solid rgba(0,0,0,0.08);
+    margin:16px 0;
+  }
+
+  /* Meta / states */
   .status{font-size:13px;color:var(--muted);margin-bottom:10px}
-  .error{color:#ffd6d6;background:#3a0000;padding:10px;border-radius:8px}
-  .tried{font-size:13px;color:#f6f1ff;opacity:0.85;margin-top:8px}
+  .error{
+    color:#6b0505;
+    background:#ffe9e9;
+    padding:12px;border-radius:10px;border:1px solid #f7c8c8
+  }
+  .tried{font-size:13px;color:var(--muted);opacity:0.9;margin-top:10px}
 </style>
 </head>
 <body>
@@ -116,10 +189,10 @@
       // If we get here, everything failed
       contentEl.innerHTML = `<div class="error"><strong>Could not load the requested markdown.</strong><br/>Make sure the file exists, the path is case-sensitive, and the file was pushed to GitHub Pages branch.</div>
         <p style="margin-top:8px;color:var(--muted)">Hint: try opening the raw file in browser to verify it exists:</p>
-        <pre style="margin-top:6px;background:#111;padding:8px;border-radius:6px;color:#fff;">/${safe}</pre>
+        <pre style="margin-top:6px;">/${safe}</pre>
         <p style="margin-top:8px;color:var(--muted)">Network error / reason: ${lastError}</p>`;
 
-      statusEl.textContent = `Failed to fetch.`;
+      statusEl.textContent = 'Failed to fetch.';
       triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
     })();
   </script>
