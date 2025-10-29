@@ -1,8 +1,8 @@
-# 🎓 Certifications
+#  Certifications
 
 | Certification | Status | Proof |
 |----------------|--------|--------|
 | Google Cybersecurity Certificate | ✅ Completed | [View Certificate](google-cybersecurity.pdf) |
-| ISC2 CC | ⏳ In Progress | Coming soon |
-| Blue Team Level 1 | ⏳ In Progress | Coming soon |
+| Fortinet Cybersecurity Associate |  ✅ Completed  | [View Certificate](fortinet-cyber-associate.pdf) |
+| Cisco Ethical Hacker  |  ✅ Completed  | [View Certificate](cisco-ethical-hacker.pdf) |
 
