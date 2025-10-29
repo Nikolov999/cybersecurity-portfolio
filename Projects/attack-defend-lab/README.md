@@ -28,7 +28,8 @@ NOTE: All work is performed on my VM's only!
 (In linux terminal)Run:
 nmap -sS -sV 10.10.10.20
 
- ![Enumeration](Projects/attack-defend-lab/Evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_.png)
+ ![Enumeration](Projects/attack-defend-lab/Evidence
+/2025-10-27_05-52_AM_Screenshot_Enumeration_ .png)
 
 
 ---
