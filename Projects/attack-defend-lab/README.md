@@ -27,7 +27,8 @@ NOTE: All work is performed on my VM's only!
   
 (In linux terminal)Run:
 nmap -sS -sV 10.10.10.20
-![Enumeration](Projects/attack-defend-lab/Evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_.png)
+
+ ![Enumeration](Projects/attack-defend-lab/Evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_.png)
 
 
 ---
@@ -41,25 +42,25 @@ Created a small Linux meterpreter ELF payload on attacker host, served it via HT
  ### Artifacts / screenshots
 Payload creation: 
 
-![Payload creation](Projects/attack-defend-lab/Evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png)
+ ![Payload creation](Projects/attack-defend-lab/Evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png)
 
 Serving payload:
 
-![Serving payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png)
+ ![Serving payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png)
 
 Payload downloaded on victim: 
 
-![Payload on victim](Projects/attack-defend-lab/Evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png)
+ ![Payload on victim](Projects/attack-defend-lab/Evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png)
 
 Exploit/run and handler: 
 
-![Exploit run & handler](Projects/attack-defend-lab/Evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png)
+ ![Exploit run & handler](Projects/attack-defend-lab/Evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png)
 
-![Victim ran payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-55-57_Victim-Ran-Payload_Initial-Access-Execution.png)
+ ![Victim ran payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-55-57_Victim-Ran-Payload_Initial-Access-Execution.png)
 
 Successful execution(meterpreter/shell proof):
 
-![Success / meterpreter proof](Projects/attack-defend-lab/Evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png)
+ ![Success / meterpreter proof](Projects/attack-defend-lab/Evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png)
 
  ### What I did
 Generated a Linux ELF reverse-TCP payload on the attacker:
@@ -87,7 +88,9 @@ set LPORT 4444
 To demonstrate persistance detection and to create realistic defender telemetry for the upcoming SecurityOnion phase, a benign backdoor user was created and a sudoers entry added. All were documented and snapshot was reverted.
 
  ### Artifacts / Screenshots
--Persistance (new user created): 'evidence/2025-10-27_17-59-25_Persistance-New-User_Persistance.png'
+-Persistance (new user created): 
+
+ ![Persistence - new user](Projects/attack-defend-lab/Evidence/2025-10-27_17-59-25_Persistance-New-User_Persistance.png)
 
  ### Commands Executed
 sudo useradd -, -s /bin/bash backdoor_user //Creating a new user
@@ -108,7 +111,9 @@ sudo chmod 440 /etc/sudoers.d/backdoor_user
 After intitial access, local privilege escalation was demonstrated - minimal proof (whoami / id) captured to validate root access. This was performed only to verify impact for detection engineering.
 
  ### Artifact / Screenshot
--Privilege escalation(root obtained): 'evidence/2025-10-27_18-49-33_Privilege-Escalation.png'
+-Privilege escalation(root obtained): 
+
+ ![Privilege escalation (root)](Projects/attack-defend-lab/Evidence/2025-10-27_18-49-33_Privilege-Escalation.png)
 
  ### Proof commands / notes
 // From the interactive shell on meterpreter > shell
