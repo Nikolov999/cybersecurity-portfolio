@@ -1,72 +1,77 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lab Viewer — EchoPurple</title>
 <style>
   :root{
-    --bg1:#ffffff; --bg2:#f7f8fb; --card:#ffffff;
-    --muted:#5a5670; --text:#1a1325;
-    --accent:#2a005f; --accent-2:#4c1d95;
+    --bg1:#ffffff;
+    --bg2:#f7f8fb;
+    --text:#1a1325;
+    --muted:#5a5670;
+    --accent:#2a005f;   /* deep purple */
+    --accent-2:#4c1d95; /* indigo-purple */
     --radius:16px;
-    --header-h: 98px; /* match other pages */
+
+    /* exact match with index */
+    --header-h: 98px;
   }
 
-  *{box-sizing:border-box;margin:0}
+  *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+  /* keep same global rule as index so behavior is identical */
+  img,video{max-width:100%;height:auto}
+
   body{
     min-height:100vh;
     background:var(--bg2);
     color:var(--text);
-    font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-    display:flex;flex-direction:column;
+    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    display:flex;flex-direction:column;overflow-x:hidden;line-height:1.65;
   }
 
-  /* ===== Fixed Header (perfectly matches index/projects) ===== */
+  /* ===== HEADER (fixed, identical to index) ===== */
   header{
     position:fixed; top:0; left:0; right:0; z-index:1000;
-    min-height:var(--header-h);
-    padding:0 40px;
-    background:var(--accent); color:#fff;
     display:flex; align-items:center; justify-content:space-between;
+    padding:0 40px;                     /* horizontal only */
+    min-height:var(--header-h);         /* fixed header height */
+    background:var(--accent); color:#fff;
     box-shadow:0 3px 12px rgba(0,0,0,0.2);
   }
-  .brand{display:flex;align-items:center;gap:16px}
+  .brand{display:flex;gap:16px;align-items:center}
 
-  /* === smaller, aligned logo === */
+  /* same logo container + image behavior as index */
   .logo{
-    width:70px;
-    height:70px;
-    border-radius:18px;
+    width:calc(var(--header-h) - 6px);
+    height:calc(var(--header-h) - 6px);
+    border-radius:20px;
     background:var(--accent);
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    overflow:visible;
   }
   .logo img{
-    width:100%;
-    height:100%;
+    width:175%;
+    height:175%;
     object-fit:contain;
+    object-position:left center;
     display:block;
   }
 
+  /* simple right-side back link (keeps index look) */
   header a{
-    color:#fff; text-decoration:none; font-weight:600; opacity:.9;
+    color:#fff;text-decoration:none;font-weight:600;opacity:.9;transition:opacity .2s;
   }
   header a:hover{opacity:1}
 
-  /* ===== Content ===== */
+  /* ===== CONTENT ===== */
   .page{
-    padding:calc(var(--header-h) + 20px) 22px 22px;
-    flex:1;width:100%;
-    max-width:1000px;margin:0 auto;
+    padding:calc(var(--header-h) + 16px) 22px 22px; /* push below fixed header */
+    flex:1; width:100%; max-width:1000px; margin:0 auto;
   }
-
   .card{
-    background:var(--card);
-    padding:24px;
-    border-radius:14px;
-    border:1px solid rgba(0,0,0,0.06);
-    box-shadow:0 4px 18px rgba(0,0,0,0.05);
+    background:#fff; padding:24px; border-radius:14px;
+    border:1px solid rgba(0,0,0,0.06); box-shadow:0 4px 18px rgba(0,0,0,0.05);
   }
 
   .md h1{font-size:30px;margin:12px 0 8px}
@@ -79,12 +84,23 @@
   .error{color:#821e1e;background:#ffe9e9;padding:10px;border-radius:8px;border:1px solid #f3bcbc}
   .tried{font-size:13px;color:var(--muted);opacity:0.85;margin-top:8px}
 
-  /* ===== Responsive ===== */
+  /* ===== MOBILE (match index) ===== */
   @media(max-width:700px){
     :root{ --header-h: 82px; }
-    header{padding:0 16px;}
-    .page{padding:calc(var(--header-h) + 12px) 16px 18px;}
-    .logo{width:56px;height:56px;border-radius:14px;}
+
+    header{padding:0 16px}
+    .page{padding:calc(var(--header-h) + 12px) 16px 18px}
+
+    .logo{
+      width:calc(var(--header-h) - 6px);
+      height:calc(var(--header-h) - 6px);
+      border-radius:16px;
+    }
+    .logo img{
+      width:170%;
+      height:170%;
+      object-position:left center;
+    }
   }
 </style>
 </head>
@@ -117,21 +133,16 @@
         if(p.includes('://') || p.startsWith('//') || p.includes('..')) return null;
         return p.replace(/^\/+/, '');
       }
-
       function candidates(path){
         const out = [];
         if(!path) return out;
         out.push(path);
         const dir = path.replace(/\/[^\/]*$/, '');
         if(path.toLowerCase().endsWith('readme.md')){
-          out.push(`${dir}/README.md`);
-          out.push(`${dir}/Readme.md`);
-          out.push(`${dir}/readme.md`);
+          out.push(`${dir}/README.md`, `${dir}/Readme.md`, `${dir}/readme.md`);
         }
         if(!path.includes('.md')){
-          out.push(`${path}/README.md`);
-          out.push(`${path}/Readme.md`);
-          out.push(`${path}/readme.md`);
+          out.push(`${path}/README.md`, `${path}/Readme.md`, `${path}/readme.md`);
         }
         return Array.from(new Set(out));
       }
