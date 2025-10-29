@@ -10,7 +10,11 @@
     --muted:#5a5670; --text:#1a1325;
     --accent:#2a005f; --accent-2:#4c1d95;
     --radius:16px;
+
+    /* fixed header height (aligned to projects/index) */
+    --header-h: 98px;
   }
+
   *{box-sizing:border-box;margin:0}
   body{
     min-height:100vh;background:var(--bg2);color:var(--text);
@@ -18,35 +22,49 @@
     display:flex;flex-direction:column;
   }
 
-  /* Header bar (dark purple) */
+  /* ===== Fixed Header (dark purple) ===== */
   header{
-    padding:18px 22px;background:var(--accent);color:#fff;
-    display:flex;align-items:center;justify-content:space-between;
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    min-height:var(--header-h);
+    padding:0 22px;
+    background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:space-between;
     box-shadow:0 3px 12px rgba(0,0,0,0.2);
   }
   .brand{display:flex;align-items:center;gap:14px}
- .logo{
-  width:70px;
-  height:70px;
-  border-radius:16px;
-  background:var(--accent); /* same dark purple as header */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:14px;
-}
+
+  /* Logo container matches header color; image fills most of header height */
+  .logo{
+    width:calc(var(--header-h) - 6px);
+    height:calc(var(--header-h) - 6px);
+    border-radius:18px;
+    background:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    overflow:visible;
+  }
+  .logo img{
+    width:175%;
+    height:175%;
+    object-fit:contain;
+    object-position:left center;
+    display:block;
+  }
 
   header a{color:#fff;text-decoration:none;font-weight:600;opacity:.9}
   header a:hover{opacity:1}
 
-  .wrap{max-width:1000px;margin:0 auto;padding:22px;flex:1;width:100%}
-  .card{background:var(--card);padding:20px;border-radius:14px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 4px 18px rgba(0,0,0,0.05)}
+  /* Push content below the fixed header */
+  .page{
+    padding:calc(var(--header-h) + 12px) 22px 22px;
+    flex:1; width:100%;
+    max-width:1000px; margin:0 auto;
+  }
+
+  .card{
+    background:var(--card);padding:20px;border-radius:14px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 4px 18px rgba(0,0,0,0.05)
+  }
   .md h1{font-size:30px;margin:12px 0 8px}
   .md h2{font-size:22px;margin:18px 0 6px}
   .md h3{font-size:18px;margin:14px 0 6px}
@@ -56,6 +74,22 @@
   .status{font-size:13px;color:var(--muted);margin-bottom:10px}
   .error{color:#821e1e;background:#ffe9e9;padding:10px;border-radius:8px;border:1px solid #f3bcbc}
   .tried{font-size:13px;color:var(--muted);opacity:0.85;margin-top:8px}
+
+  /* ===== Mobile tweaks ===== */
+  @media(max-width:700px){
+    :root{ --header-h: 82px; }
+    header{padding:0 14px}
+    .page{padding:calc(var(--header-h) + 10px) 14px 18px}
+    .logo{
+      width:calc(var(--header-h) - 6px);
+      height:calc(var(--header-h) - 6px);
+      border-radius:16px;
+    }
+    .logo img{
+      width:170%; height:170%;
+      object-position:left center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -67,7 +101,7 @@
     <a href="index.html">← Back to portfolio</a>
   </header>
 
-  <div class="wrap">
+  <div class="page">
     <div class="card">
       <div class="status" id="status">Loading…</div>
       <div id="content" class="md">Fetching markdown…</div>
