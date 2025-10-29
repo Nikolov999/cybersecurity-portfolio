@@ -27,7 +27,7 @@ NOTE: All work is performed on my VM's only!
   
 (In linux terminal)Run:
 nmap -sS -sV 10.10.10.20
-'evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_ .png'
+![Enumeration](Projects/attack-defend-lab/Evidence/2025-10-27_05-52_AM_Screenshot_Enumeration_.png)
 
 
 ---
@@ -39,11 +39,27 @@ nmap -sS -sV 10.10.10.20
 Created a small Linux meterpreter ELF payload on attacker host, served it via HTTP server, fetched and executed it on the victim, then handled the incoming meterpreter session from Metasploit.
 
  ### Artifacts / screenshots
-Payload creation: 'evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png'
-Serving payload: 'evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png'
-Payload downloaded on victim: 'evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png'
-Exploit/run and handler: 'evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png'
-Successful execution(meterpreter/shell proof)- 'evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png'
+Payload creation: 
+
+![Payload creation](Projects/attack-defend-lab/Evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png)
+
+Serving payload:
+
+![Serving payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png)
+
+Payload downloaded on victim: 
+
+![Payload on victim](Projects/attack-defend-lab/Evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png)
+
+Exploit/run and handler: 
+
+![Exploit run & handler](Projects/attack-defend-lab/Evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png)
+
+![Victim ran payload](Projects/attack-defend-lab/Evidence/2025-10-27_15-55-57_Victim-Ran-Payload_Initial-Access-Execution.png)
+
+Successful execution(meterpreter/shell proof):
+
+![Success / meterpreter proof](Projects/attack-defend-lab/Evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png)
 
  ### What I did
 Generated a Linux ELF reverse-TCP payload on the attacker:
