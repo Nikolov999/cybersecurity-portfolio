@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bobo Nikolov — Blue Team Portfolio</title>
+  <title>EchoPurple — Blue Team Portfolio</title>
   <meta name="description" content="Blue Team cybersecurity portfolio: labs, certs, writeups, contact." />
   <style>
     :root{
@@ -11,11 +11,10 @@
       --bg2:#f7f8fb;
       --text:#1a1325;
       --muted:#5a5670;
-      --accent:#4c1d95;   /* dark purple */
-      --accent-2:#6366f1; /* indigo highlight */
+      --accent:#2a005f;   /* deep purple for header */
+      --accent-2:#4c1d95; /* indigo-purple for subtle highlights */
       --radius:18px;
     }
-
     *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
     img,video{max-width:100%;height:auto}
 
@@ -23,70 +22,41 @@
       font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       color:var(--text);
       background:linear-gradient(180deg,var(--bg1),var(--bg2));
-      min-height:100vh;
-      display:flex;flex-direction:column;
-      overflow-x:hidden;
-      line-height:1.65;
+      min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;line-height:1.65;
     }
 
     /* HEADER */
     header{
       display:flex;align-items:center;justify-content:space-between;
-      padding:24px 40px;
-      background:var(--accent);            /* solid dark purple header */
-      color:#fff;
-      box-shadow:0 2px 10px rgba(0,0,0,0.15);
+      padding:22px 40px;background:var(--accent);color:#fff;
+      box-shadow:0 3px 12px rgba(0,0,0,0.2);
     }
     .brand{display:flex;gap:16px;align-items:center}
     .logo{
-      width:60px;height:60px;border-radius:16px;
-      background:#fff;
-      color:var(--accent);
-      font-weight:800;
-      display:flex;align-items:center;justify-content:center;
-      font-size:20px;
+      width:70px;height:70px;border-radius:16px;background:#fff;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
     }
-    h1{font-size:22px;margin:0}
-    .subtitle{color:#e7e2ff;font-size:13px;margin-top:2px}
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:14px}
 
-    /* NAV (plain text links, no buttons) */
+    /* header links = plain text */
     nav{display:flex;gap:16px;flex-wrap:wrap}
     .btn{
-      background:transparent;
-      border:none;
-      color:#fff;                 /* header links are white */
-      text-decoration:none;
-      font-size:14px;
-      font-weight:600;
-      padding:0;                  /* remove button padding */
-      line-height:1;
-      opacity:.9;
-      transition:opacity .2s ease;
+      background:transparent;border:none;color:#fff;text-decoration:none;
+      font-size:14px;font-weight:600;line-height:1;opacity:.9;transition:opacity .2s ease;
+      padding:0;
     }
-    .btn:hover, .btn:focus-visible{opacity:1}
+    .btn:hover,.btn:focus-visible{opacity:1}
 
-    .menu-toggle{
-      display:none;background:#fff;color:var(--accent);
-      border:1px solid rgba(76,29,149,0.3);
-      padding:10px 12px;border-radius:12px;font-size:18px;cursor:pointer;
-    }
+    .menu-toggle{display:none;background:#fff;color:var(--accent);
+      border:1px solid rgba(76,29,149,0.3);padding:10px 12px;border-radius:12px;font-size:18px;cursor:pointer;}
 
     /* MAIN */
-    main{
-      flex:1;
-      display:flex;flex-direction:column;
-      gap:32px;
-      padding:36px 40px;
-      background:var(--bg2);
-    }
+    main{flex:1;display:flex;flex-direction:column;gap:32px;padding:36px 40px;background:var(--bg2);}
 
     /* SECTIONS & CARDS */
     .section{
-      background:#fff;
-      border-radius:var(--radius);
-      padding:28px;
-      box-shadow:0 4px 18px rgba(0,0,0,0.05);
-      border:1px solid rgba(0,0,0,0.04);
+      background:#fff;border-radius:var(--radius);padding:28px;
+      box-shadow:0 4px 18px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.04);
       transition:box-shadow .2s ease;
     }
     .section:hover{box-shadow:0 8px 26px rgba(0,0,0,0.08)}
@@ -94,79 +64,45 @@
     .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
     .about p{margin:10px 0;color:var(--muted)}
     .badge{
-      background:rgba(76,29,149,0.08);
-      color:var(--accent);
-      border:1px solid rgba(76,29,149,0.15);
-      padding:6px 10px;border-radius:9px;font-size:12px;
+      background:rgba(76,29,149,0.08);color:var(--accent);
+      border:1px solid rgba(76,29,149,0.15);padding:6px 10px;border-radius:9px;font-size:12px;
     }
     .skills .chip{
-      background:rgba(76,29,149,0.08);
-      border:1px solid rgba(76,29,149,0.15);
-      color:var(--accent);
-      padding:8px 10px;border-radius:999px;font-size:12px;
+      background:rgba(76,29,149,0.08);border:1px solid rgba(76,29,149,0.15);
+      color:var(--accent);padding:8px 10px;border-radius:999px;font-size:12px;
     }
 
     .project{
-      display:flex;gap:14px;align-items:flex-start;
-      background:rgba(76,29,149,0.05);
-      padding:16px;border-radius:12px;
-      border:1px solid rgba(76,29,149,0.1);
+      display:flex;gap:14px;align-items:flex-start;background:rgba(76,29,149,0.05);
+      padding:16px;border-radius:12px;border:1px solid rgba(76,29,149,0.1)
     }
     .project .thumb{
-      width:58px;height:58px;border-radius:12px;
-      background:var(--accent);
-      color:#fff;font-weight:800;font-size:18px;
-      display:flex;align-items:center;justify-content:center;
+      width:58px;height:58px;border-radius:12px;background:var(--accent);
+      color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;
     }
 
-    /* Content links (subtle underline) */
-    a.link{
-      color:var(--accent);
-      position:relative;
-      text-decoration:none;
-      font-weight:600;
-    }
+    /* content links */
+    a.link{color:var(--accent);position:relative;text-decoration:none;font-weight:600}
     a.link::after{
-      content:"";
-      position:absolute;left:0;right:0;bottom:-2px;
-      height:2px;border-radius:2px;
+      content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;
       background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      transform:scaleX(0);
-      transform-origin:left center;
-      transition:transform .22s ease;
+      transform:scaleX(0);transform-origin:left center;transition:transform .22s ease;
     }
-    a.link:hover::after, a.link:focus-visible::after{transform:scaleX(1)}
+    a.link:hover::after,a.link:focus-visible::after{transform:scaleX(1)}
 
-    /* Cards & Blog */
     .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-    .card{
-      background:#fff;
-      border:1px solid rgba(0,0,0,0.05);
-      border-radius:12px;
-      padding:16px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.04);
-    }
+    .card{background:#fff;border:1px solid rgba(0,0,0,0.05);border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.04)}
     .blog{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
     .post h4{margin:0 0 6px 0}
     .post p{color:var(--muted);font-size:13px;line-height:1.55}
 
-    /* FOOTER */
-    footer{
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-      padding:24px;
-      background:#fff;
-      border-top:1px solid rgba(0,0,0,0.05);
-    }
+    footer{text-align:center;color:var(--muted);font-size:13px;padding:24px;background:#fff;border-top:1px solid rgba(0,0,0,0.05)}
 
-    /* RESPONSIVE */
+    /* Responsive */
     @media(max-width:900px){
       .hero{grid-template-columns:1fr}
       header{padding:18px 20px}
       main{padding:24px 20px}
-      h1{font-size:20px}
-      .subtitle{font-size:12px}
       .section{padding:22px}
     }
     @media(max-width:700px){
@@ -174,8 +110,7 @@
       header{flex-wrap:wrap;gap:12px;padding:16px}
       nav{width:100%;display:none;flex-direction:column;gap:10px;padding-top:8px;}
       body.nav-open nav{display:flex}
-      /* header nav links remain white on mobile */
-      .grid-3, .blog{grid-template-columns:1fr}
+      .grid-3,.blog{grid-template-columns:1fr}
       main{padding:18px 16px}
     }
   </style>
@@ -183,11 +118,8 @@
 <body>
   <header>
     <div class="brand">
-      <div class="logo">CY</div>
-      <div>
-        <h1>EchoPurple</h1>
-        <div class="subtitle">Threat detection • Incident response • SOC</div>
-      </div>
+      <!-- Drop your Canva logo as logo.png in the root -->
+      <div class="logo"><img src="logo.png" alt="Logo"></div>
     </div>
 
     <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
