@@ -1,4 +1,4 @@
-# 🛡️ Bobo Nikolov — Blue Team Portfolio  
+#  Bobo Nikolov — Blue Team Portfolio  
 **SOC Analyst | Threat Detection | Security Automation | Incident Response**
 
 
@@ -8,9 +8,8 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 
 ---
 
-## 🌐 Live Portfolio
-👉 **Visit my website:** [nikolov999.github.io/cybersecurity-portfolio](https://nikolov999.github.io/cybersecurity-portfolio)  
-📄 **Resume:** [Download PDF](./Resume/Bobo_Nikolov_CV.pdf)
+##  Live Portfolio
+ **Visit my website:** [nikolov999.github.io/cybersecurity-portfolio](https://nikolov999.github.io/cybersecurity-portfolio)  
 
 ---
 
@@ -33,7 +32,7 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 | [`failed_login_triage.py`](./Labs/Python-Automation/failed_login_triage.py) | Summarizes failed logins to detect brute-force attempts | SIEM / IR |
 | [`zeek_conn_summary.py`](./Labs/Python-Automation/zeek_con_summary.py) | Summarizes Zeek connection logs for quick triage | Network Analysis |
 
-👉 Full docs: [Automation README](./Labs/Python-Automation/README.md)
+ Full docs: [Automation README](./Labs/Python-Automation/README.md)
 
 ---
 
@@ -47,11 +46,11 @@ This repository documents my **Blue Team journey**, including defensive labs, au
 
 | Certification | Status |
 |----------------|---------|
-| Google Cybersecurity Certificate | ✅ Completed |
-| ISC2 Certified in Cybersecurity (CC) | 🟡 In Progress |
-| Blue Team Level 1 (BTL1) | 🔜 Upcoming |
-| eJPT | 🔜 Planned |
-| CompTIA Security+ | 🔜 Planned |
+| Google Cybersecurity Certificate |  Completed |
+| Fortinet Cybersecurity Associate |  Completed |
+| Cisco Ethical Hacker | Completed |
+| eJPT |  Planned |
+| CompTIA Security+ |  Planned |
 
 ---
 
