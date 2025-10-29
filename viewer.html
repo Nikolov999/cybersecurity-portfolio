@@ -10,9 +10,7 @@
     --muted:#5a5670; --text:#1a1325;
     --accent:#2a005f; --accent-2:#4c1d95;
     --radius:16px;
-
-    /* match index/projects */
-    --header-h: 98px;
+    --header-h: 98px; /* match other pages */
   }
 
   *{box-sizing:border-box;margin:0}
@@ -24,31 +22,30 @@
     display:flex;flex-direction:column;
   }
 
-  /* ===== Fixed Header (identical sizing) ===== */
+  /* ===== Fixed Header (perfectly matches index/projects) ===== */
   header{
     position:fixed; top:0; left:0; right:0; z-index:1000;
     min-height:var(--header-h);
-    padding:0 40px; /* same horizontal padding */
+    padding:0 40px;
     background:var(--accent); color:#fff;
     display:flex; align-items:center; justify-content:space-between;
     box-shadow:0 3px 12px rgba(0,0,0,0.2);
   }
   .brand{display:flex;align-items:center;gap:16px}
 
-  /* Logo: same container + fill as projects */
+  /* === smaller, aligned logo === */
   .logo{
-    width:calc(var(--header-h) - 6px);
-    height:calc(var(--header-h) - 6px);
-    border-radius:20px;
+    width:70px;
+    height:70px;
+    border-radius:18px;
     background:var(--accent);
     display:flex; align-items:center; justify-content:center;
-    overflow:visible;
+    overflow:hidden;
   }
   .logo img{
-    width:170%;
-    height:170%;
+    width:100%;
+    height:100%;
     object-fit:contain;
-    object-position:left center; /* bias left like other pages */
     display:block;
   }
 
@@ -57,11 +54,11 @@
   }
   header a:hover{opacity:1}
 
-  /* Push content below fixed header */
+  /* ===== Content ===== */
   .page{
-    padding:calc(var(--header-h) + 16px) 22px 22px;
-    flex:1; width:100%;
-    max-width:1000px; margin:0 auto;
+    padding:calc(var(--header-h) + 20px) 22px 22px;
+    flex:1;width:100%;
+    max-width:1000px;margin:0 auto;
   }
 
   .card{
@@ -82,19 +79,12 @@
   .error{color:#821e1e;background:#ffe9e9;padding:10px;border-radius:8px;border:1px solid #f3bcbc}
   .tried{font-size:13px;color:var(--muted);opacity:0.85;margin-top:8px}
 
-  /* ===== Mobile tweaks (match others) ===== */
+  /* ===== Responsive ===== */
   @media(max-width:700px){
     :root{ --header-h: 82px; }
-    header{padding:0 16px}
-    .page{padding:calc(var(--header-h) + 12px) 16px 18px}
-    .logo{
-      width:calc(var(--header-h) - 6px);
-      height:calc(var(--header-h) - 6px);
-      border-radius:16px;
-    }
-    .logo img{
-      width:165%; height:165%; object-position:left center;
-    }
+    header{padding:0 16px;}
+    .page{padding:calc(var(--header-h) + 12px) 16px 18px;}
+    .logo{width:56px;height:56px;border-radius:14px;}
   }
 </style>
 </head>
@@ -102,7 +92,6 @@
   <header>
     <div class="brand">
       <div class="logo"><img src="Logo/Portfolio_Logo.png" alt="Logo"></div>
-      <!-- Removed the extra 'Viewer' text to keep this identical to other pages -->
     </div>
     <a href="index.html">← Back to portfolio</a>
   </header>
