@@ -33,21 +33,26 @@
     }
     .brand{display:flex;gap:16px;align-items:center}
    
-    .logo{
-  width:90px;
-  height:90px;
-  border-radius:16px;
-  background:var(--accent); /* same dark purple as header */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
+    .logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  top: 10px; /* lift it slightly above */
 }
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:14px;
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+header {
+  padding: 20px 40px; /* fixed header height */
+  min-height: 90px;   /* keeps layout tidy even with logo floating */
 }
 
 
