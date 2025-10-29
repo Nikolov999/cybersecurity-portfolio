@@ -1,4 +1,4 @@
-ATTACKER-DEFENDER LAB
+# ATTACKER-DEFENDER LAB
 
 Author: Bobo Nikolov
 Date: 27-10-2025
@@ -23,7 +23,7 @@ NOTE: All work is performed on my VM's only!
 ---
 
 
-  ENUMERATION 
+  ## ENUMERATION 
   
 (In linux terminal)Run:
 nmap -sS -sV 10.10.10.20
@@ -33,7 +33,7 @@ nmap -sS -sV 10.10.10.20
 ---
 
 
-  INITIAL ACCESS AND EXECUTION
+  ## INITIAL ACCESS AND EXECUTION
 
  - Summary
 Created a small Linux meterpreter ELF payload on attacker host, served it via HTTP server, fetched and executed it on the victim, then handled the incoming meterpreter session from Metasploit.
@@ -65,7 +65,7 @@ set LPORT 4444
 ---
 
 
-   PERSISTANCE
+   ## PERSISTANCE
    
  - Summary
 To demonstrate persistance detection and to create realistic defender telemetry for the upcoming SecurityOnion phase, a benign backdoor user was created and a sudoers entry added. All were documented and snapshot was reverted.
@@ -86,7 +86,7 @@ sudo chmod 440 /etc/sudoers.d/backdoor_user
 ---
 
 
-   PRIVILEGE ESCALATION
+   ## PRIVILEGE ESCALATION
    
  - Summary
 After intitial access, local privilege escalation was demonstrated - minimal proof (whoami / id) captured to validate root access. This was performed only to verify impact for detection engineering.
@@ -107,7 +107,7 @@ whoami //lead to root
 ---
 
 
-   CONCLUSION
+   ## CONCLUSION
 
 This lab demonstrated a complete attacker workflow in an isolated environment: reconnaissance, payload creation and delivery, successful remote code execution, a persistence demonstration, and local privilege escalation (proof-of-concept). The aim was not to cause damage but to produce realistic telemetry and artifacts that a defender can use to tune detections and playbook responses.
 
@@ -117,15 +117,15 @@ The environment was fully isolated and snapshotted before testing; all changes w
 ---
 
 
-   LESSION'S LEARNED AND MITIGATION
+   ## LESSION'S LEARNED AND MITIGATION
 
-  Takeaways
+  ### Takeaways
   
 - Simple file-download + execute flows are a high-risk vector (e.g. `wget` + `chmod` + run). Prevent by restricting outbound HTTP to unapproved hosts and enforcing execution policies.
 - Creation of sudoers/NOPASSWD entries is a common persistence pattern — monitor `/etc/sudoers.d/` and user creation events.
 - Local privilege escalation vectors (SUID binaries, misconfigured services) remain a rapid path to full compromise — remove unnecessary SUID/privileged binaries and harden kernel/service updates.
 
-  Recommended mitigation
+  ### Recommended mitigation
   
 - Block unneeded inbound services; harden public-facing services.
 - Enforce least privilege and MFA for administrative access.
@@ -136,7 +136,7 @@ The environment was fully isolated and snapshotted before testing; all changes w
 ---
 
 
-  Next steps (roadmap)
+  ### Next steps (roadmap)
 
 - SecurityOnion integration (planned): deploy sensor/manager, ingest Zeek/Suricata logs, simulate the attack again, and capture detection telemetry.  
 - Detection engineering: write Sigma/Suricata rules and Splunk/SO correlation searches for this scenario.  
@@ -146,7 +146,7 @@ The environment was fully isolated and snapshotted before testing; all changes w
 ---
 
 
-  Appendix – Commands & Artifacts
+  ## Appendix – Commands & Artifacts
 
 Important commands used (sanitized)
 
