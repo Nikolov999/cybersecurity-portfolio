@@ -250,6 +250,8 @@ Wazuh Artifacts:
 
 Wazuh:Alert-"Non-standard sudo shell spawned".
 
+---
+
 ### Defense Evasion(T1562)
 
 **Findings**
@@ -260,12 +262,68 @@ Wazuh:Alert-"Non-standard sudo shell spawned".
 -Add Auditd rule for execve syscalls targeting/tmp/ directory.
 -Enforce time sync between Wazuh agent and Wireshark capture host.
 
+---
+
 ### Credential Access(T1110/T1552)
 
 **Status**
 -Not directly simulated. Used brute force just for fun in Execution.
 
-### Discorvery
+---
+
+### Discovery
+
+Not part of current lab setup.
+
+---
+
+### Lateral Movement
+
+Not part of the current lab set up. In next phase I will be using Autoroute and Socks.
+
+---
+
+### Command and Control(T1071)
+
+**Attacker Activity**
+
+Meterpreter reverse TCP established.
+
+**Defender Findings**
+
+Persistent TCP stream from 10.10.10.20 to 10.10.10.10:4444
+
+**Defender notes**
+No Wazuh detection;network alert required.
+
+---
+
+### Exfiltration(T1041)
+
+**Observation**
+-File downloaded from victim to attacker via meterpreter.
+-No Wazuh detection, Wireshark recorded transfer partialy.
+
+**Defender notes**
+-Add rule for abnormal outbound transfer size to non-whitelisted hosts.
+
+---
+
+### Impact(T1489)
+
+-No destructive action performed in this lab. This step intentionally skipped for system safety.
+
+---
+
+### Detection and Response
+
+|Category|Finding|Detection Source|Status|
+|:-------:--------:---------------:------|
+|Recon|Nmap Scan|Wazuh, Wireshark|Success|
+|Initial Access|Elf download|Wireshark|Partial|
+
+|
+
 
 
 
