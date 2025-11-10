@@ -320,15 +320,57 @@ No Wazuh detection;network alert required.
 |      Category      |        Finding       |  Detection Source  |  Status  |
 |--------------------|----------------------|--------------------|----------|
 |Recon               |Nmap Scan             | Wazuh, Wireshark   | Success  |
-|Initial Access      |ELF install           | Wireshark only     | Partial  |
+|Initial Access      |ELF download          | Wireshark only     | Partial  |
 |Execution           |SQLi,Brute Force      | Wazuh              | Success  |
 |Persistance         |sudoers.d modification| Wazuh              | Success  |
 |Privilege Escalation|Root shell obtained   | Wazuh              | Success  |
 |Defensive Evasion   |Missed File Transfer  | None               | Failure  |
 |C2                  |Reverse TCP active    | Wireshark only     | Partial  |
 
+**Summary**
+-Wazuh Strengths: Detected auth anomalies, persistance, and privilege escalation.
+-Wazuh Gaps: Missed binary file transfer, exeution correlation.
+-Wireshark Strengths: Perfect capture of all network phases.
 
+---
 
+### Timeline Summary
+
+|        Phase       |        Time(UTC)     |  Defender Event    |      Artifact     |
+|--------------------|----------------------|--------------------|-------------------|
+|        Recon       |         22:29        |    Scan Detected   |  Wazuh, Wireshark |
+|   Initial Access   |         22:40        |    ELF download    |     Wireshark     |
+|      Execution     |         22:41        |  SQLi/Brute Force  |       Wazuh       |
+|     Persistance    |         22:45        |  sudoers file edit |       Wazuh       |
+|Privilege Escalation|         22:46        |     Root shell     |       Wazuh       |
+|         C2         |         22:47        |Reverse Shell Active|     Wireshark     |
+
+---
+
+### Lessons Learned
+
+|Finding                          |Description               |Mitigation                    |
+|---------------------------------|--------------------------|------------------------------|
+|Missing detection on ELF download|Wazuh missed binary fetch |Add auditd exec log for /tmp/*|
+|No reverse TCP alert             |Missing Suricata signature|Add C2 rule                   |
+|sudoers persistance detected     |Wazuh rule working        |Keep                          |
+|SQLi/Brute Force detected        |Good log visibility       |Maintain threshold            |
+
+---
+
+### Disclaimer
+
+All testing performed in an isolated lab environment for educational and ethical purposes only.
+No external systems were harmed. This documentation is for defensive research and SOC playbook creation.
+
+---
+
+### Credits
+
+-Created by: Bobo Nikolov
+-Project: PurpleOps-playground
+-Focus: Blue Team/Detection Engineering
+-Tools Used: Wazuh, Wireshark, Metasploit, Python HTTP Server, MITRE ATT&CK
 
 
 
