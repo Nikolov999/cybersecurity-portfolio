@@ -250,6 +250,23 @@ Wazuh Artifacts:
 
 Wazuh:Alert-"Non-standard sudo shell spawned".
 
+### Defense Evasion(T1562)
+
+**Findings**
+-The ELF download escaped detection; correlation between network and host was missing.
+-No alert for file transfer despite visible HTTP GET in Wireshark.
+
+**Mitigation Plan**
+-Add Auditd rule for execve syscalls targeting/tmp/ directory.
+-Enforce time sync between Wazuh agent and Wireshark capture host.
+
+### Credential Access(T1110/T1552)
+
+**Status**
+-Not directly simulated. Used brute force just for fun in Execution.
+
+### Discorvery
+
 
 
 
