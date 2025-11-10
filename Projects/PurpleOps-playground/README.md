@@ -193,6 +193,64 @@ Wazuh Payload Execution: No explicit alert(missed correlation).
 
 Wireshark Payload Execution Artifacts:
 
+![Execution](Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wireshark/2025-11-06_22-41-59_File-Executed.png)
+
+Wireshark: Reverse TCP handshake detected right after downloading the file. Attacker port:4444
+
+---
+
+### Persistance(T1136/T1547)
+
+**Attacker Activity**
+
+```bash
+sudo useradd -m -s /bin/bash backdoor_user
+echo "backdoor_user ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/backdoor_user
+```
+
+**Defender Findings**
+
+Wazuh Artifacts:
+
+Backdoor_User Created:
+
+  ![Persistance](Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-45-07_Persistance_Backdoor-User-Created.png)
+
+  ![Persistance](Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-45-43_Persistance_Backdoor-User-Added.png)
+
+Password rules changed New user can use sudo always and will never be asked for a password
+
+  ![Persistance](Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-49-17_Persistance_Password-Changed.png)
+
+New User was added to sudoers:
+
+  ![Persistance](Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-50-19_Persistance_Added-New-User-Sudoers.png)
+
+Backdoor user is officially unremovable:
+
+  ![Persistance](Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-50-41_Persistance_Updated-Privileges-For-Backdoor_User.png)
+
+Wazuh: Detected new sudoers file creation.
+
+---
+
+### Privilege Escalation(T1068/T1548)
+
+**Attacker Activity**
+
+```bash
+sudo /bin/bash
+```
+
+**Defender Findings**
+
+Wazuh Artifacts:
+
+![Privilege Escalation](Projects/PurpleOps-playground/Screenshots/Screenshots/Privilege-Escalation/Wazuh/2025-11-06_22-43-06_Privilege-Escalation.png)
+
+Wazuh:Alert-"Non-standard sudo shell spawned".
+
+
 
 
 
