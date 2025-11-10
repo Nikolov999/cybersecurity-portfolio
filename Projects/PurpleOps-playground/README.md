@@ -28,7 +28,7 @@
   - IP: `10.10.10.20` (labnet / intnet)
   - Tools: `wget`, `chmod`, `bash`, `sudo`. Wazuh agent installed and logging; Wireshark capturing on the victim.
 - **Network:** Isolated internal network (no internet). Snapshots taken.
-- **Evidence storage (local):** `Projects/PurpelOps-playground/Screenshots/` (screenshots, pcaps, Wazuh JSON/alerts)
+- **Evidence storage (local):** `Projects/PurpelOps-playground/Screenshots/` (screenshots, pcaps, Wazuh alerts)
 - **Scope:** Single-host attack chain (recon → initial access → execution → persistence → privilege escalation). Defender proof-of-concept detections from Wazuh & pcap analysis.
 
 ---
