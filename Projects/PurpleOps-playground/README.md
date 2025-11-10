@@ -1,9 +1,9 @@
 #  PurpleOps-Playground — Blue Team Play-by-Play
 
 **Author:** Bobo Nikolov  
-**Project:** Attack-Defend Lab (PurpleOps-Playground)  
+**Project:** PurpleOps-Playground  
 **Date:** 27-10-2025  
-**Status:** In Progress — Defender phase (SecurityOnion / detection engineering planned)
+**Status:** Completed
 
 ---
 
@@ -93,4 +93,16 @@ Below I walk through each phase, show what I (the defender) observed in Wazuh / 
 
 **Attacker activity**
 ```bash
+
 nmap -sS -sV 10.10.10.20
+```
+
+**Defender findings**
+
+Nmap Wazuh Alerts:
+
+![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-28-54_Recon(nmap)_Enumeration.png)
+
+![Enumeration](Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-29-00_Nmap-Recon_Enumeration_Wazuh.png)
+
+Wazuh: Rule 
