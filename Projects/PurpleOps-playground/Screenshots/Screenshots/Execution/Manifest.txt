@@ -1,0 +1,16 @@
+Manifest for: Recon (TA0043 Reconnaissance)
+Project: PurpleOps-Playground
+Folder path: evidence/Recon
+Date created: 2025-11-06
+Author: Bobo Nikolov
+
+Files:
+# Timestamp | Filename | Source | Short description | Relevant MITRE ID(s)
+20251106_223125_recon_nmap_wireshark.png | wireshark | Nmap HTTP request captured from attacker to victim (recon). | T1595.002
+20251106_223125_recon_nmap_wazuh.json    | wazuh     | Wazuh alert showing port scan detection from 10.10.10.10 | T1595
+...
+
+Notes:
+- PCAPs stored in /pcaps (original capture + filtered)
+- JSON exports from Wazuh in /wazuh
+- Screenshots are raw evidence; rename per convention before archiving.
