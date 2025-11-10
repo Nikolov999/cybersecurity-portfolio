@@ -317,12 +317,16 @@ No Wazuh detection;network alert required.
 
 ### Detection and Response
 
-|Category|Finding|Detection Source|Status|
-|:-------:--------:---------------:------|
-|Recon|Nmap Scan|Wazuh, Wireshark|Success|
-|Initial Access|Elf download|Wireshark|Partial|
+|      Category      |        Finding       |  Detection Source  |  Status  |
+|--------------------|----------------------|--------------------|----------|
+|Recon               |Nmap Scan             | Wazuh, Wireshark   | Success  |
+|Initial Access      |ELF install           | Wireshark only     | Partial  |
+|Execution           |SQLi,Brute Force      | Wazuh              | Success  |
+|Persistance         |sudoers.d modification| Wazuh              | Success  |
+|Privilege Escalation|Root shell obtained   | Wazuh              | Success  |
+|Defensive Evasion   |Missed File Transfer  | None               | Failure  |
+|C2                  |Reverse TCP active    | Wireshark only     | Partial  |
 
-|
 
 
 
