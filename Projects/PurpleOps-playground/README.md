@@ -33,22 +33,6 @@
 
 ---
 
-## Evidence & artifact locations (examples)
-
-> These are examples from this run — store your actual screenshots/pcaps in similar folders and reference them from here.
-
-- `Evidence/Recon/2025-10-27_05-52_AM_Screenshot_Enumeration_.png`  
-- `Evidence/Initial-Access/2025-10-27_15-38-08_Serving_Payload_Initial_Access_Execution.png`  
-- `Evidence/Initial-Access/2025-10-27_15-42-04_Payload_On_Victim_Initial_Access_Execution.png`  
-- `Evidence/Execution/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png`  
-- `Evidence/Execution/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png`  
-- `Evidence/Persistence/2025-10-27_17-59-25_Persistance-New-User_Persistance.png`  
-- `Evidence/Privilege-Escalation/2025-10-27_18-49-33_Privilege-Escalation.png`  
-- Additional PCAPs saved from Wireshark: `Wireshark_Captures/*.pcapng`  
-- Wazuh alerts exported as JSON per alert (store under `Wazuh/alerts/*.json`)
-
----
-
 ## MITRE ATT&CK mapping (defender play-by-play)
 
 Below is the mapping used in this lab. Each tactic is followed by the specific technique(s) observed and defender notes.
