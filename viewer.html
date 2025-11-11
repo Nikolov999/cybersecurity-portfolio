@@ -84,6 +84,36 @@
   .error{color:#821e1e;background:#ffe9e9;padding:10px;border-radius:8px;border:1px solid #f3bcbc}
   .tried{font-size:13px;color:var(--muted);opacity:0.85;margin-top:8px}
 
+  /* --- Markdown tables (added) --- */
+  .md table{
+    width:100%;
+    border-collapse:collapse;
+    margin:14px 0;
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.08);
+    box-shadow:0 1px 4px rgba(0,0,0,0.04);
+    display:block;                 /* allow horizontal scroll on small screens */
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .md thead th{
+    background:#f3f4f8;
+    color:var(--text);
+    font-weight:700;
+  }
+  .md th,
+  .md td{
+    padding:10px 12px;
+    font-size:14px;
+    color:var(--muted);
+    border:1px solid rgba(0,0,0,0.08);
+    text-align:left;
+    white-space:nowrap;            /* keeps columns compact; remove if you want wrapping */
+  }
+  .md tr:nth-child(even) td{
+    background:#fafbff;
+  }
+
   /* ===== MOBILE (match index) ===== */
   @media(max-width:700px){
     :root{ --header-h: 82px; }
@@ -123,6 +153,14 @@
   <!-- marked for markdown -> html -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
+    // Enable GitHub-Flavored Markdown (tables, etc.)
+    marked.setOptions({
+      gfm: true,
+      headerIds: false,
+      mangle: false,
+      breaks: false
+    });
+
     (async function(){
       const params = new URLSearchParams(location.search);
       let mdParam = params.get("md");
@@ -167,7 +205,7 @@
           const res = await fetch(p);
           if(!res.ok){ lastError = `${res.status} ${res.statusText}`; continue; }
           const mdText = await res.text();
-          const html = marked.parse(mdText, {mangle:false, headerIds:false});
+          const html = marked.parse(mdText);   // use global GFM options
           contentEl.innerHTML = html;
           statusEl.textContent = `Rendered: ${p}`;
           triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
