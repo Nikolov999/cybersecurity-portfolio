@@ -1,5 +1,5 @@
 #  Bobo Nikolov — Blue Team Portfolio  
-**SOC Analyst | Threat Detection | Security Automation | Incident Response**
+**Aspiring SOC Analyst | Threat Detection | Security Automation | Incident Response**
 
 
 
