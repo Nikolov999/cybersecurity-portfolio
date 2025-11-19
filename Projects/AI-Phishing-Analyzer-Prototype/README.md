@@ -142,6 +142,20 @@ http://127.0.0.1:8501
 
 ---
 
+# Analyzer
+
+The "Analyzer" tab allows you to enter the mail's sender and body without looking for the message source.
+It's results won't be as detailed as the ones when you use the raw email analyzer. Showing just breif message like:
+
+- Risk score
+- Display body link, if there is any
+
+---
+
+![Analyzer Tab](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Analyzer-Screenshot.png)
+
+---
+
 # Raw Email Analyzer
 
 The "Raw Email" tab allows you to paste the complete message source (headers + body).  
@@ -169,6 +183,14 @@ Content-Type: text/html
 
 ---
 
+![Raw Email Example](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Raw-Email-Screenshot-1.png)
+
+---
+
+![Raw Email Example](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Raw-Email-Screenshot-2.png)
+
+---
+
 # Dashboard
 
 The dashboard provides:
@@ -183,6 +205,9 @@ History is saved in:
 ```
 analysis_history.jsonl
 ```
+---
+
+![Dashboard](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Dashboard-Screenshot.png)
 
 ---
 
