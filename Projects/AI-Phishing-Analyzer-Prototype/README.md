@@ -258,5 +258,5 @@ This prototype was created collaboratively as a personal cybersecurity and AI le
 
 # Notes
 
-This project is intended as a prototype and should not be used in production environments without further security hardening, model fine-tuning, and integration testing.
+This project is intended as a prototype and should not be used in production environments without further security hardening, model fine-tuning, and integration testing. After I implement and configure all these I will make a link that you guys can only curl and have it downloaded on your own VM's or Host.
 
