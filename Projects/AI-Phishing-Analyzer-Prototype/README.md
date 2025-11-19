@@ -152,7 +152,7 @@ It's results won't be as detailed as the ones when you use the raw email analyze
 
 ---
 
-![Analyzer Tab](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Raw-Email-Screenshot-2.png)
+![Analyzer Tab](Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Analyzer-Screenshot.png)
 
 ---
 
