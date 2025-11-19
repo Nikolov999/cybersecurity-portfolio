@@ -1,6 +1,10 @@
 # AI-Phishing Analyzer (Prototype)
 
-An advanced AI-powered phishing detection system built for security research, demonstrations, and portfolio purposes.  
+## Motivation
+
+Phishing remains the most common and effective initial attack vector used by cybercriminals against individuals, companies, and critical infrastructure. Despite advancements in security tools, many organizations still fall victim to credential theft, financial fraud, and malware infections that begin with a single deceptive email. Traditional filtering solutions catch a large portion of these threats, but attackers continually evolve their techniques, leveraging social engineering, spoofed domains, and forged authentication headers to bypass defenses. The purpose of this prototype was to build an accessible, transparent, and extensible phishing detection system that combines AI-driven analysis with traditional security heuristics. By understanding how phishing attacks are constructed and evaluated, this project aims to provide both a practical defensive tool and a learning platform for anyone interested in cybersecurity, email forensics, or threat detection.
+
+## This prototype app is an advanced AI-powered phishing detection system built for security research, demonstrations, and portfolio purposes.  
 This prototype integrates:
 
 - FastAPI backend  
@@ -247,7 +251,7 @@ Categories=Utility;Security;
 
 This prototype was created collaboratively as a personal cybersecurity and AI learning project.
 
-**Creators:**
+**Creator:**
 - Bobo Nikolov (project owner, developer, tester)
 
 ---
