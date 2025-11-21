@@ -211,6 +211,29 @@ analysis_history.jsonl
 
 ---
 
+# Alerts
+
+- Applied an integration option in the app where I integrated a burner zohomail account. Through which the appa scans every single mail as it arrives in the inbox and if the score is above 60% phishing probability it sends it to the Alerts tab.
+
+It provides:
+
+- Timestamp
+
+- Email sender
+
+- Recipient
+
+- Subject
+
+- Label
+
+- Score
+
+![Alerts-Screenshot]()
+
+
+---
+
 # Architecture Overview
 
 ```
