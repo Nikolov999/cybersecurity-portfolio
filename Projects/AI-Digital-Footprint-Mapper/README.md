@@ -48,8 +48,8 @@ The application can load a YAML file describing:
 
 The YAML file is parsed into an interconnected asset graph representing the digital footprint.
 
-![YAML Scanning]()
-![YAML Scanning]()
+![YAML Scanning](Projects/AI-Digital-Footprint-Mapper/Screenshots/YAML-Analyzing.png)
+![YAML Scanning](Projects/AI-Digital-Footprint-Mapper/Screenshots/YAML-Graph.png)
 
 ---
 
@@ -67,8 +67,8 @@ The application integrates Nmap to scan internal or lab networks. Results are au
 
 This provides real-time visibility into internal exposure.
 
-![Network-Mapper]()
-![Network-Mapper]()
+![Network-Mapper](Projects/AI-Digital-Footprint-Mapper/Screenshots/NetworkScanner-Screenshot.png)
+![Network-Mapper](Projects/AI-Digital-Footprint-Mapper/Screenshots/NetworkScanner-Graph.png)
 
 ---
 
@@ -83,10 +83,6 @@ The function also includes foundational error handling. Network issues, malforme
 In practice, llm_client.py acts as the “voice” of the assistant portion of the software. Whenever the user asks a question, the application gathers contextual information (such as risk summaries or historical scan data), constructs a prompt, and passes it to the LLM through this module. The function then returns the model’s response as plain text, ready to be displayed in the assistant chat panel. The entire conversational workflow depends on this small but essential component.
 
 In essence, llm_client.py is the glue that binds the analytical capabilities of the application with the generative reasoning power of a local LLM. By isolating the API communication logic into a dedicated module, the project gains clarity, extensibility, and reliability, while ensuring that all AI inference remains fully local and under the user’s control.
-
----
-
-![Assistant-Example]()
 
 ---
 
