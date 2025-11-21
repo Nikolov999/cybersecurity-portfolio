@@ -28,8 +28,6 @@ All processing runs locally inside an Ubuntu (Defender) VM, making it safe and s
 
 ## Key Features
 
----
-
 ### Digital Footprint Loading (YAML)
 
 The application can load a YAML file describing:
