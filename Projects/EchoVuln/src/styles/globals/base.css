@@ -1,0 +1,108 @@
+:root {
+  --bg0: #07060b;
+  --bg1: #0c0814;
+  --card: rgba(255,255,255,0.06);
+  --card2: rgba(255,255,255,0.08);
+  --stroke: rgba(255,255,255,0.10);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.64);
+  --muted2: rgba(255,255,255,0.42);
+
+  --p1: #7c3aed;
+  --p2: #a855f7;
+  --p3: #22d3ee;
+
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --ok: #22c55e;
+
+  --r: 16px;
+  --r2: 22px;
+  --shadow: 0 18px 60px rgba(0,0,0,0.55);
+  --shadow2: 0 10px 30px rgba(0,0,0,0.45);
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(124,58,237,0.30), transparent 50%),
+              radial-gradient(1200px 600px at 80% 20%, rgba(168,85,247,0.18), transparent 55%),
+              radial-gradient(900px 500px at 60% 90%, rgba(34,211,238,0.10), transparent 60%),
+              linear-gradient(180deg, var(--bg0), var(--bg1));
+  overflow: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { margin: 10px 0; padding-left: 18px; }
+.bullets li { margin: 6px 0; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); }
+.strong { font-weight: 700; }
+.link { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ================================
+   EchoVuln Scrollbar Theme
+================================ */
+
+/* Chrome, Edge, Brave, Opera */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(20, 10, 40, 0.6);
+  border-radius: 12px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(140, 80, 255, 0.9),
+    rgba(90, 40, 200, 0.9)
+  );
+  border-radius: 12px;
+  border: 2px solid rgba(20, 10, 40, 0.6);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(180, 120, 255, 1),
+    rgba(120, 70, 230, 1)
+  );
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 80, 255, 0.9) rgba(20, 10, 40, 0.6);
+}
+
+.brandLogo{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  object-fit:cover;
+  box-shadow:0 14px 45px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,0.10);
+}
+
+.okText{ color: rgba(170,255,210,0.95); }
+.warnText{ color: rgba(255,205,140,0.95); }
+
+.chipOk{
+  border: 1px solid rgba(80,220,160,0.35);
+  background: rgba(80,220,160,0.12);
+}
+
+.chipWarn{
+  border: 1px solid rgba(255,205,140,0.35);
+  background: rgba(255,205,140,0.12);
+}
