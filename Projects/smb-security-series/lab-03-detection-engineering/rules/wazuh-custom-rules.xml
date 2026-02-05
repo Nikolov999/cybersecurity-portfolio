@@ -1,0 +1,34 @@
+group name="custom,windows,smb,lateral_movement,">
+
+  <!-- 4624 mapped by Wazuh to rule 60106 (Windows Logon Success) -->
+  <rule id="300001" level="6">
+    <if_sid>92657</if_sid>
+    <field name="win.eventdata.LogonType">3</field>
+    <field name="win.eventdata.AuthenticationPackageName">NTLM|Negotiate</field>
+    <description>Network logon detected (Type 3, NTLM/Negotiate)</description>
+    <mitre>T1078</mitre>
+  </rule>
+
+  <!-- 4672 mapped by Wazuh to rule 67028 (Special privileges assigned) -->
+  <rule id="300002" level="7">
+    <if_sid>67028</if_sid>
+    <description>Privileged logon context assigned (4672)</description>
+    <mitre>T1078</mitre>
+  </rule>
+
+  <!-- Service creation mapped by Wazuh to rule 61138 -->
+  <!-- High-signal: PsExec commonly creates PSEXESVC -->
+  <rule id="300003" level="9">
+    <if_sid>61138</if_sid>
+    <description>New Windows service created (possible remote execution)</description>
+    <mitre>T1569.002</mitre>
+  </rule>
+
+  <!-- Service creation shortly after network logon and privilege -->
+  <rule id="300010" level="12" frequency="2" timeframe="300">
+    <if_matched_sid>300001,300002,300003</if_matched_sid>
+    <description>Credential reuse + privileged remote execution (LogonType3 + 4672 + PsExec service)</description>
+    <mitre>T1078,T1569.002</mitre>
+  </rule>
+
+</group>

@@ -1,0 +1,312 @@
+//Special Privileges Assigned 
+
+{
+  "_index": "wazuh-alerts-4.x-2026.02.03",
+  "_id": "3voqJZwBRvU-fieRbIAm",
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "10.10.10.50",
+      "name": "Win-2022-Server",
+      "id": "008"
+    },
+    "manager": {
+      "name": "bobo-VirtualBox"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectLogonId": "0x2d0167",
+          "subjectUserSid": "S-1-5-21-1929864326-3294810221-3740133360-500",
+          "subjectDomainName": "LAB",
+          "privilegeList": "SeSecurityPrivilege     SeBackupPrivilege     SeRestorePrivilege     SeTakeOwnershipPrivilege     SeDebugPrivilege     SeSystemEnvironmentPrivilege     SeLoadDriverPrivilege     SeImpersonatePrivilege     SeDelegateSessionUserImpersonatePrivilege     SeEnableDelegationPrivilege",
+          "subjectUserName": "Administrator"
+        },
+        "system": {
+          "eventID": "4672",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"Special privileges assigned to new logon.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-21-1929864326-3294810221-3740133360-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tLAB\r\n\tLogon ID:\t\t0x2D0167\r\n\r\nPrivileges:\t\tSeSecurityPrivilege\r\n\t\t\tSeBackupPrivilege\r\n\t\t\tSeRestorePrivilege\r\n\t\t\tSeTakeOwnershipPrivilege\r\n\t\t\tSeDebugPrivilege\r\n\t\t\tSeSystemEnvironmentPrivilege\r\n\t\t\tSeLoadDriverPrivilege\r\n\t\t\tSeImpersonatePrivilege\r\n\t\t\tSeDelegateSessionUserImpersonatePrivilege\r\n\t\t\tSeEnableDelegationPrivilege\"",
+          "version": "0",
+          "systemTime": "2026-02-04T03:06:08.5500519Z",
+          "eventRecordID": "5345",
+          "threadID": "1588",
+          "computer": "WIN-EVGH6IS9JPB.lab.local",
+          "task": "12548",
+          "processID": "696",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "firedtimes": 1,
+      "mail": false,
+      "level": 3,
+      "description": "Special privileges assigned to new logon.",
+      "groups": [
+        "windows",
+        " WEF"
+      ],
+      "mitre": {
+        "technique": [
+          "Domain Policy Modification"
+        ],
+        "id": [
+          "T1484"
+        ],
+        "tactic": [
+          "Defense Evasion",
+          "Privilege Escalation"
+        ]
+      },
+      "id": "67028"
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1770150053.5698744",
+    "timestamp": "2026-02-03T20:20:53.112+0000"
+  },
+  "fields": {
+    "timestamp": [
+      "2026-02-03T20:20:53.112Z"
+    ]
+  },
+  "sort": [
+    1770150053112
+  ]
+}
+
+// Successful Remote Logon alert
+
+{
+  "_index": "wazuh-alerts-4.x-2026.02.03",
+  "_id": "3_oqJZwBRvU-fieRbIAm",
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "10.10.10.50",
+      "name": "Win-2022-Server",
+      "id": "008"
+    },
+    "manager": {
+      "name": "bobo-VirtualBox"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectLogonId": "0x0",
+          "targetLinkedLogonId": "0x0",
+          "impersonationLevel": "%%1833",
+          "ipAddress": "10.10.10.1",
+          "authenticationPackageName": "NTLM",
+          "workstationName": "WORKSTATION",
+          "lmPackageName": "NTLM V2",
+          "targetLogonId": "0x2d0167",
+          "logonProcessName": "NtLmSsp",
+          "logonGuid": "{00000000-0000-0000-0000-000000000000}",
+          "targetUserName": "Administrator",
+          "keyLength": "128",
+          "elevatedToken": "%%1842",
+          "subjectUserSid": "S-1-0-0",
+          "processId": "0x0",
+          "ipPort": "4361",
+          "targetDomainName": "LAB",
+          "targetUserSid": "S-1-5-21-1929864326-3294810221-3740133360-500",
+          "virtualAccount": "%%1843",
+          "logonType": "3"
+        },
+        "system": {
+          "eventID": "4624",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tVirtual Account:\t\tNo\r\n\tElevated Token:\t\tYes\r\n\r\nImpersonation Level:\t\tImpersonation\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1929864326-3294810221-3740133360-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tLAB\r\n\tLogon ID:\t\t0x2D0167\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x0\r\n\tProcess Name:\t\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\tWORKSTATION\r\n\tSource Network Address:\t10.10.10.1\r\n\tSource Port:\t\t4361\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tNtLmSsp \r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\tNTLM V2\r\n\tKey Length:\t\t128\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.\"",
+          "version": "2",
+          "systemTime": "2026-02-04T03:06:08.5516374Z",
+          "eventRecordID": "5346",
+          "threadID": "1588",
+          "computer": "WIN-EVGH6IS9JPB.lab.local",
+          "task": "12544",
+          "processID": "696",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "mail": false,
+      "level": 6,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Successful Remote Logon Detected - User:\\Administrator - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WORKSTATION is allowed to perform RDP connections",
+      "groups": [
+        "win_evt_channel",
+        "windows",
+        "authentication_success"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "technique": [
+          "Pass the Hash",
+          "Domain Accounts",
+          "Remote Desktop Protocol"
+        ],
+        "id": [
+          "T1550.002",
+          "T1078.002",
+          "T1021.001"
+        ],
+        "tactic": [
+          "Defense Evasion",
+          "Lateral Movement",
+          "Persistence",
+          "Privilege Escalation",
+          "Initial Access"
+        ]
+      },
+      "id": "92657",
+      "gpg13": [
+        "7.1",
+        "7.2"
+      ]
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1770150053.5701926",
+    "full_log": "{\"win\":{\"system\":{\"providerName\":\"Microsoft-Windows-Security-Auditing\",\"providerGuid\":\"{54849625-5478-4994-a5ba-3e3b0328c30d}\",\"eventID\":\"4624\",\"version\":\"2\",\"level\":\"0\",\"task\":\"12544\",\"opcode\":\"0\",\"keywords\":\"0x8020000000000000\",\"systemTime\":\"2026-02-04T03:06:08.5516374Z\",\"eventRecordID\":\"5346\",\"processID\":\"696\",\"threadID\":\"1588\",\"channel\":\"Security\",\"computer\":\"WIN-EVGH6IS9JPB.lab.local\",\"severityValue\":\"AUDIT_SUCCESS\",\"message\":\"\\\"An account was successfully logged on.\\r\\n\\r\\nSubject:\\r\\n\\tSecurity ID:\\t\\tS-1-0-0\\r\\n\\tAccount Name:\\t\\t-\\r\\n\\tAccount Domain:\\t\\t-\\r\\n\\tLogon ID:\\t\\t0x0\\r\\n\\r\\nLogon Information:\\r\\n\\tLogon Type:\\t\\t3\\r\\n\\tRestricted Admin Mode:\\t-\\r\\n\\tVirtual Account:\\t\\tNo\\r\\n\\tElevated Token:\\t\\tYes\\r\\n\\r\\nImpersonation Level:\\t\\tImpersonation\\r\\n\\r\\nNew Logon:\\r\\n\\tSecurity ID:\\t\\tS-1-5-21-1929864326-3294810221-3740133360-500\\r\\n\\tAccount Name:\\t\\tAdministrator\\r\\n\\tAccount Domain:\\t\\tLAB\\r\\n\\tLogon ID:\\t\\t0x2D0167\\r\\n\\tLinked Logon ID:\\t\\t0x0\\r\\n\\tNetwork Account Name:\\t-\\r\\n\\tNetwork Account Domain:\\t-\\r\\n\\tLogon GUID:\\t\\t{00000000-0000-0000-0000-000000000000}\\r\\n\\r\\nProcess Information:\\r\\n\\tProcess ID:\\t\\t0x0\\r\\n\\tProcess Name:\\t\\t-\\r\\n\\r\\nNetwork Information:\\r\\n\\tWorkstation Name:\\tWORKSTATION\\r\\n\\tSource Network Address:\\t10.10.10.1\\r\\n\\tSource Port:\\t\\t4361\\r\\n\\r\\nDetailed Authentication Information:\\r\\n\\tLogon Process:\\t\\tNtLmSsp \\r\\n\\tAuthentication Package:\\tNTLM\\r\\n\\tTransited Services:\\t-\\r\\n\\tPackage Name (NTLM only):\\tNTLM V2\\r\\n\\tKey Length:\\t\\t128\\r\\n\\r\\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\\r\\n\\r\\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\\r\\n\\r\\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\\r\\n\\r\\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\\r\\n\\r\\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\\r\\n\\r\\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\\r\\n\\r\\nThe authentication information fields provide detailed information about this specific logon request.\\r\\n\\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\\r\\n\\t- Transited services indicate which intermediate services have participated in this logon request.\\r\\n\\t- Package name indicates which sub-protocol was used among the NTLM protocols.\\r\\n\\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.\\\"\"},\"eventdata\":{\"subjectUserSid\":\"S-1-0-0\",\"subjectLogonId\":\"0x0\",\"targetUserSid\":\"S-1-5-21-1929864326-3294810221-3740133360-500\",\"targetUserName\":\"Administrator\",\"targetDomainName\":\"LAB\",\"targetLogonId\":\"0x2d0167\",\"logonType\":\"3\",\"logonProcessName\":\"NtLmSsp\",\"authenticationPackageName\":\"NTLM\",\"workstationName\":\"WORKSTATION\",\"logonGuid\":\"{00000000-0000-0000-0000-000000000000}\",\"lmPackageName\":\"NTLM V2\",\"keyLength\":\"128\",\"processId\":\"0x0\",\"ipAddress\":\"10.10.10.1\",\"ipPort\":\"4361\",\"impersonationLevel\":\"%%1833\",\"virtualAccount\":\"%%1843\",\"targetLinkedLogonId\":\"0x0\",\"elevatedToken\":\"%%1842\"}}}",
+    "timestamp": "2026-02-03T20:20:53.114+0000"
+  },
+  "fields": {
+    "timestamp": [
+      "2026-02-03T20:20:53.114Z"
+    ]
+  },
+  "sort": [
+    1770150053114
+  ]
+}
+
+//Windows User Logoff Event
+
+{
+  "_index": "wazuh-alerts-4.x-2026.02.03",
+  "_id": "4PoqJZwBRvU-fieRbIAm",
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "10.10.10.50",
+      "name": "Win-2022-Server",
+      "id": "008"
+    },
+    "manager": {
+      "name": "bobo-VirtualBox"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "targetLogonId": "0x2d0167",
+          "targetUserName": "Administrator",
+          "targetDomainName": "LAB",
+          "targetUserSid": "S-1-5-21-1929864326-3294810221-3740133360-500",
+          "logonType": "3"
+        },
+        "system": {
+          "eventID": "4634",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"An account was logged off.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-21-1929864326-3294810221-3740133360-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tLAB\r\n\tLogon ID:\t\t0x2D0167\r\n\r\nLogon Type:\t\t\t3\r\n\r\nThis event is generated when a logon session is destroyed. It may be positively correlated with a logon event using the Logon ID value. Logon IDs are only unique between reboots on the same computer.\"",
+          "version": "0",
+          "systemTime": "2026-02-04T03:06:14.6742870Z",
+          "eventRecordID": "5347",
+          "threadID": "6264",
+          "computer": "WIN-EVGH6IS9JPB.lab.local",
+          "task": "12545",
+          "processID": "696",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "firedtimes": 20,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows User Logoff",
+      "groups": [
+        "windows",
+        "windows_security"
+      ],
+      "id": "60137",
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1770150053.5709469",
+    "timestamp": "2026-02-03T20:20:53.171+0000"
+  },
+  "fields": {
+    "timestamp": [
+      "2026-02-03T20:20:53.171Z"
+    ]
+  },
+  "sort": [
+    1770150053171
+  ]
+}
