@@ -1,4 +1,4 @@
-﻿#SMB Credential Abuse — Detection, Remediation \& Validation Series
+# SMB Credential Abuse — Detection, Remediation \& Validation Series
 
 This repository documents a four-lab defensive security series focused on
 credential exposure via SMB misconfiguration and its downstream impact.
@@ -23,8 +23,6 @@ Focus:
 - Analyst reasoning without tuned detections
 
 - Identification of visibility gaps
- 
----
 
 Outcome:
 
