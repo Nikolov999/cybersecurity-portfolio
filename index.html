@@ -3,23 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EchoPurple — Blue and Red Team Portfolio</title>
+  <title>EchoPurple — Blue And Red Team Portfolio</title>
   <meta name="description" content="Blue Team cybersecurity portfolio: labs, certs, writeups, contact." />
   <style>
     :root{
       --bg0:#07040d;
       --bg1:#0b0614;
       --bg2:#100a1e;
-      --card:#0f0a1b;
-      --card-2:#120c21;
       --stroke:rgba(255,255,255,0.10);
 
       --text:#f5f1ff;
       --muted:rgba(245,241,255,0.72);
 
-      --p1:#6d28d9;   /* purple */
-      --p2:#a855f7;   /* violet */
-      --p3:#22d3ee;   /* cyan accent for contrast */
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
       --radius:18px;
 
       --header-h: 98px;
@@ -41,7 +39,6 @@
       min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;line-height:1.65;
     }
 
-    /* Subtle animated grain */
     body::before{
       content:"";
       position:fixed;inset:0;pointer-events:none;z-index:0;
@@ -50,7 +47,6 @@
       mix-blend-mode:overlay;
     }
 
-    /* HEADER (fixed) */
     header{
       position:fixed; top:0; left:0; right:0; z-index:1000;
       display:flex;align-items:center;justify-content:space-between;
@@ -75,22 +71,21 @@
 
     .brand{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
 
+    /* Transparent logo holder (no box/background) */
     .logo{
-      width:calc(var(--header-h) - 6px);
-      height:calc(var(--header-h) - 6px);
-      border-radius:20px;
-      background:rgba(0,0,0,0.22);
-      border:1px solid rgba(255,255,255,0.18);
+      height:calc(var(--header-h) - 10px);
       display:flex;align-items:center;justify-content:center;
-      overflow:visible;
-      box-shadow:0 10px 22px rgba(0,0,0,0.35);
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      border-radius:0;
     }
     .logo img{
-      width:175%;
-      height:175%;
+      height:100%;
+      width:auto;
       object-fit:contain;
-      object-position:left center;
       display:block;
+      /* subtle shadow only (keeps PNG edges clean on gradient) */
       filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
     }
 
@@ -112,7 +107,6 @@
       box-shadow:0 10px 20px rgba(0,0,0,0.30);
     }
 
-    /* MAIN */
     main{
       flex:1; display:flex; flex-direction:column; gap:32px;
       padding:calc(var(--header-h) + 18px) 40px 36px;
@@ -120,7 +114,6 @@
       z-index:1;
     }
 
-    /* SECTIONS & CARDS */
     .section{
       background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border-radius:var(--radius);
@@ -143,9 +136,7 @@
     .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:stretch}
     .about p{margin:10px 0}
 
-    .badges{
-      display:flex;flex-wrap:wrap;gap:10px;margin-top:12px
-    }
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
     .badge{
       background:rgba(109,40,217,0.18);
       color:rgba(245,241,255,0.92);
@@ -154,9 +145,7 @@
       box-shadow:0 8px 18px rgba(0,0,0,0.25);
     }
 
-    .skills{
-      display:flex;flex-wrap:wrap;gap:10px
-    }
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
     .skills .chip{
       background:rgba(34,211,238,0.08);
       border:1px solid rgba(34,211,238,0.18);
@@ -165,7 +154,6 @@
       box-shadow:0 8px 18px rgba(0,0,0,0.22);
     }
 
-    /* Project block */
     .project{
       display:flex;gap:14px;align-items:flex-start;
       background:linear-gradient(180deg, rgba(109,40,217,0.10), rgba(34,211,238,0.05));
@@ -181,7 +169,6 @@
       border:1px solid rgba(255,255,255,0.14);
     }
 
-    /* content links */
     a.link{
       color:rgba(245,241,255,0.95);
       position:relative;
@@ -210,7 +197,6 @@
     .post h4{margin:0 0 6px 0;font-size:15px;color:rgba(245,241,255,0.96)}
     .post p{font-size:13px;line-height:1.55;color:rgba(245,241,255,0.70)}
 
-    /* Subsection "Quick Stats" panel */
     .quick{
       background:
         radial-gradient(520px 240px at 20% 20%, rgba(168,85,247,0.18), transparent 60%),
@@ -219,7 +205,6 @@
       border:1px solid rgba(255,255,255,0.12);
     }
 
-    /* Footer with gradient purple */
     footer{
       text-align:center;
       color:rgba(255,255,255,0.78);
@@ -240,7 +225,6 @@
       opacity:.45;
     }
 
-    /* Responsive */
     @media(max-width:900px){
       .hero{grid-template-columns:1fr}
       main{padding:calc(var(--header-h) + 14px) 20px 24px}
@@ -252,19 +236,11 @@
       header{padding:0 16px}
       .menu-toggle{display:block}
       header{flex-wrap:wrap;gap:10px}
-     nav{width:100%;display:none;flex-direction:column;gap:10px;padding:10px 0;}
+      nav{width:100%;display:none;flex-direction:column;gap:10px;padding:10px 0;}
       body.nav-open nav{display:flex}
 
-      .logo{
-        width:calc(var(--header-h) - 6px);
-        height:calc(var(--header-h) - 6px);
-        border-radius:16px;
-      }
-      .logo img{
-        width:170%;
-        height:170%;
-        object-position:left center;
-      }
+      .logo{height:calc(var(--header-h) - 10px)}
+      .logo img{height:100%;width:auto}
 
       .grid-3,.blog{grid-template-columns:1fr}
       main{padding:calc(var(--header-h) + 12px) 16px 18px}
@@ -290,7 +266,6 @@
   </header>
 
   <main>
-    <!-- ABOUT -->
     <section id="about" class="section hero">
       <div class="about">
         <h2 style="margin-bottom:8px">Welcome </h2>
@@ -314,7 +289,6 @@
       </aside>
     </section>
 
-    <!-- SKILLS -->
     <section id="skills" class="section">
       <h2>Skills</h2>
       <p style="color:var(--muted);margin-top:6px;font-size:14px">Some of the tools and platforms I use daily:</p>
@@ -325,7 +299,6 @@
       </div>
     </section>
 
-    <!-- LATEST PROJECT -->
     <section class="section">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
         <span>Latest Project</span>
@@ -334,7 +307,6 @@
       <div id="latestProject" style="margin-top:14px"></div>
     </section>
 
-    <!-- LABS -->
     <section id="labs" class="section">
       <h2>Labs</h2>
       <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Hands-on labs focused on network analysis, detections, and automation:</p>
@@ -358,7 +330,6 @@
       </div>
     </section>
 
-    <!-- CERTS -->
     <section id="certs" class="section">
       <h2>Certifications</h2>
       <div class="grid-3" style="margin-top:12px">
@@ -369,7 +340,6 @@
       </div>
     </section>
 
-    <!-- BLOG -->
     <section id="blog" class="section">
       <h2>Blog & Writeups</h2>
       <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Short reads from my investigations and detections:</p>
@@ -385,7 +355,6 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" class="section">
       <h2>Contact</h2>
       <p>Want to connect or collaborate? I’m always up for talking detection, blue teaming, or lab setups.</p>
