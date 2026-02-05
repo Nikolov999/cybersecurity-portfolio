@@ -1,202 +1,143 @@
-﻿# \# SMB Credential Abuse — Detection, Remediation \& Validation Series
+﻿#SMB Credential Abuse — Detection, Remediation \& Validation Series
 
-# 
+This repository documents a four-lab defensive security series focused on
+credential exposure via SMB misconfiguration and its downstream impact.
+The goal is not exploitation, but realistic blue-team detection, response,
+and validation using default telemetry and minimal tooling.
 
-# This repository documents a four-lab defensive security series focused on
+---
 
-# credential exposure via SMB misconfiguration and its downstream impact.
+## Lab Overview 
 
-# 
+### Lab 1 — Detection \& Incident Response
 
-# The goal is not exploitation, but \*\*realistic blue-team detection, response,
+Scenario:  
 
-# and validation\*\* using default telemetry and minimal tooling.
+A misconfigured SMB share exposed plaintext credentials which were abused for
+privileged access and remote execution.
 
-# 
+Focus:
 
-# ---
+- Incident reconstruction
 
-# 
+- Analyst reasoning without tuned detections
 
-# \## Lab Overview
+- Identification of visibility gaps
+ 
+---
 
-# 
+Outcome:
 
-# \### Lab 1 — Detection \& Incident Response
+- Credential abuse occurred
 
-# \*\*Scenario:\*\*  
+- Limited detection fidelity
 
-# A misconfigured SMB share exposed plaintext credentials which were abused for
+- Manual log correlation required 
 
-# privileged access and remote execution.
+--- 
 
-# 
+### Lab 2 — Remediation
 
-# \*\*Focus:\*\*
+Scenario:  
 
-# \- Incident reconstruction
+The root cause (credential exposure via SMB share) was remediated. 
 
-# \- Analyst reasoning without tuned detections
+Focus:
 
-# \- Identification of visibility gaps
+- Share and NTFS permission hardening
 
-# 
+- Secret removal and hygiene
 
-# \*\*Outcome:\*\*
+- Verification of corrected behavior 
 
-# \- Credential abuse occurred
+Outcome:
 
-# \- Limited detection fidelity
+- Credential exposure eliminated
 
-# \- Manual log correlation required
+- Attack path disrupted at source 
 
-# 
+--- 
 
-# ---
+### Lab 3 — Detection Engineering
 
-# 
+Scenario:  
 
-# \### Lab 2 — Remediation
+Custom Wazuh rules were engineered to detect the behavioral chain of
+credential-based lateral movement.
 
-# \*\*Scenario:\*\*  
+Focus:
 
-# The root cause (credential exposure via SMB share) was remediated.
+- Network logons (Type 3)
 
-# 
+- Privileged logon assignment (4672)
 
-# \*\*Focus:\*\*
+- SMB-based remote execution via service creation
 
-# \- Share and NTFS permission hardening
+- Correlation across events 
 
-# \- Secret removal and hygiene
+Outcome:
 
-# \- Verification of corrected behavior
+- High-confidence detection of lateral movement behavior
 
-# 
+- Reduced reliance on protocol-specific logging 
 
-# \*\*Outcome:\*\*
+--- 
 
-# \- Credential exposure eliminated
+### Lab 4 — Validation (Purple Team)
 
-# \- Attack path disrupted at source
+Scenario:  
+The original attack path from Lab 1 was replayed after remediation and
+detection engineering. 
 
-# 
+Focus:
 
-# ---
+- Control effectiveness
 
-# 
+- Detection reliability
 
-# \### Lab 3 — Detection Engineering
+- Analyst confidence 
 
-# \*\*Scenario:\*\*  
+Outcome:
 
-# Custom Wazuh rules were engineered to detect the behavioral chain of
+- Attack prevented or constrained
 
-# credential-based lateral movement.
+- Detection chain fired consistently
 
-# 
+- Incident resolved with minimal response 
 
-# \*\*Focus:\*\*
+--- 
 
-# \- Network logons (Type 3)
+## Why This Series Matters 
 
-# \- Privileged logon assignment (4672)
+### This project demonstrates:
 
-# \- SMB-based remote execution via service creation
+- Realistic enterprise misconfiguration
 
-# \- Correlation across events
+- Identity-based attack detection challenges
 
-# 
+- Analyst-level reasoning over alert chasing
 
-# \*\*Outcome:\*\*
+- Full defensive lifecycle: detect → fix → engineer → validate 
 
-# \- High-confidence detection of lateral movement behavior
+### No artificial exploits. No excessive tooling. No theater.
 
-# \- Reduced reliance on protocol-specific logging
+--- 
 
-# 
+## Technologies Used
 
-# ---
+- Windows 10 / Windows Server 2022
 
-# 
+- Wazuh (agent + manager)
 
-# \### Lab 4 — Validation (Purple Team)
+- Native Windows logging
 
-# \*\*Scenario:\*\*  
+- SMB / NTLM authentication
 
-# The original attack path from Lab 1 was replayed after remediation and
+- PsExec-style execution (benign command) 
 
-# detection engineering.
+--- 
 
-# 
-
-# \*\*Focus:\*\*
-
-# \- Control effectiveness
-
-# \- Detection reliability
-
-# \- Analyst confidence
-
-# 
-
-# \*\*Outcome:\*\*
-
-# \- Attack prevented or constrained
-
-# \- Detection chain fired consistently
-
-# \- Incident resolved with minimal response
-
-# 
-
-# ---
-
-# 
-
-# \## Why This Series Matters
-
-# 
-
-# This project demonstrates:
-
-# \- Realistic enterprise misconfiguration
-
-# \- Identity-based attack detection challenges
-
-# \- Analyst-level reasoning over alert chasing
-
-# \- Full defensive lifecycle: detect → fix → engineer → validate
-
-# 
-
-# No artificial exploits. No excessive tooling. No theater.
-
-# 
-
-# ---
-
-# 
-
-# \## Technologies Used
-
-# \- Windows 10 / Windows Server 2022
-
-# \- Wazuh (agent + manager)
-
-# \- Native Windows logging
-
-# \- SMB / NTLM authentication
-
-# \- PsExec-style execution (benign command)
-
-# 
-
-# ---
-
-# 
-
-# \## Author
+## Author
 
 # EchoPentest  
 
