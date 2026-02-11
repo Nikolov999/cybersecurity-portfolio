@@ -1,0 +1,6 @@
+streamlit
+pywebview
+requests
+pandas
+pyinstaller
+webview
