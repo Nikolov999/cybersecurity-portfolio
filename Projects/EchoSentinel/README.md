@@ -213,6 +213,119 @@ It is a **purpose-built detection and investigation platform**.
 
 ---
 
+# UI Walkthrough
+
+## Front Page — System Status Overview
+
+![EchoSentinel Frontpage](assets/echosentinel-frontpage.png)
+
+The landing view confirms operational state:
+
+- Backend connectivity status  
+- OS context (Windows)  
+- Active storage engine (SQLite)  
+- Feature modules enabled (Auth, Persistence, Sysmon)  
+
+This verifies that the detection pipeline is functioning end-to-end.
+
+---
+
+## Dashboard — Operational Telemetry Summary
+
+![EchoSentinel Dashboard](assets/echosentinel-dashboard.png)
+
+The dashboard provides:
+
+- Event counts (last 24h) grouped by `event_id`
+- Alert severity distribution (last 24h)
+- Latest alert feed with rule mapping
+- Direct visibility into high-volume authentication activity (4624 / 4672, etc.)
+
+This supports rapid triage and baseline validation.
+
+---
+
+## Events View — Raw Forensic Evidence
+
+![EchoSentinel Events](assets/echosentinel-events.png)
+
+The Events tab provides:
+
+- Filter by hostname
+- Filter by event ID
+- Filter by username
+- Channel visibility
+- Record ID reference
+- Raw message inspection drawer
+
+This enables investigation workflows comparable to traditional SIEM event search interfaces.
+
+---
+
+## Alerts View — Deterministic Detections
+
+![EchoSentinel Alerts](assets/echosentinel-alerts.png)
+
+The Alerts view shows:
+
+- Severity classification
+- Rule identifier (e.g., ES-AUTH-008)
+- Host and username context
+- Source IP attribution
+- Deduplicated alert occurrences
+- First seen / last seen timestamps
+
+Alerts are generated strictly by deterministic rule packs.
+
+---
+
+## Endpoints — Host Inventory & Telemetry Health
+
+![EchoSentinel Endpoints](assets/echosentinel-endpoints.png)
+
+The Endpoints tab displays:
+
+- Hostname
+- Status (online / stale)
+- Last seen timestamp
+- Sysmon presence detection
+- Event rate (events per minute window)
+- Channels observed
+
+This provides lightweight endpoint health validation without deploying a heavyweight EDR.
+
+---
+
+## Rules Catalog — Detection Transparency
+
+![EchoSentinel Rules](assets/echosentinel-rules.png)
+
+The Rules tab documents:
+
+- Rule pack (Auth / Persistence / Sysmon)
+- Rule ID
+- Severity level
+- Signal event IDs
+- Default detection thresholds
+
+This ensures detection transparency and supports detection engineering validation exercises.
+
+---
+
+## Operational Context
+
+The screenshots demonstrate:
+
+- Active authentication telemetry (4624, 4672)
+- Privilege assignment detections
+- Explicit credential usage alerts (4648)
+- RDP and session-based detection support
+- Deterministic rule firing within 24-hour aggregation windows
+
+EchoSentinel operates as a controlled, explainable mini-SIEM designed for real blue-team workflows.
+
+---
+
 ## How this fits the EchoPentest portfolio
 
 EchoSentinel underpins:
@@ -228,4 +341,5 @@ The progression mirrors a real blue-team learning path, not isolated labs.
 ## Branding
 
 EchoSentinel is part of the **EchoPentest** ecosystem:  
+
 focused security tooling built for operators, deterministic detections, and defensible evidence.
