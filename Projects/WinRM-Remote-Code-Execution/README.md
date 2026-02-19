@@ -1,4 +1,4 @@
-\# WinRM Remote Code Execution (PowerShell Remoting) — Detection + Remediation + Validation
+# WinRM Remote Code Execution (PowerShell Remoting) — Detection + Remediation + Validation
 
 
 
@@ -6,99 +6,75 @@ This project documents an end-to-end WinRM (Windows Remote Management) remote co
 
 
 
-\## Lab Topology (This Repo)
+## Lab Topology (This Repo)
 
-\- \*\*EchoSentinel (collector / SIEM):\*\* `192.168.1.27`
+- EchoSentinel (collector / SIEM):\*\* `192.168.1.27`
 
-\- \*\*Attacker (Kali):\*\* `192.168.1.13`
+- Attacker (Kali):\*\* `192.168.1.13`
 
-\- \*\*Target (Windows 10):\*\* `192.168.1.32`
-
-
-
-\## What This Covers
-
-\- WinRM enablement and baseline telemetry
-
-\- Credentialed remote execution via:
-
-&nbsp; - `evil-winrm`
-
-&nbsp; - PowerShell Remoting (`Invoke-Command`, `Enter-PSSession`) where applicable
-
-&nbsp; - Spray/enum tooling signals (optional)
-
-\- Detection engineering:
-
-&nbsp; - WinRM Operational logs
-
-&nbsp; - Security logon telemetry
-
-&nbsp; - PowerShell logging (Script Block / Module logging)
-
-&nbsp; - Process creation (4688 / Sysmon)
-
-\- Remediation:
-
-&nbsp; - Reduce/disable exposure
-
-&nbsp; - Require encryption, disable weak auth
-
-&nbsp; - Tight access control (least privilege + allowlists)
-
-\- Validation:
-
-&nbsp; - Test cases
-
-&nbsp; - Expected alerts
-
-&nbsp; - Pass/Fail criteria
+- Target (Windows 10):\*\* `192.168.1.32`
 
 
 
-\## Folder Map
+## What This Covers
 
-\- `00-overview/` scope, threat model, MITRE mapping
+- WinRM enablement and baseline telemetry
 
-\- `01-lab-setup/` topology, prerequisites, WinRM enablement, logging baseline
+- Credentialed remote execution via:
 
-\- `02-attack/` attack execution steps (credentialed)
+  - `evil-winrm`
 
-\- `03-detection/` telemetry sources, event IDs, process chains, correlations, EchoSentinel queries
+  - PowerShell Remoting (`Invoke-Command`, `Enter-PSSession`) where applicable
 
-\- `04-remediation/` hardening steps + config + access control + results
+  - Spray/enum tooling signals (optional)
 
-\- `05-validation/` test cases, expected alerts, pass/fail rubric
+- Detection engineering:
+
+    - WinRM Operational logs
+
+    - Security logon telemetry
+
+    - PowerShell logging (Script Block / Module logging)
+
+    - Process creation (4688 / Sysmon)
+
+- Remediation:
+
+    - Reduce/disable exposure
+
+    - Require encryption, disable weak auth
+
+    - Tight access control (least privilege + allowlists)
+
+- Validation:
+
+    - Test cases
+
+    - Expected alerts
+
+    - Pass/Fail criteria
 
 
 
-\## Evidence to Capture (Portfolio)
+ ## Folder Map
 
-\- Screenshots of:
+ - `00-overview/` scope, threat model, MITRE mapping
 
-&nbsp; - WinRM listener configuration
+ - `01-lab-setup/` topology, prerequisites, WinRM enablement, logging baseline
 
-&nbsp; - Successful remote command execution
+ - `02-attack/` attack execution steps (credentialed)
 
-&nbsp; - Key Event Viewer hits (WinRM Operational, Security 4624, PowerShell 4104)
+ - `03-detection/` telemetry sources, event IDs, process chains, correlations, EchoSentinel queries
 
-&nbsp; - EchoSentinel detections (alerts + raw events)
+ - `04-remediation/` hardening steps + config + access control + results
 
-\- Exported logs:
-
-&nbsp; - `Microsoft-Windows-WinRM/Operational`
-
-&nbsp; - `Microsoft-Windows-PowerShell/Operational`
-
-&nbsp; - Security log filtered view for 4624/4648/4688
-
-\- Command transcripts (copy/paste) for repeatability
+ - `05-validation/` test cases, expected alerts, pass/fail rubric
 
 
+ ## Notes
 
-\## Notes
+ - This repo assumes \*\*credentialed WinRM\*\* (common in real intrusions after credential theft/reuse).
 
-\- This repo assumes \*\*credentialed WinRM\*\* (common in real intrusions after credential theft/reuse).
 
 
 
