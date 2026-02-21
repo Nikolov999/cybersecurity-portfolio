@@ -1,68 +1,69 @@
-\# Event IDs Cheat Sheet (WinRM RCE)
+# Event IDs Cheat Sheet (WinRM RCE)
 
 
 
-\## WinRM Operational (Microsoft-Windows-WinRM/Operational)
+## WinRM Operational (Microsoft-Windows-WinRM/Operational)
 
 Exact IDs can vary by Windows build/config; use the channel as authoritative evidence.
 
 Focus on:
 
-\- Session creation/termination
+- Session creation/termination
 
-\- Authentication/authorization outcomes
+- Authentication/authorization outcomes
 
-\- Listener activity
+- Listener activity
 
 
 
 Hunt approach:
 
-\- Filter by:
+- Filter by:
 
-&nbsp; - Channel = WinRM Operational
+ - Channel = WinRM Operational
 
-&nbsp; - Time window of attack
+ - Time window of attack
 
-&nbsp; - Source IP correlation in message fields (where present)
-
-
-
-\## Security (Windows Security Log)
-
-\- \*\*4624\*\* Successful logon
-
-&nbsp; - Validate source IP = `192.168.1.13`
-
-&nbsp; - Look for remote/network logon types (commonly \*\*3\*\*)
-
-\- \*\*4625\*\* Failed logon (if you test failures)
-
-\- \*\*4648\*\* Logon with explicit credentials (often appears around remote auth)
-
-\- \*\*4688\*\* Process creation
-
-&nbsp; - Look for `wsmprovhost.exe`
-
-&nbsp; - Look for `powershell.exe`, `cmd.exe` spawned as children
+ - Source IP correlation in message fields (where present)
 
 
 
-\## PowerShell (Microsoft-Windows-PowerShell/Operational)
+## Security (Windows Security Log)
 
-\- \*\*4104\*\* Script Block Logging
+- 4624 Successful logon
 
-&nbsp; - Captures executed PowerShell content
+- Validate source IP = `192.168.1.13`
 
-\- \*\*4103\*\* Module Logging
+- Look for remote/network logon types (commonly 3)
 
-&nbsp; - Captures pipeline/module usage (noisier)
+- 4625 Failed logon 
+
+- 4648 Logon with explicit credentials (often appears around remote auth)
+
+- 4688 Process creation
+
+- Look for `wsmprovhost.exe`
+
+- Look for `powershell.exe`, `cmd.exe` spawned as children
 
 
 
-\## Sysmon (If Installed)
+## PowerShell (Microsoft-Windows-PowerShell/Operational)
 
-\- \*\*1\*\* Process Create
+- 4104 Script Block Logging
 
-\- \*\*3\*\* Network Connection
+- Captures executed PowerShell content
+
+- 4103 Module Logging
+
+- Captures pipeline/module usage (noisier)
+
+
+
+## Sysmon 
+
+- 1 Process Create
+
+- 3 Network Connection
+
 
