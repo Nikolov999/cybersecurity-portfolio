@@ -1,62 +1,63 @@
-\# Process Chains (What to Expect)
+ # Process Chains (What to Expect)
 
 
 
-\## Canonical WinRM Execution Chain
+ ## Canonical WinRM Execution Chain
 
 One common pattern on the target:
 
-\- `svchost.exe` (WinRM service host)
+ - `svchost.exe` (WinRM service host)
 
-&nbsp; → `wsmprovhost.exe` (WinRM provider host)
+ - `wsmprovhost.exe` (WinRM provider host)
 
-&nbsp;   → child process (depending on what you execute)
+ - child process (depending on what you execute)
 
-&nbsp;     - `powershell.exe`
+ - `powershell.exe`
 
-&nbsp;     - `cmd.exe`
+ - `cmd.exe`
 
-&nbsp;     - `conhost.exe` (console host)
-
-
-
-\## High-Signal Anchors
-
-\- `wsmprovhost.exe` existence during attack window
-
-\- Child process command line content (if collected)
-
-\- Parent/child relationships:
-
-&nbsp; - Parent = `wsmprovhost.exe`
-
-&nbsp; - Child = `powershell.exe` / `cmd.exe`
+ - `conhost.exe` (console host)
 
 
 
-\## What to Capture as Evidence
+ ## High-Signal Anchors
 
-\- Process creation event showing:
+ - `wsmprovhost.exe` existence during attack window
 
-&nbsp; - Image = `wsmprovhost.exe` and/or child image
+ - Child process command line content (if collected)
 
-&nbsp; - ParentImage relationship
+ - Parent/child relationships:
 
-&nbsp; - CommandLine fields
+  - Parent = `wsmprovhost.exe`
+
+  - Child = `powershell.exe` / `cmd.exe`
 
 
 
-\## Common Attack Commands (Script Block Evidence)
+ ## What to Capture as Evidence
 
-\- `Invoke-Command`
+ - Process creation event showing:
 
-\- `Enter-PSSession`
+  - Image = `wsmprovhost.exe` and/or child image
 
-\- `New-PSSession`
+  - ParentImage relationship
 
-\- `Invoke-WebRequest`
+  - CommandLine fields
 
-\- `DownloadString`
 
-\- `IEX`
+
+ ## Common Attack Commands (Script Block Evidence)
+
+ - `Invoke-Command`
+
+ - `Enter-PSSession`
+
+ - `New-PSSession`
+
+ - `Invoke-WebRequest`
+
+ - `DownloadString`
+
+ - `IEX`
+
 
