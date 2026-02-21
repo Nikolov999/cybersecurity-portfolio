@@ -1,4 +1,4 @@
-\# RDP Security Series — Detection and Incident Response
+# RDP Security Series — Detection and Incident Response
 
 
 
@@ -8,29 +8,30 @@ This lab demonstrates detection and investigation of RDP activity using default 
 
 Objective:
 
-\- Observe normal RDP behavior
+- Observe normal RDP behavior
 
-\- Simulate suspicious or malicious RDP activity
+- Simulate suspicious or malicious RDP activity
 
-\- Detect activity using Wazuh and Windows logs
+- Detect activity using Wazuh and Windows logs
 
-\- Build a timeline of events
+- Build a timeline of events
 
-\- Document findings as an analyst would
+- Document findings as an analyst would
 
 
 
 Lab Environment:
 
-\- lab-attacker: Kali Linux
+- lab-attacker: Kali Linux
 
-\- lab-win-server: Windows Server 2022 (Wazuh agent installed)
+- lab-win-server: Windows Server 2022 (Wazuh agent installed)
 
-\- Optional: lab-win-client (used if lateral movement scenario is required)
+- Optional: lab-win-client (used if lateral movement scenario is required)
 
 
 
 Scope:
 
 This phase focuses only on detection and investigation. No hardening or rule tuning is performed here.
+
 
