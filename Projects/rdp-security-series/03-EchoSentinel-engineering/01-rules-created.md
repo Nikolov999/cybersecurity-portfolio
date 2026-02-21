@@ -1,6 +1,4 @@
-\# RDP Security Series – 03 Detection Engineering  
-
-\## 01 – Rules Created (EchoSentinel)
+# Rules Created (EchoSentinel)
 
 
 
@@ -16,7 +14,7 @@ All rules originate from EchoSentinel’s deterministic rule engine and correlat
 
 
 
-\# PACK 1 – Authentication \& RDP Abuse
+# PACK 1 – Authentication & RDP Abuse
 
 
 
@@ -24,7 +22,7 @@ All rules originate from EchoSentinel’s deterministic rule engine and correlat
 
 
 
-\## ES-AUTH-001  
+## ES-AUTH-001  
 
 Brute Force Suspected (4625 threshold)
 
@@ -32,33 +30,33 @@ Brute Force Suspected (4625 threshold)
 
 Trigger:
 
-\- Event ID: 4625
+- Event ID: 4625
 
-\- Same hostname
+- Same hostname
 
-\- Same username
+- Same username
 
-\- Same source\_ip
+- Same source_ip
 
-\- ≥ brute\_fail\_threshold within brute\_fail\_window\_seconds
+- ≥ brute_fail_threshold within brute_fail_window_seconds
 
 
 
 Threshold defaults:
 
-\- 5 failures within 120 seconds :contentReference\[oaicite:0]{index=0}
+- 5 failures within 120 seconds :contentReference[oaicite:0]{index=0}
 
 
 
 MITRE:
 
-\- Credential Access – T1110
+- Credential Access – T1110
 
 
 
 Severity:
 
-\- Medium
+- Medium
 
 
 
@@ -66,7 +64,7 @@ Severity:
 
 
 
-\## ES-AUTH-002  
+## ES-AUTH-002  
 
 Password Spray Suspected
 
@@ -74,27 +72,27 @@ Password Spray Suspected
 
 Trigger:
 
-\- Event ID: 4625
+- Event ID: 4625
 
-\- Same source\_ip
+- Same source_ip
 
-\- ≥ 15 failures
+- ≥ 15 failures
 
-\- ≥ 6 distinct usernames
+- ≥ 6 distinct usernames
 
-\- Within 300 seconds :contentReference\[oaicite:1]{index=1}
+- Within 300 seconds :contentReference[oaicite:1]{index=1}
 
 
 
 MITRE:
 
-\- Credential Access – T1110
+- Credential Access – T1110
 
 
 
 Severity:
 
-\- High
+- High
 
 
 
@@ -102,7 +100,7 @@ Severity:
 
 
 
-\## ES-AUTH-003  
+## ES-AUTH-003  
 
 RDP Brute Force (LogonType = 10)
 
@@ -110,25 +108,25 @@ RDP Brute Force (LogonType = 10)
 
 Trigger:
 
-\- Event ID: 4625
+- Event ID: 4625
 
-\- LogonType = 10 (RemoteInteractive)
+- LogonType = 10 (RemoteInteractive)
 
-\- Same source\_ip + username
+- Same source_ip + username
 
-\- ≥ 3 failures within 60 seconds :contentReference\[oaicite:2]{index=2}
+- ≥ 3 failures within 60 seconds :contentReference[oaicite:2]{index=2}
 
 
 
 MITRE:
 
-\- Credential Access – T1110
+- Credential Access – T1110
 
 
 
 Severity:
 
-\- High
+- High
 
 
 
@@ -142,7 +140,7 @@ This is the primary RDP-focused brute-force detection.
 
 
 
-\## ES-AUTH-004  
+## ES-AUTH-004  
 
 Rapid IP Change for Same User
 
@@ -150,25 +148,25 @@ Rapid IP Change for Same User
 
 Trigger:
 
-\- Event ID: 4624
+- Event ID: 4624
 
-\- Same username
+- Same username
 
-\- ≥ 2 distinct source IPs
+- ≥ 2 distinct source IPs
 
-\- Within 600 seconds :contentReference\[oaicite:3]{index=3}
+- Within 600 seconds :contentReference[oaicite:3]{index=3}
 
 
 
 MITRE:
 
-\- Defense Evasion – T1078
+- Defense Evasion – T1078
 
 
 
 Severity:
 
-\- Medium (High if admin user)
+- Medium (High if admin user)
 
 
 
@@ -176,7 +174,7 @@ Severity:
 
 
 
-\## ES-AUTH-005  
+## ES-AUTH-005  
 
 Privileged User Network/RDP Logon
 
@@ -184,23 +182,23 @@ Privileged User Network/RDP Logon
 
 Trigger:
 
-\- Event ID: 4624
+- Event ID: 4624
 
-\- LogonType 3 or 10
+- LogonType 3 or 10
 
-\- Username in admin\_users list :contentReference\[oaicite:4]{index=4}
+- Username in admin_users list :contentReference[oaicite:4]{index=4}
 
 
 
 MITRE:
 
-\- Privilege Escalation – T1078
+- Privilege Escalation – T1078
 
 
 
 Severity:
 
-\- Medium
+- Medium
 
 
 
@@ -208,7 +206,7 @@ Severity:
 
 
 
-\## ES-AUTH-006  
+## ES-AUTH-006  
 
 First-Seen Source IP for User
 
@@ -216,27 +214,27 @@ First-Seen Source IP for User
 
 Trigger:
 
-\- Event ID: 4624
+- Event ID: 4624
 
-\- BaselineUserIP table indicates first occurrence :contentReference\[oaicite:5]{index=5}
+- BaselineUserIP table indicates first occurrence :contentReference[oaicite:5]{index=5}
 
 
 
 MITRE:
 
-\- Credential Access – T1078
+- Credential Access – T1078
 
 
 
 Severity:
 
-\- Low / Medium (if privileged)
+- Low / Medium (if privileged)
 
 
 
 Baseline persistence model:
 
-BaselineUserIP table :contentReference\[oaicite:6]{index=6}
+BaselineUserIP table :contentReference[oaicite:6]{index=6}
 
 
 
@@ -244,7 +242,7 @@ BaselineUserIP table :contentReference\[oaicite:6]{index=6}
 
 
 
-\## ES-AUTH-007  
+## ES-AUTH-007  
 
 Explicit Credentials Used (4648)
 
@@ -252,21 +250,21 @@ Explicit Credentials Used (4648)
 
 Trigger:
 
-\- Event ID: 4648
+- Event ID: 4648
 
-\- Explicit credential usage detected
+- Explicit credential usage detected
 
 
 
 MITRE:
 
-\- Credential Access – T1078
+- Credential Access – T1078
 
 
 
 Severity:
 
-\- Medium/High
+- Medium/High
 
 
 
@@ -274,7 +272,7 @@ Severity:
 
 
 
-\## ES-AUTH-008  
+## ES-AUTH-008  
 
 Special Privileges Assigned (4672)
 
@@ -282,21 +280,21 @@ Special Privileges Assigned (4672)
 
 Trigger:
 
-\- Event ID: 4672
+- Event ID: 4672
 
-\- User NOT in allow\_4672\_users list :contentReference\[oaicite:7]{index=7}
+- User NOT in allow_4672_users list :contentReference[oaicite:7]{index=7}
 
 
 
 MITRE:
 
-\- Privilege Escalation – T1068
+- Privilege Escalation – T1068
 
 
 
 Severity:
 
-\- Medium
+- Medium
 
 
 
@@ -304,7 +302,7 @@ Severity:
 
 
 
-\# CORRELATION RULE
+# CORRELATION RULE
 
 
 
@@ -312,7 +310,7 @@ Severity:
 
 
 
-\## ES-CORR-001  
+## ES-CORR-001  
 
 Brute Force → Success (4625 → 4624)
 
@@ -320,23 +318,23 @@ Brute Force → Success (4625 → 4624)
 
 Logic:
 
-\- ≥ 5 failures within 10 minutes
+- ≥ 5 failures within 10 minutes
 
-\- Followed by successful 4624
+- Followed by successful 4624
 
-\- Same user + same source\_ip :contentReference\[oaicite:8]{index=8}
+- Same user + same source_ip :contentReference[oaicite:8]{index=8}
 
 
 
 MITRE:
 
-\- Credential Access – T1110
+- Credential Access – T1110
 
 
 
 Severity:
 
-\- High
+- High
 
 
 
@@ -350,7 +348,7 @@ Detects successful compromise after brute force.
 
 
 
-\# SUPPRESSION LOGIC
+# SUPPRESSION LOGIC
 
 
 
@@ -358,11 +356,11 @@ Severity-based suppression window:
 
 
 
-\- Low: 900 seconds
+- Low: 900 seconds
 
-\- Medium: 1800 seconds
+- Medium: 1800 seconds
 
-\- High: 1800 seconds :contentReference\[oaicite:9]{index=9}
+- High: 1800 seconds :contentReference[oaicite:9]{index=9}
 
 
 
@@ -374,7 +372,7 @@ Prevents alert storms during active brute-force testing.
 
 
 
-\# RISK SCORING MODEL
+# RISK SCORING MODEL
 
 
 
@@ -382,19 +380,20 @@ Risk score derived from:
 
 
 
-\- Severity score
+- Severity score
 
-\- Asset criticality
+- Asset criticality
 
-\- Privileged user boost
+- Privileged user boost
 
-\- First-seen anomaly boost
+- First-seen anomaly boost
 
-\- Recurrence factor :contentReference\[oaicite:10]{index=10}
+- Recurrence factor :contentReference[oaicite:10]{index=10}
 
 
 
 Ensures RDP compromise on critical server scores significantly higher than lab noise.
+
 
 
 
