@@ -1,4 +1,4 @@
-\# RDP Security Series – Detection Engineering (EchoSentinel)
+# RDP Security Series – Detection Engineering (EchoSentinel)
 
 
 
@@ -10,39 +10,19 @@ This module documents how EchoSentinel was tuned to detect, correlate, and score
 
 
 
-\## Core Focus
+## Core Focus
 
 
 
-\- RDP brute force detection
+- RDP brute force detection
 
-\- Password spray detection
+- Password spray detection
 
-\- Privileged RDP monitoring
+- Privileged RDP monitoring
 
-\- Baseline anomaly detection
+- Baseline anomaly detection
 
-\- Brute→Success correlation
-
-
-
----
-
-
-
-\## Architecture Components Used
-
-
-
-\- Deterministic rule engine :contentReference\[oaicite:25]{index=25}
-
-\- Correlation layer :contentReference\[oaicite:26]{index=26}
-
-\- Baseline tables :contentReference\[oaicite:27]{index=27}
-
-\- Risk scoring engine :contentReference\[oaicite:28]{index=28}
-
-\- Threshold tuning via settings :contentReference\[oaicite:29]{index=29}
+- Brute→Success correlation
 
 
 
@@ -50,21 +30,19 @@ This module documents how EchoSentinel was tuned to detect, correlate, and score
 
 
 
-\## Evidence Stored
+## Architecture Components Used
 
 
 
-\- Raw Windows event logs (4624, 4625, 4648, 4672)
+- Deterministic rule engine :contentReference[oaicite:25]{index=25}
 
-\- Alert records from alerts table :contentReference\[oaicite:30]{index=30}
+- Correlation layer :contentReference[oaicite:26]{index=26}
 
-\- Validation scenario run data
+- Baseline tables :contentReference[oaicite:27]{index=27}
 
-\- Risk score comparisons pre/post tuning
+- Risk scoring engine :contentReference[oaicite:28]{index=28}
 
-\- Screenshot of detection timeline
-
-\- Correlation ID evidence for ES-CORR-001
+- Threshold tuning via settings :contentReference[oaicite:29]{index=29}
 
 
 
@@ -72,13 +50,36 @@ This module documents how EchoSentinel was tuned to detect, correlate, and score
 
 
 
-\## Conclusion
+## Evidence Stored
 
 
 
-EchoSentinel was tuned to provide deterministic, explainable, and risk-aware detection coverage for RDP abuse techniques aligned to MITRE ATT\&CK.
+- Raw Windows event logs (4624, 4625, 4648, 4672)
+
+- Alert records from alerts table :contentReference[oaicite:30]{index=30}
+
+- Validation scenario run data
+
+- Risk score comparisons pre/post tuning
+
+- Screenshot of detection timeline
+
+- Correlation ID evidence for ES-CORR-001
+
+
+
+---
+
+
+
+## Conclusion
+
+
+
+EchoSentinel was tuned to provide deterministic, explainable, and risk-aware detection coverage for RDP abuse techniques aligned to MITRE ATT&CK.
 
 
 
 Portfolio-grade SOC validation complete.
+
 
