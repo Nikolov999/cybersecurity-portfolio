@@ -353,9 +353,9 @@
         </ul>
 
         <div class="actions">
-          <a class="btn-solid" href="../../Projects/rdp-security-series/README.md">Series README</a>
-          <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/01-rules-created.md">Rules Created</a>
-          <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/02-tuning.md">Tuning</a>
+          <a class="btn-solid" href="../../viewer.html?src=Projects/rdp-security-series/README.md">Series README</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/01-rules-created.md">Rules Created</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/02-tuning.md">Tuning</a>
         </div>
 
         <div class="note">
@@ -397,7 +397,7 @@
           </p>
           <div class="actions">
             <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/rdp-security-series/01-detection-and-ir" target="_blank" rel="noopener">View Repository</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/01-detection-and-ir/README.md">Local README</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/01-detection-and-ir/README.md">Local README</a>
           </div>
         </div>
 
@@ -408,7 +408,7 @@
           </p>
           <div class="actions">
             <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/rdp-security-series/02-remediation" target="_blank" rel="noopener">View Repository</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/02-remediation/README.md">Local README</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/02-remediation/README.md">Local README</a>
           </div>
         </div>
 
@@ -419,7 +419,7 @@
           </p>
           <div class="actions">
             <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/rdp-security-series/03-EchoSentinel-engineering" target="_blank" rel="noopener">View Repository</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/README.md">Local README</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/README.md">Local README</a>
           </div>
         </div>
 
@@ -430,7 +430,7 @@
           </p>
           <div class="actions">
             <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/rdp-security-series/04-validation-pentest" target="_blank" rel="noopener">View Repository</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/04-validation-pentest/README.md">Local README</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/04-validation-pentest/README.md">Local README</a>
           </div>
         </div>
       </div>
@@ -451,8 +451,8 @@
             <li><strong>Correlation:</strong> fails → success within 10 minutes</li>
           </ul>
           <div class="actions">
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/01-rules-created.md">Rules Created</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/02-tuning.md">Tuning Notes</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/01-rules-created.md">Rules Created</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/02-tuning.md">Tuning Notes</a>
           </div>
         </div>
 
@@ -465,8 +465,8 @@
             <li>Validation retest proves controls changed the outcome, not just the alerting.</li>
           </ul>
           <div class="actions">
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/03-false-positive-analysis.md">False Positive Analysis</a>
-            <a class="btn-ghost" href="../../Projects/rdp-security-series/03-EchoSentinel-engineering/04-results.md">Engineering Results</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/03-false-positive-analysis.md">False Positive Analysis</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/rdp-security-series/03-EchoSentinel-engineering/04-results.md">Engineering Results</a>
           </div>
         </div>
       </div>
@@ -490,45 +490,24 @@
         </figure>
 
         <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/03-logon-attempt-events.png" alt="Logon attempt events 1" />
-          <figcaption>Windows Security: failed logon telemetry (4625, LogonType=10).</figcaption>
+          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/03-failed-logons-4625.png" alt="Failed logons 4625" />
+          <figcaption>Security log: repeated 4625 failures with LogonType=10 (RDP).</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/04-logon-attempt-events.png" alt="Logon attempt events 2" />
-          <figcaption>Windows Security: additional 4625 evidence supporting brute thresholding.</figcaption>
+          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/04-successful-logon-4624.png" alt="Successful logon 4624" />
+          <figcaption>Security log: 4624 success after failures (candidate compromise event).</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/05-logon-attempt-events.png" alt="Logon attempt events 3" />
-          <figcaption>Windows Security: continued failed attempts (noise control + tuning context).</figcaption>
+          <img src="../../Projects/rdp-security-series/03-EchoSentinel-engineering/evidence/01-rule-created.png" alt="Rule created" />
+          <figcaption>EchoSentinel engineering: RDP brute-force rule created.</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/06-unsuccessful-attempt.png" alt="Unsuccessful attempt 1" />
-          <figcaption>Baseline: unsuccessful brute attempt (pre-compromise evidence).</figcaption>
+          <img src="../../Projects/rdp-security-series/04-validation-pentest/evidence/01-retest.png" alt="Retest evidence" />
+          <figcaption>Validation: retest under hardening controls and measure outcome.</figcaption>
         </figure>
-
-        <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/07-unsuccessful-attempt.png" alt="Unsuccessful attempt 2" />
-          <figcaption>Baseline: repeated unsuccessful attempt (rate/threshold validation).</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/08-loggon-successful-events.png" alt="Successful logon events 1" />
-          <figcaption>Windows Security: successful logon after failures (4624 compromise candidate).</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/rdp-security-series/01-detection-and-ir/evidence/09-loggon-successful-events.png" alt="Successful logon events 2" />
-          <figcaption>Windows Security: additional context for successful RDP logon sequence.</figcaption>
-        </figure>
-      </div>
-
-      <div class="note">
-        Image path rule: this HTML file must live in the same site layout as SMB page.
-        Evidence images must exist at <strong>Projects/rdp-security-series/01-detection-and-ir/evidence/</strong>.
-        Keep filenames identical.
       </div>
     </section>
   </main>
@@ -546,7 +525,7 @@
       });
     }
 
-    // Hide broken images automatically (prevents broken icons in the gallery)
+    // Hide broken images automatically
     document.querySelectorAll('figure img').forEach(img=>{
       img.addEventListener('error', ()=>{
         const fig = img.closest('figure');
