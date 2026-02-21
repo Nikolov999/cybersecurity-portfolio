@@ -1,10 +1,10 @@
-\# RDP Security Series – 02 Remediation  
+# RDP Security Series – 02 Remediation  
 
-\## 03 – Access Control
+## 03 – Access Control
 
 
 
-\### Objective
+### Objective
 
 Limit RDP access to authorized users and controlled network paths.
 
@@ -14,7 +14,7 @@ Limit RDP access to authorized users and controlled network paths.
 
 
 
-\## 1. Restrict RDP Group Membership
+## 1. Restrict RDP Group Membership
 
 
 
@@ -50,7 +50,7 @@ Remove-LocalGroupMember `
 
 
 
-\## 2. Implement Least Privilege
+## 2. Implement Least Privilege
 
 
 
@@ -70,7 +70,7 @@ Remove-LocalGroupMember `
 
 
 
-\## 3. IP-Based Access Control
+## 3. IP-Based Access Control
 
 
 
@@ -104,7 +104,7 @@ New-NetFirewallRule `
 
 
 
-\## 4. Network Segmentation
+## 4. Network Segmentation
 
 
 
@@ -132,7 +132,7 @@ RDP only allowed from Management VLAN.
 
 
 
-\## 5. Conditional Access (Enterprise Subnet)
+## 5. Conditional Access (Enterprise Subnet)
 
 
 
@@ -156,7 +156,7 @@ If domain joined:
 
 
 
-\## Security Impact
+## Security Impact
 
 
 
@@ -173,3 +173,4 @@ If domain joined:
 
 
 * Improved detection clarity for failed logon bursts
+
