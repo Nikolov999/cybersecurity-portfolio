@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EchoPurple — Blue And Red Team Portfolio</title>
-  <meta name="description" content="Blue Team cybersecurity portfolio: labs, certs, writeups, contact." />
+  <meta name="description" content="Blue Team cybersecurity portfolio: projects, certs, writeups, contact." />
   <style>
     :root{
       --bg0:#07040d;
@@ -71,7 +71,6 @@
 
     .brand{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
 
-    /* Transparent logo holder (no box/background) */
     .logo{
       height:calc(var(--header-h) - 10px);
       display:flex;align-items:center;justify-content:center;
@@ -85,7 +84,6 @@
       width:auto;
       object-fit:contain;
       display:block;
-      /* subtle shadow only (keeps PNG edges clean on gradient) */
       filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
     }
 
@@ -108,7 +106,7 @@
     }
 
     main{
-      flex:1; display:flex; flex-direction:column; gap:32px;
+      flex:1; display:flex; flex-direction:column; gap:22px;
       padding:calc(var(--header-h) + 18px) 40px 36px;
       position:relative;
       z-index:1;
@@ -133,10 +131,40 @@
     p{color:var(--muted)}
     strong{color:var(--text)}
 
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:stretch}
-    .about p{margin:10px 0}
+    .hero{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:18px;
+      align-items:stretch;
+    }
 
-    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .heroLead{font-size:14px;color:rgba(245,241,255,0.76);max-width:70ch}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .cta{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.2px;
+      color:rgba(245,241,255,0.95);
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.08));
+      box-shadow:0 12px 26px rgba(0,0,0,0.28);
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+    .cta:hover,.cta:focus-visible{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,0.18);
+      box-shadow:0 18px 40px rgba(0,0,0,0.40);
+    }
+    .cta.primary{
+      border:1px solid rgba(168,85,247,0.28);
+      background:linear-gradient(135deg, rgba(109,40,217,0.72), rgba(168,85,247,0.40), rgba(34,211,238,0.10));
+    }
+
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
     .badge{
       background:rgba(109,40,217,0.18);
       color:rgba(245,241,255,0.92);
@@ -154,21 +182,6 @@
       box-shadow:0 8px 18px rgba(0,0,0,0.22);
     }
 
-    .project{
-      display:flex;gap:14px;align-items:flex-start;
-      background:linear-gradient(180deg, rgba(109,40,217,0.10), rgba(34,211,238,0.05));
-      padding:18px;border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-    }
-    .project .thumb{
-      width:58px;height:58px;border-radius:14px;
-      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.75));
-      color:#fff;font-weight:900;font-size:18px;
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 16px 26px rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.14);
-    }
-
     a.link{
       color:rgba(245,241,255,0.95);
       position:relative;
@@ -184,7 +197,16 @@
     }
     a.link:hover::after,a.link:focus-visible::after{transform:scaleX(1)}
 
-    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+
+    @media(max-width:900px){
+     .grid-3{ grid-template-columns:1fr; }
+    }
+
     .card{
       background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
       border:1px solid rgba(255,255,255,0.10);
@@ -193,10 +215,6 @@
       box-shadow:0 10px 24px rgba(0,0,0,0.28);
     }
 
-    .blog{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .post h4{margin:0 0 6px 0;font-size:15px;color:rgba(245,241,255,0.96)}
-    .post p{font-size:13px;line-height:1.55;color:rgba(245,241,255,0.70)}
-
     .quick{
       background:
         radial-gradient(520px 240px at 20% 20%, rgba(168,85,247,0.18), transparent 60%),
@@ -204,6 +222,73 @@
         linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.12);
     }
+
+    .kpi{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px;margin-top:12px}
+    .kpi .mini{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+      box-shadow:0 10px 22px rgba(0,0,0,0.22);
+    }
+
+    .spotlight{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+      margin-top:12px;
+    }
+    @media(max-width:900px){
+      .spotlight{ grid-template-columns:1fr; }
+    }
+
+    .proj{
+      display:flex;gap:14px;align-items:flex-start;
+      padding:16px;border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:linear-gradient(180deg, rgba(109,40,217,0.10), rgba(34,211,238,0.05));
+      text-decoration:none;color:inherit;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,0.24);
+      min-height:140px;
+    }
+    .proj:hover,.proj:focus-visible{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,0.16);
+      box-shadow:0 18px 44px rgba(0,0,0,0.40);
+    }
+    
+    .proj h3{margin-top:2px}
+    .proj p{margin-top:6px;font-size:13px;color:rgba(245,241,255,0.72);line-height:1.55}
+
+    .biz{
+      background:
+        radial-gradient(620px 260px at 20% 10%, rgba(168,85,247,0.22), transparent 60%),
+        radial-gradient(620px 260px at 80% 0%, rgba(34,211,238,0.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.14);
+    }
+
+    .bizGrid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:14px;
+      align-items:stretch;
+      margin-top:12px;
+    }
+    .bizPoints{display:grid;gap:10px}
+    .bizPoint{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+      box-shadow:0 10px 22px rgba(0,0,0,0.22);
+    }
+    .bizPoint strong{display:block;margin-bottom:4px}
+
+    .blog{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .post h4{margin:0 0 6px 0;font-size:15px;color:rgba(245,241,255,0.96)}
+    .post p{font-size:13px;line-height:1.55;color:rgba(245,241,255,0.70)}
 
     footer{
       text-align:center;
@@ -225,8 +310,11 @@
       opacity:.45;
     }
 
-    @media(max-width:900px){
+    @media(max-width:980px){
       .hero{grid-template-columns:1fr}
+      .bizGrid{grid-template-columns:1fr}
+    }
+    @media(max-width:900px){
       main{padding:calc(var(--header-h) + 14px) 20px 24px}
       .section{padding:22px}
     }
@@ -244,6 +332,7 @@
 
       .grid-3,.blog{grid-template-columns:1fr}
       main{padding:calc(var(--header-h) + 12px) 16px 18px}
+      .kpi{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -258,7 +347,6 @@
       <a class="btn" href="#about">About</a>
       <a class="btn" href="#skills">Skills</a>
       <a class="btn" href="projects.html">Projects</a>
-      <a class="btn" href="#labs">Labs</a>
       <a class="btn" href="#certs">Certs</a>
       <a class="btn" href="#blog">Blog</a>
       <a class="btn" href="#contact">Contact</a>
@@ -268,133 +356,208 @@
   <main>
     <section id="about" class="section hero">
       <div class="about">
-        <h2 style="margin-bottom:8px">Welcome </h2>
-        <p>Welcome to my <strong>portfolio page</strong> — I am an Aspiring Blue Team analyst focused on log analysis, detection engineering, and incident response. I like turning telemetry into insights and documenting every investigation clearly for future playbooks.</p>
+        <h2 style="margin-bottom:10px">Welcome</h2>
+        <p class="heroLead">
+          Detection engineering + incident response + offensive validation.
+          Practical labs, clean evidence, and repeatable workflows across Windows telemetry and network data.
+        </p>
+
+        <div class="row">
+          <a class="cta primary" href="projects.html">Open projects</a>
+          <a class="cta" href="#echopentest">EchoPentest services</a>
+          <a class="cta" href="#contact">Contact</a>
+        </div>
+
         <div class="badges">
+          <div class="badge">EchoPentest</div>
+          <div class="badge">Cisco Verified Ethical Hacker</div>
           <div class="badge">GRCP</div>
+          <div class="badge">Cloud Security Knowledge</div>
           <div class="badge">eJPT</div>
-          <div class="badge">Cisco Verified OffSec Ethical Hacker</div>
           <div class="badge">Fortinet Cybersecurity Associate</div>
         </div>
-        <p style="margin-top:12px">📁 <a class="link" href="https://github.com/Nikolov999/cybersecurity-portfolio">View the full repository</a></p>
+
+        <p style="margin-top:12px">
+          <a class="link" href="https://github.com/Nikolov999/cybersecurity-portfolio">Repository</a>
+        </p>
       </div>
 
       <aside class="section quick">
-        <h2>Quick Stats</h2>
-        <div class="grid-3" style="margin-top:10px">
-          <div class="card"><strong>1</strong><br/><span style="color:var(--muted)">Project</span></div>
-          <div class="card"><strong>4</strong><br/><span style="color:var(--muted)">Certs (incl. in progress)</span></div>
-          <div class="card"><strong>100+</strong><br/><span style="color:var(--muted)">THM/BTLO hours</span></div>
+        <h2>What I build</h2>
+        <div class="kpi">
+          <div class="mini">
+            <strong>Detections</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">
+              Rules, tuning, FP analysis, and validation retests.
+            </div>
+          </div>
+          <div class="mini">
+            <strong>Evidence</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">
+              Screenshots, timelines, logs, and reproducible steps.
+            </div>
+          </div>
+          <div class="mini">
+            <strong>Telemetry</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">
+              Windows Event Logs, Sysmon, PowerShell, Task Scheduler, DNS, network logs.
+            </div>
+          </div>
+          <div class="mini">
+            <strong>Validation</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">
+              Attack simulation to prove detections and mitigations.
+            </div>
+          </div>
         </div>
       </aside>
     </section>
 
     <section id="skills" class="section">
       <h2>Skills</h2>
-      <p style="color:var(--muted);margin-top:6px;font-size:14px">Some of the tools and platforms I use daily:</p>
+      <p style="color:var(--muted);margin-top:6px;font-size:14px">Tools and platforms:</p>
       <div class="skills" style="margin-top:10px">
         <span class="chip">Splunk</span><span class="chip">Wazuh</span><span class="chip">Wireshark</span><span class="chip">Zeek</span>
         <span class="chip">Sysmon</span><span class="chip">Windows Event Logs</span><span class="chip">Python</span><span class="chip">PowerShell</span>
-        <span class="chip">Threat Intel (VT, MISP)</span>
+        <span class="chip">Threat Intel</span>
       </div>
     </section>
 
     <section class="section">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-        <span>Latest Project</span>
-        <a class="link" href="projects.html">View all projects →</a>
+        <span>Project spotlight</span>
+        <a class="link" href="projects.html">View all</a>
       </h2>
-      <div id="latestProject" style="margin-top:14px"></div>
+
+      <div class="spotlight" id="spotlight"></div>
+
+      <div class="card" style="margin-top:14px">
+        <strong>How to read these</strong><br/>
+        <span style="color:var(--muted)">
+          Each project is documented like a case: environment → attack path → telemetry → detections → tuning → validation retest → remediation.
+        </span>
+      </div>
     </section>
 
-    <section id="labs" class="section">
-      <h2>Labs</h2>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Hands-on labs focused on network analysis, detections, and automation:</p>
-      <div class="blog">
-        <article class="card post">
-          <h4>Network Traffic Analysis</h4>
-          <p>Analyzed PCAPs to identify suspicious C2 traffic (Wireshark, Zeek). <a class="link" href="viewer.html?md=Labs/Network-Analysis/README.md">Open lab</a></p>
-        </article>
-        <article class="card post">
-          <h4>SIEM Brute-force Detection</h4>
-          <p>Splunk dashboards & alerts for credential stuffing and brute-force. <a class="link" href="viewer.html?md=Labs/Splunk-Investigation/README.md">Open lab</a></p>
-        </article>
-        <article class="card post">
-          <h4>Incident Response Timeline</h4>
-          <p>IR playbook and timeline: containment & recovery. <a class="link" href="viewer.html?md=Labs/Incident-Response/README.md">Open lab</a></p>
-        </article>
-        <article class="card post">
-          <h4>Threat Intelligence Automation</h4>
-          <p>Python IOC enricher, Windows failed-login triage & Zeek summarizer. <a class="link" href="viewer.html?md=Labs/Python-Automations/README.md">Open lab</a></p>
-        </article>
+    <section id="echopentest" class="section biz">
+      <h2>EchoPentest</h2>
+      <p style="margin-top:8px">
+        Penetration testing services for small to mid-sized Irish businesses, built around practical risk reduction: findings you can fix, proof you can verify.
+      </p>
+
+      <div class="bizGrid">
+        <div class="bizPoints">
+          <div class="bizPoint">
+            <strong>What you get</strong>
+            <div style="color:var(--muted);font-size:13px">
+              Executive summary + technical detail + prioritized remediation + evidence for each issue.
+            </div>
+          </div>
+          <div class="bizPoint">
+            <strong>Typical scopes</strong>
+            <div style="color:var(--muted);font-size:13px">
+              External perimeter, internal validation, Active Directory exposure, web app testing, configuration review.
+            </div>
+          </div>
+          <div class="bizPoint">
+            <strong>Verification mindset</strong>
+            <div style="color:var(--muted);font-size:13px">
+              Retest flow to confirm fixes and reduce recurring risk.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <strong>Business link</strong><br/>
+          <div style="color:var(--muted);font-size:13px;margin-top:8px">
+            Portfolio focuses on engineering and proof. Business site focuses on services and delivery.
+          </div>
+          <div class="row" style="margin-top:14px">
+            <a class="cta primary" href="https://echopentest.com" target="_blank" rel="noopener">Open EchoPentest</a>
+            <a class="cta" href="#contact">Request contact</a>
+          </div>
+          <div style="margin-top:12px;color:rgba(245,241,255,0.66);font-size:12px">
+            Target: small–mid Irish businesses (practical security upgrades, not vague reports).
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="certs" class="section">
       <h2>Certifications</h2>
       <div class="grid-3" style="margin-top:12px">
-        <div class="card">Google Cybersecurity — <strong>Completed</strong></div>
-        <div class="card">ISC2 CC — <strong>In progress</strong></div>
-        <div class="card">Cisco Verified OffSec Ethical Hacker — <strong>Completed</strong></div>
-        <div class="card">Fortinet Cybersecurity Associate — <strong>Completed</strong></div>
+        <div class="card">Cisco Verified Ethical Hacker</div>
+        <div class="card">GRCP</div>
+        <div class="card">Cloud Security Knowledge</div>
+        <div class="card">eJPT</div>
+        <div class="card">Fortinet Cybersecurity Associate</div>
       </div>
     </section>
 
     <section id="blog" class="section">
       <h2>Blog & Writeups</h2>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Short reads from my investigations and detections:</p>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Short reads from investigations and detections:</p>
       <div class="blog">
         <article class="card post">
           <h4>Detecting RDP Brute-Force in Splunk</h4>
-          <p>Query examples, notable event tuning, and a detection rule you can copy. <a class="link" href="viewer.html?md=Blog/detection-bruteforce-splunk.md">Read</a></p>
+          <p>Query examples, tuning notes, and a detection rule.</p>
         </article>
         <article class="card post">
           <h4>How I Read PCAPs Quickly</h4>
-          <p>My Wireshark filters, Zeek logs, and a checklist for triage. <a class="link" href="viewer.html?md=Blog/how-to-read-pcaps.md">Read</a></p>
+          <p>Filters, Zeek logs, and a triage checklist.</p>
         </article>
       </div>
     </section>
 
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <p>Want to connect or collaborate? I’m always up for talking detection, blue teaming, or lab setups.</p>
       <p>Email: <a class="link" href="mailto:bobonikolov02@gmail.com">bobonikolov02@gmail.com</a></p>
       <p>LinkedIn: <a class="link" href="https://www.linkedin.com/in/bobonikolov/">linkedin.com/in/bobonikolov</a> · GitHub: <a class="link" href="https://github.com/Nikolov999">github.com/Nikolov999</a></p>
     </section>
   </main>
 
   <footer>
-    <p>Built with ⚙️ and a lot of curiosity — © Bobo Nikolov</p>
+    <p>© Bobo Nikolov</p>
   </footer>
 
   <script>
-    const projectsData = [{
-      title:"Attack-Defend Lab (WIP)",
-      slug:"attack-defend-lab",
-      date:"2025-10-25",
-      tags:["network","siem","ir"],
-      summary:"Isolated Kali + Metasploitable; defender (SecurityOnion) coming next.",
-      href:"viewer.html?md=Projects/attack-defend-lab/README.md",
-      thumb:"AD"
-    }];
+    // Project spotlight (no tag blocks on cards).
+    // All links are clean (no slug/hash): point to projects.html only.
+    const projects = [
+      {
+        title:"Windows Remote Service Creation (Persistence)",
+        desc:"End-to-end lifecycle: remote service creation for persistence, detection engineering in EchoSentinel, remediation, and validation retest.",
+        href:"p/scenarios/windows-service-remote-creation.html"
+      },
+      {
+        title:"Scheduled Tasks Persistence (Persistence)",
+        desc:"Create scheduled task persistence remotely, build detections + tuning notes, then verify mitigation with a full retest workflow.",
+        href:"p/scenarios/scheduled-tasks-persistence.html"
+      },
+      {
+        title:"WinRM Remote Code Execution (Lateral Movement)",
+        desc:"Purple-team lifecycle for WinRM abuse paths: telemetry, detection, tuning, and hardening verification using EchoSentinel SIEM.",
+        href:"p/scenarios/winrm-remote-code-execution.html"
+      },
+      {
+        title:"RDP Security Series (Lateral Movement)",
+        desc:"Purple-team lifecycle for RDP (TCP 3389): abuse paths, detection coverage, tuning, and hardening with validated outcomes.",
+        href:"p/scenarios/rdp-security-series.html"
+      }
+    ];
 
-    function renderLatest(){
-      const latest = projectsData[0];
-      const wrap = document.getElementById('latestProject');
-      wrap.innerHTML = `
-        <div class="project">
-          <div class="thumb">${latest.thumb}</div>
-          <div>
-            <h3>${latest.title}</h3>
-            <p>${latest.summary} <a class="link" href="${latest.href}">Read writeup</a></p>
-            <div style="margin-top:8px;color:var(--muted);font-size:12px">
-              <span>📅 ${new Date(latest.date).toLocaleDateString()}</span>
-              · <span>Tags: ${latest.tags.join(', ')}</span>
-            </div>
+    function renderSpotlight(){
+      const el = document.getElementById('spotlight');
+      el.innerHTML = projects.map(p => `
+        <a class="proj" href="${p.href}">
+          <div style="min-width:0">
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
           </div>
-        </div>`;
+        </a>
+      `).join('');
     }
-    renderLatest();
+    renderSpotlight();
 
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
