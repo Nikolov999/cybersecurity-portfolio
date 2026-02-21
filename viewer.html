@@ -1,295 +1,350 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lab Viewer — EchoPurple</title>
-<style>
-  :root{
-    --bg0:#07040d;
-    --bg1:#0b0614;
-    --bg2:#100a1e;
-    --stroke:rgba(255,255,255,0.10);
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Document Viewer — EchoPurple</title>
+  <meta name="description" content="Markdown viewer for EchoPurple portfolio documents." />
 
-    --text:#f5f1ff;
-    --muted:rgba(245,241,255,0.72);
+  <style>
+    :root{
+      --bg0:#07040d;
+      --bg1:#0b0614;
+      --bg2:#100a1e;
+      --stroke:rgba(255,255,255,0.10);
+      --text:#f5f1ff;
+      --muted:rgba(245,241,255,0.72);
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
+      --radius:18px;
+      --header-h: 98px;
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
 
-    --p1:#6d28d9;
-    --p2:#a855f7;
-    --p3:#22d3ee;
-    --radius:16px;
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+      line-height:1.65;
+    }
 
-    /* exact match with index */
-    --header-h: 98px;
-  }
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 40px;
+      min-height:var(--header-h);
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25)),
+        radial-gradient(900px 160px at 20% 40%, rgba(255,255,255,0.08), transparent 55%);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
 
-  *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
-  img,video{max-width:100%;height:auto}
+    nav{display:flex;gap:18px;flex-wrap:wrap}
+    .btn{
+      background:transparent;border:none;color:#fff;text-decoration:none;
+      font-size:14px;font-weight:700;line-height:1;opacity:.9;
+      transition:opacity .2s ease, transform .2s ease;
+    }
+    .btn:hover,.btn:focus-visible{opacity:1;transform:translateY(-1px)}
 
-  body{
-    min-height:100vh;
-    color:var(--text);
-    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    display:flex;flex-direction:column;overflow-x:hidden;line-height:1.65;
-    background:
-      radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
-      radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
-      radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
-      linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
-  }
+    main{
+      padding:calc(var(--header-h) + 18px) 40px 36px;
+      max-width:1100px;
+      margin:0 auto;
+    }
 
-  body::before{
-    content:"";
-    position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
-    opacity:.07;
-    mix-blend-mode:overlay;
-  }
+    .wrap{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+    }
 
-  /* ===== HEADER (fixed) ===== */
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:1000;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 40px;
-    min-height:var(--header-h);
-    color:#fff;
-    background:
-      linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25)),
-      radial-gradient(900px 160px at 20% 40%, rgba(255,255,255,0.08), transparent 55%);
-    border-bottom:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 12px 40px rgba(0,0,0,0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  header::after{
-    content:"";
-    position:absolute;left:0;right:0;bottom:-1px;height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-    opacity:.45;
-  }
-  .brand{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:14px;
+      color:var(--muted);
+      font-size:13px;
+    }
 
-  /* transparent logo (no box) */
-  .logo{
-    height:calc(var(--header-h) - 10px);
-    display:flex;align-items:center;justify-content:center;
-    background:transparent;border:none;box-shadow:none;border-radius:0;overflow:visible;
-  }
-  .logo img{
-    height:100%;
-    width:auto;
-    object-fit:contain;
-    object-position:left center;
-    display:block;
-    filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
-  }
+    a.link{
+      color:rgba(245,241,255,0.95);
+      text-decoration:none;
+      font-weight:800;
+      position:relative;
+    }
+    a.link::after{
+      content:"";
+      position:absolute;left:0;right:0;bottom:-3px;height:2px;border-radius:2px;
+      background:linear-gradient(90deg, var(--p2), var(--p1), rgba(34,211,238,0.7));
+      transform:scaleX(0);transform-origin:left center;transition:transform .22s ease;
+      opacity:.9;
+    }
+    a.link:hover::after,a.link:focus-visible::after{transform:scaleX(1)}
 
-  header a{
-    color:#fff;text-decoration:none;font-weight:800;opacity:.9;
-    transition:opacity .2s, transform .2s;
-    position:relative;z-index:1;
-  }
-  header a:hover{opacity:1;transform:translateY(-1px)}
+    /* Markdown render styling */
+    #content h1{font-size:28px;margin:0 0 10px}
+    #content h2{font-size:22px;margin:18px 0 8px}
+    #content h3{font-size:18px;margin:16px 0 8px}
+    #content p{color:var(--muted);margin:10px 0}
+    #content ul,#content ol{margin:10px 0 10px 22px;color:var(--muted)}
+    #content li{margin:6px 0}
+    #content hr{border:0;border-top:1px solid rgba(255,255,255,0.12);margin:18px 0}
+    #content blockquote{
+      border-left:3px solid rgba(168,85,247,0.45);
+      padding-left:12px;
+      margin:12px 0;
+      color:rgba(245,241,255,0.78);
+      background:rgba(0,0,0,0.14);
+      border-radius:12px;
+      padding:12px;
+    }
+    #content code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95em;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.10);
+      padding:2px 6px;
+      border-radius:8px;
+      color:rgba(245,241,255,0.92);
+    }
+    #content pre{
+      background:rgba(0,0,0,0.28);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:14px;
+      overflow:auto;
+      margin:12px 0;
+    }
+    #content pre code{
+      background:transparent;
+      border:none;
+      padding:0;
+      font-size:13px;
+      color:rgba(245,241,255,0.88);
+      display:block;
+      white-space:pre;
+    }
+    #content a{ color:rgba(245,241,255,0.92); }
 
-  /* ===== CONTENT ===== */
-  .page{
-    padding:calc(var(--header-h) + 16px) 22px 22px;
-    flex:1; width:100%; max-width:1000px; margin:0 auto;
-    position:relative;
-    z-index:1;
-  }
-  .card{
-    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-    padding:24px;
-    border-radius:14px;
-    border:1px solid var(--stroke);
-    box-shadow:0 18px 60px rgba(0,0,0,0.45);
-  }
+    .err{
+      margin-top:10px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.18);
+      color:rgba(245,241,255,0.78);
+    }
 
-  .md h1{font-size:30px;margin:12px 0 8px;color:rgba(245,241,255,0.96)}
-  .md h2{font-size:22px;margin:18px 0 6px;color:rgba(245,241,255,0.94)}
-  .md h3{font-size:18px;margin:14px 0 6px;color:rgba(245,241,255,0.92)}
-  .md p,.md li{color:var(--muted);line-height:1.65}
-
-  .md a{
-    color:rgba(245,241,255,0.95);
-    text-decoration:none;
-    font-weight:800;
-    position:relative;
-  }
-  .md a::after{
-    content:"";
-    position:absolute;left:0;right:0;bottom:-3px;height:2px;border-radius:2px;
-    background:linear-gradient(90deg, var(--p2), var(--p1), rgba(34,211,238,0.7));
-    transform:scaleX(0);transform-origin:left center;transition:transform .22s ease;
-    opacity:.9;
-  }
-  .md a:hover::after,.md a:focus-visible::after{transform:scaleX(1)}
-
-  .md pre{
-    overflow:auto;
-    background:#0f0a1a;
-    color:#f6f1ff;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.10);
-    box-shadow:0 12px 26px rgba(0,0,0,0.35);
-  }
-  .md code{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.10);
-    padding:1px 6px;
-    border-radius:8px;
-    color:rgba(245,241,255,0.92);
-  }
-  .md pre code{
-    background:transparent;border:0;padding:0;color:inherit;
-  }
-
-  .md img{
-    max-width:100%;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 14px 30px rgba(0,0,0,0.40);
-  }
-
-  .status{font-size:13px;color:var(--muted);margin-bottom:10px}
-  .error{
-    color:rgba(255,255,255,0.90);
-    background:rgba(130,30,30,0.22);
-    padding:10px;border-radius:10px;
-    border:1px solid rgba(255,120,120,0.35);
-  }
-  .tried{font-size:13px;color:var(--muted);opacity:0.85;margin-top:8px}
-
-  /* --- Markdown tables --- */
-  .md table{
-    width:100%;
-    border-collapse:collapse;
-    margin:14px 0;
-    background:rgba(0,0,0,0.18);
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 10px 24px rgba(0,0,0,0.28);
-    display:block;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    border-radius:12px;
-  }
-  .md thead th{
-    background:rgba(109,40,217,0.18);
-    color:rgba(245,241,255,0.92);
-    font-weight:900;
-  }
-  .md th,
-  .md td{
-    padding:10px 12px;
-    font-size:14px;
-    color:var(--muted);
-    border:1px solid rgba(255,255,255,0.10);
-    text-align:left;
-    white-space:nowrap;
-  }
-  .md tr:nth-child(even) td{
-    background:rgba(255,255,255,0.03);
-  }
-
-  /* ===== MOBILE (match index) ===== */
-  @media(max-width:700px){
-    :root{ --header-h: 82px; }
-
-    header{padding:0 16px}
-    .page{padding:calc(var(--header-h) + 12px) 16px 18px}
-
-    .logo{height:calc(var(--header-h) - 10px)}
-    .logo img{height:100%;width:auto}
-  }
-</style>
+    @media(max-width:900px){
+      main{padding:calc(var(--header-h) + 14px) 20px 24px}
+      .wrap{padding:22px}
+      header{padding:0 16px}
+    }
+  </style>
 </head>
 <body>
   <header>
-    <div class="brand">
-      <div class="logo"><img src="Logo/Portfolio_Logo.png.png" alt="Logo"></div>
-    </div>
-    <a href="index.html">← Back to portfolio</a>
+    <div style="font-weight:900;letter-spacing:.2px">EchoPurple</div>
+    <nav>
+      <a class="btn" href="index.html">Home</a>
+      <a class="btn" href="projects.html">Projects</a>
+      <a class="btn" href="index.html#contact">Contact</a>
+    </nav>
   </header>
 
-  <div class="page">
-    <div class="card">
-      <div class="status" id="status">Loading…</div>
-      <div id="content" class="md">Fetching markdown…</div>
-      <div id="tried" class="tried"></div>
-    </div>
-  </div>
+  <main>
+    <section class="wrap">
+      <div class="meta">
+        <span id="title">Document</span>
+        <span>·</span>
+        <a id="sourceLink" class="link" href="#" target="_blank" rel="noopener">Open source</a>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+      <div id="content"></div>
+      <div id="error" class="err" style="display:none"></div>
+    </section>
+  </main>
+
   <script>
-    marked.setOptions({
-      gfm: true,
-      headerIds: false,
-      mangle: false,
-      breaks: false
-    });
+    function esc(s){
+      return String(s)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+
+    // Minimal markdown renderer (enough for portfolio docs)
+    function mdToHtml(md){
+      const lines = String(md || '').replaceAll('\r\n','\n').split('\n');
+      let html = '';
+      let inCode = false;
+      let codeLang = '';
+      let listMode = null; // 'ul' | 'ol'
+      let codeBuf = [];
+
+      const flushList = () => {
+        if(listMode){ html += `</${listMode}>`; listMode = null; }
+      };
+      const flushCode = () => {
+        const code = codeBuf.join('\n');
+        html += `<pre><code data-lang="${esc(codeLang)}">${esc(code)}</code></pre>`;
+        codeBuf = [];
+      };
+
+      for(let i=0;i<lines.length;i++){
+        const line = lines[i];
+
+        // fenced code
+        const fence = line.match(/^```(\w+)?\s*$/);
+        if(fence){
+          if(!inCode){
+            flushList();
+            inCode = true;
+            codeLang = fence[1] || '';
+            continue;
+          } else {
+            inCode = false;
+            flushCode();
+            codeLang = '';
+            continue;
+          }
+        }
+        if(inCode){
+          codeBuf.push(line);
+          continue;
+        }
+
+        // hr
+        if(/^---\s*$/.test(line)){
+          flushList();
+          html += `<hr/>`;
+          continue;
+        }
+
+        // headings
+        const h = line.match(/^(#{1,6})\s+(.*)$/);
+        if(h){
+          flushList();
+          const level = h[1].length;
+          const text = h[2].trim();
+          html += `<h${level}>${inline(text)}</h${level}>`;
+          continue;
+        }
+
+        // blockquote
+        const bq = line.match(/^>\s?(.*)$/);
+        if(bq){
+          flushList();
+          html += `<blockquote>${inline(bq[1] || '')}</blockquote>`;
+          continue;
+        }
+
+        // lists
+        const ul = line.match(/^\s*[-*]\s+(.*)$/);
+        const ol = line.match(/^\s*\d+\.\s+(.*)$/);
+        if(ul){
+          if(listMode !== 'ul'){
+            flushList();
+            listMode = 'ul';
+            html += `<ul>`;
+          }
+          html += `<li>${inline(ul[1])}</li>`;
+          continue;
+        }
+        if(ol){
+          if(listMode !== 'ol'){
+            flushList();
+            listMode = 'ol';
+            html += `<ol>`;
+          }
+          html += `<li>${inline(ol[1])}</li>`;
+          continue;
+        }
+
+        // blank line
+        if(/^\s*$/.test(line)){
+          flushList();
+          continue;
+        }
+
+        // paragraph
+        flushList();
+        html += `<p>${inline(line)}</p>`;
+      }
+
+      if(inCode) flushCode();
+      if(listMode) flushList();
+      return html;
+
+      function inline(s){
+        let out = esc(s);
+
+        // links [text](url)
+        out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, u) => {
+          const url = esc(u);
+          const text = esc(t);
+          return `<a class="link" href="${url}" target="_blank" rel="noopener">${text}</a>`;
+        });
+
+        // bold **text**
+        out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+        // inline code `x`
+        out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        return out;
+      }
+    }
 
     (async function(){
       const params = new URLSearchParams(location.search);
-      let mdParam = params.get("md");
-      const defaultPath = "Projects/attack-defend-lab/README.md";
+      const src = params.get('src');
 
-      function safePath(p){
-        if(!p) return null;
-        if(p.includes('://') || p.startsWith('//') || p.includes('..')) return null;
-        return p.replace(/^\/+/, '');
-      }
-      function candidates(path){
-        const out = [];
-        if(!path) return out;
-        out.push(path);
-        const dir = path.replace(/\/[^\/]*$/, '');
-        if(path.toLowerCase().endsWith('readme.md')){
-          out.push(`${dir}/README.md`, `${dir}/Readme.md`, `${dir}/readme.md`);
-        }
-        if(!path.includes('.md')){
-          out.push(`${path}/README.md`, `${path}/Readme.md`, `${path}/readme.md`);
-        }
-        return Array.from(new Set(out));
-      }
-
-      const statusEl = document.getElementById('status');
+      const titleEl = document.getElementById('title');
       const contentEl = document.getElementById('content');
-      const triedEl = document.getElementById('tried');
+      const errEl = document.getElementById('error');
+      const sourceLink = document.getElementById('sourceLink');
 
-      if(!mdParam) mdParam = defaultPath;
-      const safe = safePath(mdParam) || defaultPath;
-      statusEl.textContent = `Requested: ${safe}`;
-
-      const tryList = candidates(safe);
-      if(tryList.length === 0) tryList.push(safe);
-
-      let lastError = null;
-      const triedPaths = [];
-      for(const p of tryList){
-        triedPaths.push(p);
-        try{
-          statusEl.textContent = `Fetching: ${p}`;
-          const res = await fetch(p);
-          if(!res.ok){ lastError = `${res.status} ${res.statusText}`; continue; }
-          const mdText = await res.text();
-          const html = marked.parse(mdText);
-          contentEl.innerHTML = html;
-          statusEl.textContent = `Rendered: ${p}`;
-          triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
-          return;
-        } catch(err){
-          lastError = err.message || String(err);
-        }
+      if(!src){
+        titleEl.textContent = 'No document selected';
+        errEl.style.display = '';
+        errEl.textContent = 'Missing query parameter: ?src=PATH_OR_URL_TO_MD';
+        return;
       }
 
-      contentEl.innerHTML = `<div class="error"><strong>Could not load the requested markdown.</strong><br/>Make sure the file exists, the path is case-sensitive, and the file was pushed to GitHub Pages branch.</div>
-        <p style="margin-top:8px;color:var(--muted)">Hint: try opening the raw file in browser to verify it exists:</p>
-        <pre style="margin-top:6px;background:#111;padding:8px;border-radius:6px;color:#fff;">/${safe}</pre>
-        <p style="margin-top:8px;color:var(--muted)">Network error / reason: ${lastError}</p>`;
-      statusEl.textContent = `Failed to fetch.`;
-      triedEl.textContent = `Tried: ${triedPaths.join('  •  ')}`;
+      sourceLink.href = src;
+
+      const niceName = src.split('/').pop() || 'Document';
+      titleEl.textContent = niceName;
+
+      try{
+        const res = await fetch(src, { cache: 'no-store' });
+        if(!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+        const md = await res.text();
+        contentEl.innerHTML = mdToHtml(md);
+      }catch(e){
+        errEl.style.display = '';
+        errEl.textContent = 'Failed to load document: ' + String(e && e.message ? e.message : e);
+      }
     })();
   </script>
 </body>
