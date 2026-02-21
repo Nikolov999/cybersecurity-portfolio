@@ -1,10 +1,8 @@
-\# RDP Security Series – 02 Remediation  
-
-\## 02 – Configuration Changes
+# Configuration Changes
 
 
 
-\### Baseline vs Hardened State
+### Baseline vs Hardened State
 
 
 
@@ -12,7 +10,7 @@
 
 
 
-\## Authentication Controls
+## Authentication Controls
 
 
 
@@ -32,7 +30,7 @@
 
 
 
-\## Exposure Controls
+## Exposure Controls
 
 
 
@@ -52,7 +50,7 @@
 
 
 
-\## Service Configuration
+## Service Configuration
 
 
 
@@ -63,4 +61,5 @@ Verify service state:
 ```powershell
 
 Get-Service TermService
+
 
