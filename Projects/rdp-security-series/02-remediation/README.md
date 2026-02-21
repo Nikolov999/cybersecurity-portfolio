@@ -1,4 +1,4 @@
-\# RDP Security Series – 02 Remediation
+# RDP Security Series – 02 Remediation
 
 
 
@@ -10,33 +10,15 @@ It focuses on:
 
 
 
-\- Hardening authentication mechanisms
+- Hardening authentication mechanisms
 
-\- Restricting access scope
+- Restricting access scope
 
-\- Enforcing encryption standards
+- Enforcing encryption standards
 
-\- Implementing least privilege
+- Implementing least privilege
 
-\- Improving detection telemetry
-
-
-
----
-
-
-
-\## Structure
-
-
-
-\- 01-hardening-steps.md → Technical remediation steps
-
-\- 02-configuration-changes.md → Before/After configuration comparison
-
-\- 03-access-control.md → Access restriction and segmentation
-
-\- 04-results.md → Post-remediation validation results
+- Improving detection telemetry
 
 
 
@@ -44,17 +26,35 @@ It focuses on:
 
 
 
-\## Lab Context
+## Structure
+
+
+
+- 01-hardening-steps.md → Technical remediation steps
+
+- 02-configuration-changes.md → Before/After configuration comparison
+
+- 03-access-control.md → Access restriction and segmentation
+
+- 04-results.md → Post-remediation validation results
+
+
+
+---
+
+
+
+## Lab Context
 
 
 
 Environment:
 
-\- Attacker: Kali Linux VM
+- Attacker: Kali Linux VM
 
-\- Victim: Windows 8/10 VM (Bridged)
+- Victim: Windows 8/10 VM (Bridged)
 
-\- Monitoring: EchoSentinel SIEM (Host)
+- Monitoring: EchoSentinel SIEM (Host)
 
 
 
@@ -62,7 +62,7 @@ Environment:
 
 
 
-\## Objective
+## Objective
 
 
 
@@ -74,7 +74,7 @@ Transform an exposed RDP service into a hardened, monitored, and access-controll
 
 
 
-\## Outcome
+## Outcome
 
 
 
@@ -87,4 +87,5 @@ Security posture measurably improved.
 
 
 Portfolio-ready remediation documentation.
+
 
