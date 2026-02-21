@@ -260,182 +260,110 @@
       padding:22px 18px;
       background:
         linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88) 45%, rgba(34,211,238,0.20)),
-        radial-gradient(900px 160px at 50% 0%, rgba(255,255,255,0.10), transparent 60%);
-      border-top:1px solid rgba(255,255,255,0.14);
-      box-shadow:0 -10px 36px rgba(0,0,0,0.45);
+        radial-gradient(900px 160px at 50% 0%, rgba(255,255,255,0.08), transparent 60%);
+      border-top:1px solid rgba(255,255,255,0.12);
       position:relative;
       z-index:1;
     }
-    footer::before{
-      content:"";
-      position:absolute;left:0;right:0;top:-1px;height:1px;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      opacity:.45;
-    }
 
-    @media(max-width:1050px){
-      .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media(max-width:900px){
-      main{padding:calc(var(--header-h) + 14px) 20px 24px}
-      .section{padding:20px}
+    @media(max-width: 980px){
       .hero{grid-template-columns:1fr}
       .grid3{grid-template-columns:1fr}
-    }
-    @media(max-width:700px){
-      :root{ --header-h: 82px; }
-      header{padding:0 16px; flex-wrap:wrap; gap:12px}
-      .menu-toggle{display:block}
-      nav{width:100%; display:none; flex-direction:column; gap:10px; padding-top:8px;}
-      body.nav-open nav{display:flex}
-      .logo{height:calc(var(--header-h) - 10px)}
-      .logo img{height:100%;width:auto}
-      main{padding:calc(var(--header-h) + 12px) 16px 18px}
-      .kv{grid-template-columns:1fr}
+      main{padding:calc(var(--header-h) + 12px) 18px 26px}
+      header{padding:0 18px}
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
-      <div class="subtitle">AI Phishing Analyzer Prototype</div>
+<header>
+  <div class="brand">
+    <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+    <div class="subtitle">AI Phishing Analyzer Prototype</div>
+  </div>
+
+  <nav>
+    <a class="btn" href="../../projects.html">← Projects</a>
+    <a class="btn" href="../../index.html">Home</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section hero">
+    <div class="card">
+      <h1>AI Phishing Analyzer Prototype — EchoPentest</h1>
+      <p>
+        An explainable phishing detection prototype designed for portfolio demonstration.
+        The goal is to show an analyst-style workflow: input parsing, feature extraction,
+        scoring/classification, and clear reasoning outputs.
+      </p>
+
+      <div class="pillbar">
+        <span class="pill primary">Prototype</span>
+        <span class="pill">Explainable Output</span>
+        <span class="pill">Feature Signals</span>
+        <span class="pill">Offline-Friendly</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/AI-Phishing-Analyzer-Prototype">View Repository</a>
+        <a class="btn-ghost" href="../../viewer.html?file=../../Projects/AI-Phishing-Analyzer-Prototype/README.md">Project README</a>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>Core Workflow</h2>
+      <ul>
+        <li><strong>Input:</strong> suspicious email content (headers/body), URLs, and indicators</li>
+        <li><strong>Signals:</strong> domain mismatch, urgent language, link obfuscation, spoof indicators</li>
+        <li><strong>Scoring:</strong> weighted risk model producing a final classification</li>
+        <li><strong>Explainability:</strong> per-signal breakdown for analyst review</li>
+      </ul>
     </div>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
-    <nav>
-      <a class="btn" href="../../projects.html">← Projects</a>
-      <a class="btn" href="../../index.html">Home</a>
-    </nav>
-  </header>
 
-  <main>
-    <section class="section hero">
-      <div class="card">
-        <h1>AI Phishing Analyzer Prototype</h1>
-        <p>
-          A prototype that classifies suspicious emails using AI-driven text understanding and simple explainability signals.
-          Built as an early experiment toward EchoPhishing-style automated triage: classify, score, and extract reasons an analyst can validate.
-        </p>
-
-        <div class="pillbar">
-          <span class="pill primary">Prototype</span>
-          <span class="pill">Phishing Classification</span>
-          <span class="pill">Explainable Signals</span>
-          <span class="pill">Risk Scoring</span>
-          <span class="pill">Email Triage</span>
-          <span class="pill">NLP</span>
-          <span class="pill">Portfolio Build</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <h2 style="margin-top:14px">Core Capabilities</h2>
-        <ul>
-          <li>Classifies email text into phishing vs benign (prototype model workflow).</li>
-          <li>Extracts high-signal indicators: urgency language, credential request patterns, link cues, spoofing-style phrasing.</li>
-          <li>Produces a risk score with reasons (analyst-readable output).</li>
-          <li>Designed as a foundation for automation (IMAP watcher, quarantine workflow, reporting).</li>
-        </ul>
-
-        <div class="actions">
-          <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/AI-Phishing-Analyzer-Prototype" target="_blank" rel="noopener">View Repository</a>
-          <a class="btn-ghost" href="../../Projects/AI-Phishing-Analyzer-Prototype/README.md" target="_blank" rel="noopener">Project README</a>
-        </div>
+    <div class="card">
+      <h2>What This Demonstrates</h2>
+      <div class="kv">
+        <div class="k">Skill Focus</div><div class="v">Detection logic, feature engineering, and analyst reporting UX</div>
+        <div class="k">Output</div><div class="v">Classification + rationale + extracted IOCs</div>
+        <div class="k">Use Case</div><div class="v">SOC triage, awareness validation, incident intake enrichment</div>
       </div>
 
-      <div class="card">
-        <h2>Project Snapshot</h2>
-        <div class="kv">
-          <div class="k">Category</div><div class="v">AI / Security Automation</div>
-          <div class="k">Goal</div><div class="v">Automate phishing triage with explainable reasoning</div>
-          <div class="k">Inputs</div><div class="v">Raw email text (prototype)</div>
-          <div class="k">Outputs</div><div class="v">Classification + score + reasons</div>
-          <div class="k">Future</div><div class="v">IMAP pipeline + reporting + SOC workflows</div>
-        </div>
+      <div class="divider"></div>
 
-        <div class="divider"></div>
+      <h3>Example Signals</h3>
+      <ul>
+        <li>Sender domain vs reply-to / return-path mismatch</li>
+        <li>Link text vs destination mismatch</li>
+        <li>Newly registered / suspicious domains</li>
+        <li>Credential-harvest phrasing patterns</li>
+      </ul>
+    </div>
+  </section>
 
-        <h2 style="margin-top:14px">Signals Used</h2>
-        <ul>
-          <li>Urgency / threat language patterns</li>
-          <li>Credential harvesting phrases</li>
-          <li>Link / domain cues</li>
-          <li>Spoofing indicators (tone + identity claims)</li>
-        </ul>
-      </div>
-    </section>
+  <section class="section">
+    <h2>Evidence Screenshots</h2>
+    <p>Place the key UI evidence screenshots below (clean, readable, portfolio-friendly).</p>
 
-    <section class="section">
-      <h2>Workflow</h2>
+    <div class="divider"></div>
 
-      <div class="grid3" style="margin-top:14px">
-        <div class="card">
-          <h3>1) Ingest</h3>
-          <p class="muted">Take email content as input and normalize text for analysis.</p>
-          <ul>
-            <li>Headers / body extraction</li>
-            <li>Normalization</li>
-            <li>Feature signals</li>
-          </ul>
-        </div>
+    <div class="grid3">
+      <figure>
+        <img src="../../Projects/AI-Phishing-Analyzer-Prototype/evidence/screenshots/01-main-ui.png" alt="Main UI">
+        <figcaption>Main UI: input area + classification results panel.</figcaption>
+      </figure>
+      <figure>
+        <img src="../../Projects/AI-Phishing-Analyzer-Prototype/evidence/screenshots/02-feature-signals.png" alt="Feature signals">
+        <figcaption>Feature signals extracted and scored.</figcaption>
+      </figure>
+      <figure>
+        <img src="../../Projects/AI-Phishing-Analyzer-Prototype/evidence/screenshots/03-explainability.png" alt="Explainability">
+        <figcaption>Explainable breakdown: why the email is flagged.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
 
-        <div class="card">
-          <h3>2) Classify</h3>
-          <p class="muted">Run an AI classifier and combine it with heuristic signals.</p>
-          <ul>
-            <li>Model probability</li>
-            <li>Signal boosts/penalties</li>
-            <li>Explainability reasons</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>3) Report</h3>
-          <p class="muted">Produce a clear output that an analyst can validate quickly.</p>
-          <ul>
-            <li>Risk score</li>
-            <li>Top reasons</li>
-            <li>Recommended action</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Evidence Gallery</h2>
-      <p class="muted">Screenshots captured during prototype runs and output review.</p>
-
-      <div class="grid3" style="margin-top:14px">
-        <figure>
-          <img src="../../Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Alerts-Screenshot.png" alt="Prototype UI screenshot 1" />
-          <figcaption>Prototype UI: Alerts page, email content input and analysis panel.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Analyzer-Screenshot.png" alt="Prototype UI screenshot 2" />
-          <figcaption>Classification output: score and primary indicators.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/AI-Phishing-Analyzer-Prototype/Screenshots/Dashboard-Screenshot.png" alt="Prototype UI screenshot 3" />
-          <figcaption>Explainability view: reasons and recommended actions.</figcaption>
-        </figure>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© Bobo Nikolov</p>
-  </footer>
-
-  <script>
-    const menuBtn = document.querySelector('.menu-toggle');
-    if(menuBtn){
-      menuBtn.addEventListener('click', ()=>{
-        const open = document.body.classList.toggle('nav-open');
-        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    }
-  </script>
+<footer>© Bobo Nikolov — EchoPentest</footer>
 </body>
 </html>
