@@ -17,10 +17,9 @@
 
       --p1:#6d28d9;   /* purple */
       --p2:#a855f7;   /* violet */
-      --p3:#22d3ee;   /* cyan accent */
+      --p3:#22d3ee;   /* cyan */
       --radius:18px;
 
-      /* fixed header height (slightly taller, +10px) */
       --header-h: 98px;
     }
 
@@ -49,11 +48,10 @@
       mix-blend-mode:overlay;
     }
 
-    /* ===== Header (fixed) ===== */
     header{
       position:fixed; top:0; left:0; right:0; z-index:1000;
       display:flex; align-items:center; justify-content:space-between;
-      padding:0 40px;                 /* horizontal only */
+      padding:0 40px;
       min-height:var(--header-h);
       color:#fff;
       background:
@@ -73,7 +71,6 @@
 
     .brand{display:flex; gap:16px; align-items:center; position:relative; z-index:1}
 
-    /* Transparent logo holder (no box/background) */
     .logo{
       height:calc(var(--header-h) - 10px);
       display:flex; align-items:center; justify-content:center;
@@ -94,7 +91,6 @@
 
     .subtitle{color:rgba(255,255,255,0.78);font-size:13px}
 
-    /* Header nav links (plain, no buttons) */
     nav{display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1}
     .btn{
       background:transparent; border:none; color:#fff; text-decoration:none;
@@ -114,13 +110,13 @@
       box-shadow:0 10px 20px rgba(0,0,0,0.30);
     }
 
-    /* ===== Main & Cards ===== */
     main{
       flex:1; display:flex; flex-direction:column; gap:20px;
-      padding:calc(var(--header-h) + 16px) 40px 32px; /* push content below fixed header */
+      padding:calc(var(--header-h) + 16px) 40px 32px;
       position:relative;
       z-index:1;
     }
+
     .section{
       background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border-radius:var(--radius); padding:24px;
@@ -175,21 +171,6 @@
     }
     a.link:hover::after, a.link:focus-visible::after{transform:scaleX(1)}
 
-    .actions{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
-    .download-btn{
-      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.75));
-      color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.14);
-      padding:10px 14px; border-radius:12px; font-weight:800;
-      display:inline-flex; align-items:center; gap:8px;
-      box-shadow:0 14px 26px rgba(0,0,0,0.35);
-      transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
-    }
-    .download-btn:hover, .download-btn:focus-visible{
-      transform:translateY(-1px);
-      box-shadow:0 18px 40px rgba(0,0,0,0.45);
-      opacity:1;
-    }
-
     footer{
       text-align:center; color:rgba(255,255,255,0.78); font-size:13px;
       padding:22px 18px;
@@ -208,25 +189,20 @@
       opacity:.45;
     }
 
-    /* ===== Responsive ===== */
     @media(max-width:900px){
       main{padding:calc(var(--header-h) + 14px) 20px 24px}
       .section{padding:20px}
     }
     @media(max-width:700px){
-      :root{ --header-h: 82px; }          /* shorter fixed header on phones */
-
+      :root{ --header-h: 82px; }
       header{padding:0 16px; flex-wrap:wrap; gap:12px}
       .menu-toggle{display:block}
       nav{width:100%; display:none; flex-direction:column; gap:10px; padding-top:8px;}
       body.nav-open nav{display:flex}
-
       .logo{height:calc(var(--header-h) - 10px)}
       .logo img{height:100%;width:auto}
-
       main{padding:calc(var(--header-h) + 12px) 16px 18px}
       .item{padding:12px}
-      .actions .download-btn{width:100%;justify-content:center}
     }
   </style>
 </head>
@@ -234,7 +210,6 @@
   <header>
     <div class="brand">
       <div class="logo"><img src="Logo/Portfolio_Logo.png.png" alt="Logo"></div>
-      <div class="subtitle">Completed & upcoming labs</div>
     </div>
     <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
     <nav><a class="btn" href="index.html">← Home</a></nav>
@@ -242,192 +217,211 @@
 
   <main>
     <section class="section">
-      <h2>Completed</h2>
-      <div id="nowList" class="list"></div>
+      <h2>Purple Team Scenarios</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Scenario-style projects: simulate + detect + document.</p>
+      <div id="scenarioList" class="list"></div>
     </section>
 
     <section class="section">
-      <h2>Upcoming</h2>
-      <p style="color:var(--muted);font-size:13px;margin-top:6px">Planned projects I’ll be adding next.</p>
-      <div id="upcomingList" class="list"></div>
+      <h2>Tools</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Security tooling projects (apps, automation, platforms).</p>
+      <div id="toolList" class="list"></div>
+    </section>
+
+    <!-- NEW SECTION -->
+    <section class="section">
+      <h2>Detection Content Packs</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Reusable detection logic: queries, rules, and validation checklists.</p>
+      <div id="packList" class="list"></div>
+    </section>
+
+    <section class="section">
+      <h2>Other Projects</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Supporting projects (AI prototypes, sandboxes, generators).</p>
+      <div id="otherList" class="list"></div>
     </section>
   </main>
 
   <footer>
-    <p>Made with ⚙️ — © Bobo Nikolov</p>
+    <p>© Bobo Nikolov</p>
   </footer>
 
   <script>
-    const projects = [
-      // completed
-      {
-        title:"Attack-Defend-Lab",
-        slug:"attack-defend-lab",
-        date:"2025-10-27",
-        status:"Completed",
-        tags:["red-team","blue-team","ir"],
-        summary:"Isolated Kali ↔ Ubuntu lab demonstrating exploitation, persistence & privilege escalation. SecurityOnion integration planned next.",
-        href:"viewer.html?md=Projects/attack-defend-lab/README.md",
-        report:"Projects/attack-defend-lab/Report/Attack-Defend-Lab_Attack-Report.pdf",
-        thumb:"AD",
-        bucket:"now"
-      },
-      {
-        title:"PurpleOps-playground",
-        slug:"purpleops-playground",
-        date:"2025-11-06",
-        status:"Completed",
-        tags:["red-team","blue-team","ir","wazuh","wireshark"],
-        summary:"Full Adversary Simulation:SQL injections, Brute Force, HTTP exploitation, all captured and analyzed with Wazuh and Wireshark",
-        href:"viewer.html?md=Projects/PurpleOps-playground/README.md",
-        report:"Projects/PurpleOps-playground/Report/PurpleOps-Playground_Report.pdf",
-        thumb:"PO",
-        bucket:"now"
-      },
-      {
-        title:"Malware Analysis Lab",
-        slug:"Malware-Analysis-Lab",
-        date:"2025-11-16",
-        status:"Completed",
-        tags:["malware","sandbox","analysis","windows","windows 10"],
-        summary:"Full safe Malware simulation and analysis with keylogger, persistance and beaconing files.",
-        href:"viewer.html?md=Projects/Malware-sandbox-project/README.md",
-        report:"Projects/PurpleOps-playground/Report/Malware-Analysis-Lab_Report.pdf",
-        thumb:"MA",
-        bucket:"now"
-      },
-      {
-        title:"AI-Phishing Analyzer (Prototype)",
-        slug:"AI-Phishing-Analyzer-Prototype",
-        date:"2025-11-19",
-        status:"In-Progress",
-        tags:["phishing","triage","detect","Ai"],
-        summary:"Built an app which triages and checks email(SPF, DMARK, DKIM, Return-Path missmatch) to mitigate phishing risks",
-        href:"viewer.html?md=Projects/AI-Phishing-Analyzer-Prototype/README.md",
-        report:"Projects/AI-Phishing-Analyzer-Prototype/Report/AI-Phishing-Analyzer-Prototype-Report.pdf",
-        thumb:"AP",
-        bucket:"now"
-      },
-      {
-        title:"AI-Digital-Footprint-Mapper",
-        slug:"AI-Digital-Footprint-Mapper",
-        date:"2025-11-19",
-        status:"Completed",
-        tags:["network","mapper","service","ports","Ai"],
-        summary:"Built a app that does newtork mapping including, host discovery, port discovery and service enumeration",
-        href:"viewer.html?md=Projects/AI-Digital-Footprint-Mapper/README.md",
-        report:"Projects/AI-Digital-Footrpint-Mapper/Report/AI-Digital-Footprint-Mapper-Report.pdf",
-        thumb:"AD",
-        bucket:"now"
-      },
-      {
-        title:"SMB Security Series (Credential Abuse)",
-        slug:"smb-security-series",
-        date:"2026-02-05",
-        status:"Completed",
-        tags:["SMB","triage","IR","Detection", "Wazuh Engineering", "Pentest"],
-        summary:"Project where I orchestrated an attack while having default wazuh rules, did detection, incident response, remediation, wazuh enginnering and pentest",
-        href:"viewer.html?md=Projects/smb-security-series/README.md",
-        thumb:"SMB",
-        bucket:"now"
-      },
-      {
-        title:"EchoExposure",
-        slug:"EchoExposure",
-        date:"2026-02-05",
-        status:"Completed",
-        tags:["Network","triage","Ports","Services", "Windows", "IP", "domain"],
-        summary:"Desktop app using python wrapped in tauri, does ongoing network mapping for assets that you own, IP addresses or Domains.",
-        href:"viewer.html?md=Projects/EchoExposure/README.md",
-        thumb:"EE",
-        bucket:"now"
-      },
-      {
-        title:"EchoVuln",
-        slug:"EchoVuln",
-        date:"2026-02-03",
-        status:"Completed",
-        tags:["OS","triage","Infrastructure","Hotfixes", "Agent", "Patches"],
-        summary:"Desktop python app wrapped in tauri, installs an agent on host and does ongoing scanning on the OS looking for missed patches or bugs.",
-        href:"viewer.html?md=Projects/EchoVuln/README.md",
-        thumb:"EV",
-        bucket:"now"
-      },
-      {
-        title:"EchoSentinel",
-        slug:"EchoSentinel",
-        date:"2026-02-11",
-        status:"Completed",
-        tags:["SIEM","triage","analysis","windows","windows 10"],
-        summary:"Mini SIEM.",
-        href:"viewer.html?md=Projects/EchoSentinel/README.md",
-        bucket:"now"
-      },
+    // NOTE: href targets are placeholders.
+    // We will create these pages later under /p/... without changing this styling.
 
-      // upcoming
+    const scenarios = [
       {
-        title:"SecurityOnion Defender Integration",
-        slug:"securityonion-defender",
-        priority:1,
-        status:"Planned",
-        tags:["siem","network","blue-team"],
-        summary:"Deploy SO sensor/manager; ingest Zeek/Suricata; create alerts; demo detection.",
-        href:"#",
-        thumb:"SO",
-        bucket:"upcoming"
+        title:"Windows Remote Service Creation (Persistence)",
+        status:"Listed",
+        tags:["WinRM","Detection","Remediation","Engineering","EchoSentinel SIEM","sc.exe"],
+        summary:"A lifecycle, creation and detection of a remotely executed service for persistence.",
+        href:"p/scenarios/windows-service-remote-creation.html"
       },
       {
-        title:"Detection Engineering Pack",
-        slug:"detection-pack",
-        priority:2,
-        status:"Planned",
-        tags:["siem","sigma"],
-        summary:"Author Sigma rules for SSH brute force, reverse shells, and suspicious PowerShell.",
-        href:"#",
-        thumb:"DE",
-        bucket:"upcoming"
+        title:"Scheduled Tasks Persistence (Persistence)",
+        status:"Listed",
+        tags:["WinRM","Detection","Remediation","Engineering","EchoSentinel SIEM","schtasks"],
+        summary:"A lifecycle, creation and detection of a scheduled tasks persistence.",
+        href:"p/scenarios/scheduled-tasks-persistence.html"
       },
       {
-        title:"Purple-Team Walkthrough",
-        slug:"purple-walkthrough",
-        priority:3,
-        status:"Planned",
-        tags:["purple","mitre-attck"],
-        summary:"Adversary simulation steps + mapped detections and mitigations (ATT&CK).",
-        href:"#",
-        thumb:"PT",
-        bucket:"upcoming"
+        title:"WinRM Remote Code Execution (Lateral Movement)",
+        status:"Listed",
+        tags:["WinRM","Detection","Remediation","Engineering","EchoSentinel SIEM"],
+        summary:"A full purple-team lifecycle for WinRM, abuse paths, detection, and hardening.",
+        href:"p/scenarios/winrm-remote-code-execution.html"
+      },
+      {
+        title:"RDP Security Series (Lateral Movement)",
+        status:"Listed",
+        tags:["RDP","Detection","Remediation","Engineering"],
+        summary:"A full purple-team lifecycle for RDP (TCP 3389), abuse paths, detection, and hardening.",
+        href:"p/scenarios/rdp-security-series.html"
+      },
+      {
+        title:"SMB Security Series (Initial Access)",
+        status:"Listed",
+        tags:["SMB","Detection","Remediation"],
+        summary:"Scenario series focused on SMB exposure, abuse paths, detection, and hardening.",
+        href:"p/scenarios/smb-security-series.html"
+      },
+      {
+        title:"Attack-Defend Lab",
+        status:"Listed",
+        tags:["Purple Team","IR","Detection"],
+        summary:"Attack/defend exercises with evidence collection and detection validation.",
+        href:"p/scenarios/attack-defend-lab.html"
+      },
+      {
+        title:"PurpleOps Playground",
+        status:"Listed",
+        tags:["Lab","Telemetry","Validation"],
+        summary:"Multi-VM lab environment used for repeatable purple-team experiments.",
+        href:"p/scenarios/purpleops-playground.html"
       }
     ];
 
-    function projectItemHTML(p){
-      const tags = p.tags.map(t=>`<span class="tag">${t}</span>`).join(' ');
-      const status = `<span class="tag status">${p.status}</span>`;
-      const date = p.date ? `<span>📅 ${new Date(p.date).toLocaleDateString()}</span>` : "";
-      const link = p.href && p.href !== "#" ? `<a class="link" href="${p.href}">Read writeup</a>` : `<span style="color:var(--muted);font-size:12px">Writeup coming soon</span>`;
-      const reportBtn = p.report ? `
-        <div class="actions">
-          <a class="download-btn" href="${p.report}" download>⬇ Download Report (PDF)</a>
-        </div>` : "";
+    const tools = [
+      {
+        title:"EchoSentinel",
+        status:"Listed",
+        tags:["SIEM","Windows Events","Cases"],
+        summary:"Mini SIEM: ingest events, generate alerts, manage cases, and validate detections.",
+        href:"p/tools/echosentinel.html"
+      },
+      {
+        title:"EchoVuln",
+        status:"Listed",
+        tags:["Vulnerability","Agent","Posture"],
+        summary:"Host posture + vulnerability tracking with an agent-style workflow.",
+        href:"p/tools/echovuln.html"
+      },
+      {
+        title:"EchoExposure",
+        status:"Listed",
+        tags:["Attack Surface","Recon","Asset Mapping"],
+        summary:"Digital footprint / exposure mapping and recon automation.",
+        href:"p/tools/echoexposure.html"
+      },
+      {
+        title:"EchoAdversary",
+        status:"Listed",
+        tags:["Attack","Windows Events","Lab"],
+        summary:"An offensive simulation tool built for labs and purple-team validation.",
+        href:"p/tools/echoadversary.html"
+      }
+    ];
 
+    // NEW: realistic “folder you’ll create” category
+    // Make a folder: /p/packs/
+    const packs = [
+      {
+        title:"EchoSentinel Detection Pack — Remote Service Creation & Persistence",
+        status:"Listed",
+        tags:["Queries","Rules","Remote Service Creation","T1021.006"],
+        summary:"Reusable detection logic for Remote Service Creation sessions: wsmprovhost lineage, auth context, and suspicious remote execution.",
+        href:"p/packs/echosentinel-detection-pack-remote-service-creation.html"
+      },
+      {
+        title:"EchoSentinel Detection Pack — WinRM & Lateral Movement",
+        status:"Listed",
+        tags:["Queries","Rules","WinRM","T1021.006"],
+        summary:"Reusable detection logic for WinRM sessions: wsmprovhost lineage, auth context, and suspicious remote execution.",
+        href:"p/packs/echosentinel-detection-pack-winrm.html"
+      },
+      {
+        title:"EchoSentinel Detection Pack — Scheduled Tasks Persistence",
+        status:"Listed",
+        tags:["Queries","Rules","Persistence","T1053.005"],
+        summary:"Rules and hunting queries for schtasks creation/run and task artifact writes under System32\\Tasks.",
+        href:"p/packs/echosentinel-detection-pack-scheduled-tasks.html"
+      },
+      {
+        title:"EchoSentinel Detection Pack — RDP Brute & Session Abuse",
+        status:"Listed",
+        tags:["Queries","Rules","RDP","T1021.001"],
+        summary:"Detection content for failed logon bursts, LogonType 10 patterns, and admin session anomalies.",
+        href:"p/packs/echosentinel-detection-pack-rdp.html"
+      },
+      {
+        title:"EchoSentinel Detection Pack — SMB Credential Abuse",
+        status:"Listed",
+        tags:["Queries","Rules","SMB","T1021.001"],
+        summary:"Detection content for failed logon bursts, LogonType 3 patterns, and admin session anomalies.",
+        href:"p/packs/echosentinel-detection-pack-smb.html"
+      }
+    ];
+
+    const others = [
+      {
+        title:"Incident Response Playbook Generator",
+        status:"Listed",
+        tags:["IR","Playbooks","Automation"],
+        summary:"Generate structured incident response playbooks and documentation quickly.",
+        href:"p/other/incident-response-playbook-generator.html"
+      },
+      {
+        title:"Malware Sandbox Project",
+        status:"Listed",
+        tags:["Malware","Analysis","Sandbox"],
+        summary:"Controlled malware analysis workflow and lab notes.",
+        href:"p/other/malware-sandbox-project.html"
+      },
+      {
+        title:"AI Phishing Analyzer Prototype",
+        status:"Listed",
+        tags:["AI","Phishing","NLP"],
+        summary:"Prototype phishing classification / analysis pipeline.",
+        href:"p/other/ai-phishing-analyzer-prototype.html"
+      },
+      {
+        title:"AI Digital Footprint Mapper",
+        status:"Listed",
+        tags:["AI","OSINT","Recon"],
+        summary:"Prototype digital footprint mapping with automation + AI assistance.",
+        href:"p/other/ai-digital-footprint-mapper.html"
+      }
+    ];
+
+    function itemHTML(p){
+      const tags = (p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join(' ');
+      const status = `<span class="tag status">${p.status || "Listed"}</span>`;
       return `
         <div class="item">
-          <div>
+          <div style="flex:1">
             <h3>${p.title}</h3>
-            <p style="margin-top:6px;color:var(--muted)">${p.summary} ${link}</p>
-            <div class="meta">${status} ${date} ${tags}</div>
-            ${reportBtn}
+            <p style="margin-top:6px;color:var(--muted)">${p.summary} <a class="link" href="${p.href}">Open</a></p>
+            <div class="meta">${status} ${tags}</div>
           </div>
         </div>`;
     }
 
     function render(){
-      const nowEl = document.getElementById('nowList');
-      const upEl = document.getElementById('upcomingList');
-      const now = projects.filter(p=>p.bucket==='now').sort((a,b)=> new Date(b.date)-new Date(a.date));
-      const upcoming = projects.filter(p=>p.bucket==='upcoming').sort((a,b)=>(a.priority||99)-(b.priority||99));
-      nowEl.innerHTML = now.map(projectItemHTML).join('');
-      upEl.innerHTML = upcoming.map(projectItemHTML).join('');
+      document.getElementById('scenarioList').innerHTML = scenarios.map(itemHTML).join('');
+      document.getElementById('toolList').innerHTML = tools.map(itemHTML).join('');
+      document.getElementById('packList').innerHTML = packs.map(itemHTML).join('');   // NEW
+      document.getElementById('otherList').innerHTML = others.map(itemHTML).join('');
     }
     render();
 
