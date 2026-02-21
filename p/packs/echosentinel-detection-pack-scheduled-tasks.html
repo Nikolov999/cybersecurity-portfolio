@@ -1,0 +1,329 @@
+<!-- /root/p/echo-sentinel-detection-packs/scheduled-tasks-persistence.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EchoSentinel Detection Pack — Scheduled Tasks Persistence</title>
+  <meta name="description" content="Rules and hunting queries for schtasks creation/run and task artifact writes under System32\Tasks." />
+
+  <style>
+    :root{
+      --bg0:#07040d;
+      --bg1:#0b0614;
+      --bg2:#100a1e;
+      --stroke:rgba(255,255,255,0.10);
+      --stroke2:rgba(255,255,255,0.14);
+      --text:#f5f1ff;
+      --muted:rgba(245,241,255,0.72);
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
+      --radius:18px;
+      --header-h: 98px;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img{max-width:100%;height:auto}
+
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      line-height:1.65;
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+    }
+
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px;
+      min-height:var(--header-h);
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25));
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .brand{display:flex; gap:16px; align-items:center}
+    .logo img{height:80px;object-fit:contain}
+    .subtitle{font-size:14px;color:rgba(255,255,255,0.85)}
+    nav{display:flex; gap:16px}
+    nav a{color:#fff;text-decoration:none;font-weight:600}
+
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+      padding:calc(var(--header-h) + 24px) 40px 40px;
+    }
+
+    .section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:26px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+    }
+
+    h1{font-size:28px;margin-bottom:8px}
+    h2{font-size:18px;margin-bottom:12px}
+    h3{font-size:15px;margin-bottom:8px}
+    p{color:var(--muted)}
+    strong{color:var(--text)}
+
+    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+    .card{
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .pillbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(34,211,238,0.08);
+    }
+    .pill.primary{
+      background:linear-gradient(135deg,var(--p1),var(--p2));
+      color:#fff;
+    }
+
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+      margin:14px 0;
+    }
+
+    .kv{display:grid;grid-template-columns:160px 1fr;gap:8px}
+    .k{font-weight:700;font-size:13px}
+    .v{font-size:13px;color:var(--muted)}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+    figure{
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.25);
+    }
+    figure img{display:block;width:100%}
+    figcaption{
+      padding:10px;
+      font-size:12px;
+      color:rgba(245,241,255,0.8);
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    footer{
+      text-align:center;
+      padding:22px;
+      background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88));
+      border-top:1px solid rgba(255,255,255,0.14);
+    }
+
+    @media(max-width:900px){
+      .hero,.grid2,.grid3{grid-template-columns:1fr}
+      main{padding:calc(var(--header-h) + 16px) 20px 24px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+    <div class="subtitle">Scheduled Tasks Persistence</div>
+  </div>
+  <nav>
+    <a href="../../projects.html">← Projects</a>
+    <a href="../../index.html">Home</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="section hero">
+  <div class="card">
+    <h1>EchoSentinel Detection Pack — Scheduled Tasks Persistence</h1>
+    <p>
+      Rules and hunting queries for <strong>schtasks.exe</strong> creation/run and task artifact writes
+      under <strong>C:\Windows\System32\Tasks\</strong>. Coverage is built from evidence captured in EchoSentinel:
+      Sysmon process/file telemetry plus Security privilege context.
+    </p>
+
+    <div class="pillbar">
+      <span class="pill primary">Listed</span>
+      <span class="pill">Queries</span>
+      <span class="pill">Rules</span>
+      <span class="pill">Persistence</span>
+      <span class="pill">T1053.005</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Telemetry Coverage</h2>
+    <ul>
+      <li><strong>Sysmon</strong>: EID 1 (Process Create), EID 11 (File Create)</li>
+      <li><strong>Security</strong>: 4624 (Logon), 4672 (Special Privileges)</li>
+      <li><strong>High-signal artifacts</strong>: System32\Tasks task file + payload drop path</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Extraction Anchors</h2>
+    <div class="kv">
+      <div class="k">Anchor</div><div class="v"><strong>TaskName</strong> + task file path under System32\Tasks</div>
+      <div class="k">Attribution</div><div class="v">Security 4624 LogonType 3 + 4672 privilege context</div>
+      <div class="k">Lineage</div><div class="v">Parent <strong>wsmprovhost.exe</strong> → <strong>schtasks.exe</strong></div>
+      <div class="k">Payload</div><div class="v">Sysmon 11 payload script creation (example: Public path)</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Detection Logic (Rule Ideas)</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Rule A — WinRM-driven Scheduled Task Creation</h3>
+      <p>
+        Trigger when Sysmon EID 1 where <strong>Image</strong> ends with schtasks.exe and
+        <strong>CommandLine</strong> contains <strong>/create</strong>, with <strong>ParentImage</strong>
+        containing <strong>wsmprovhost.exe</strong>.
+      </p>
+      <div class="divider"></div>
+      <p>
+        Escalate severity if command line contains <strong>/ru SYSTEM</strong> and trigger type is
+        <strong>/sc ONLOGON</strong> or <strong>/sc ONSTART</strong>.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Rule B — Task Artifact Written</h3>
+      <p>
+        Trigger when Sysmon EID 11 writes under
+        <strong>C:\Windows\System32\Tasks\</strong>. Add scoring when task naming mimics OS/update tooling.
+      </p>
+      <div class="divider"></div>
+      <p>
+        Capture <strong>TargetFilename</strong> and adjacent Sysmon 1 process context for who wrote it.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Rule C — Immediate Execution After Creation</h3>
+      <p>
+        Trigger when Sysmon EID 1 includes <strong>/run</strong> and the task name matches a recent
+        <strong>/create</strong> within a short window.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Fields to Collect (EchoSentinel Normalization)</h3>
+      <p>
+        hostname, username, channel, event_id, image, parent_image, command_line,
+        target_filename, integrity_level, logon_type (Security 4624), record_id, timestamp.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Queries (Copy/Paste)</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>schtasks create/run</h3>
+      <p><strong>channel</strong>:"Microsoft-Windows-Sysmon/Operational" <strong>event_id</strong>:1 <strong>image</strong>:"C:\Windows\System32\schtasks.exe"</p>
+    </div>
+    <div class="card">
+      <h3>task file written</h3>
+      <p><strong>channel</strong>:"Microsoft-Windows-Sysmon/Operational" <strong>event_id</strong>:11 <strong>target_filename</strong>:"C:\Windows\System32\Tasks\WindowsUpdateCheck"</p>
+    </div>
+    <div class="card">
+      <h3>payload script created</h3>
+      <p><strong>channel</strong>:"Microsoft-Windows-Sysmon/Operational" <strong>event_id</strong>:11 <strong>target_filename</strong>:"C:\Users\Public\updater.ps1"</p>
+    </div>
+    <div class="card">
+      <h3>WinRM auth context</h3>
+      <p><strong>channel</strong>:"Security" <strong>event_id</strong>:4624<br><strong>channel</strong>:"Security" <strong>event_id</strong>:4672</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Validation Checklist (Evidence Required)</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Required Proof</h3>
+      <ul>
+        <li>Security 4624 LogonType 3</li>
+        <li>Security 4672 privileges assigned</li>
+        <li>Sysmon 1 showing schtasks.exe <strong>/create</strong></li>
+        <li>Sysmon 11 showing task file created under System32\Tasks</li>
+        <li>Sysmon 1 showing schtasks.exe <strong>/run</strong></li>
+        <li>Sysmon 11 showing payload script created (parent wsmprovhost)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Strongest Signature</h3>
+      <p>
+        Parent = <strong>wsmprovhost.exe</strong><br>
+        Image = <strong>schtasks.exe</strong><br>
+        CommandLine includes <strong>/create</strong> and <strong>/ru SYSTEM</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Evidence Gallery</h2>
+  <div class="grid2">
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/01-WinRM-Logon.png" alt="WinRM Logon">
+      <figcaption>Security: WinRM network logon context.</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/02-Special-Privileges-assigned.png" alt="Special Privileges">
+      <figcaption>Security 4672: special privileges assigned.</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/04-Creation-of-Persistence-Task.png" alt="schtasks create">
+      <figcaption>Sysmon 1: schtasks.exe /create (task persistence).</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/05-Loaction-of-task.png" alt="Task file location">
+      <figcaption>Sysmon 11: task artifact written under System32\Tasks.</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/06-Task-forcly-executed.png" alt="schtasks run">
+      <figcaption>Sysmon 1: schtasks.exe /run (immediate execution).</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/scheduled-tasks-persistence/evidence/screenshots/03-Creation-binary-update.ps1.png" alt="payload created">
+      <figcaption>Sysmon 11: payload script created (drop + attribution pivot).</figcaption>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<footer>© Bobo Nikolov — EchoSentinel</footer>
+</body>
+</html>

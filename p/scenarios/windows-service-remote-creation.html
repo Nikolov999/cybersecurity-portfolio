@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Windows Service Remote Creation — EchoPurple</title>
+  <meta name="description" content="Remote Windows Service creation → persistence → payload execution → EchoSentinel detection engineering → remediation → validation retest." />
+
+  <style>
+    :root{
+      --bg0:#07040d;
+      --bg1:#0b0614;
+      --bg2:#100a1e;
+      --stroke:rgba(255,255,255,0.10);
+      --stroke2:rgba(255,255,255,0.14);
+      --text:#f5f1ff;
+      --muted:rgba(245,241,255,0.72);
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
+      --radius:18px;
+      --header-h: 98px;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img{max-width:100%;height:auto}
+
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      line-height:1.65;
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+    }
+
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px;
+      min-height:var(--header-h);
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25));
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .brand{display:flex; gap:16px; align-items:center}
+    .logo img{height:80px;object-fit:contain}
+    .subtitle{font-size:14px;color:rgba(255,255,255,0.85)}
+    nav{display:flex; gap:16px}
+    nav a{color:#fff;text-decoration:none;font-weight:600}
+
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+      padding:calc(var(--header-h) + 24px) 40px 40px;
+    }
+
+    .section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:26px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+    }
+
+    h1{font-size:28px;margin-bottom:8px}
+    h2{font-size:18px;margin-bottom:12px}
+    h3{font-size:15px;margin-bottom:8px}
+    p{color:var(--muted)}
+    strong{color:var(--text)}
+
+    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+    .card{
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .pillbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(34,211,238,0.08);
+    }
+    .pill.primary{
+      background:linear-gradient(135deg,var(--p1),var(--p2));
+      color:#fff;
+    }
+
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+      margin:14px 0;
+    }
+
+    .kv{display:grid;grid-template-columns:160px 1fr;gap:8px}
+    .k{font-weight:700;font-size:13px}
+    .v{font-size:13px;color:var(--muted)}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+    .btn-solid{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--p1),var(--p2));
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      margin-top:12px;
+    }
+
+    figure{
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.25);
+    }
+    figure img{display:block;width:100%}
+    figcaption{
+      padding:10px;
+      font-size:12px;
+      color:rgba(245,241,255,0.8);
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    footer{
+      text-align:center;
+      padding:22px;
+      background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88));
+      border-top:1px solid rgba(255,255,255,0.14);
+    }
+
+    @media(max-width:900px){
+      .hero,.grid2,.grid3{grid-template-columns:1fr}
+      main{padding:calc(var(--header-h) + 16px) 20px 24px}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+    <div class="subtitle">Windows Service Remote Creation</div>
+  </div>
+  <nav>
+    <a href="../../projects.html">← Projects</a>
+    <a href="../../index.html">Home</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="section hero">
+  <div class="card">
+    <h1>Windows Service Remote Creation Case Study</h1>
+    <p>
+      Remote service creation used for persistence and execution.
+      Detection engineered through correlated telemetry: service install,
+      registry modification, payload staging, and execution tracing.
+    </p>
+
+    <div class="pillbar">
+      <span class="pill primary">Purple Team</span>
+      <span class="pill">Windows Services</span>
+      <span class="pill">sc.exe</span>
+      <span class="pill">Registry</span>
+      <span class="pill">Persistence</span>
+      <span class="pill">Sysmon</span>
+      <span class="pill">Detection Engineering</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Key Findings</h2>
+    <ul>
+      <li>Remote <strong>sc.exe create</strong> installs a service.</li>
+      <li>ImagePath written to Services registry key.</li>
+      <li>Payload staged under <strong>C:\ProgramData\svc\</strong>.</li>
+      <li>Service start triggers payload execution.</li>
+      <li>High-confidence detection via event correlation.</li>
+    </ul>
+
+    <a class="btn-solid" href="../../Projects/windows-service-remote-creation/README.md">Series README</a>
+  </div>
+
+  <div class="card">
+    <h2>Project Snapshot</h2>
+    <div class="kv">
+      <div class="k">Scenario</div>
+      <div class="v">Remote service creation → persistence → payload execution → IR → validation</div>
+
+      <div class="k">Telemetry</div>
+      <div class="v">Security + Sysmon EID 1 / 11 / 13</div>
+
+      <div class="k">Goal</div>
+      <div class="v">Explainable correlated detection</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Evidence Gallery</h2>
+  <div class="grid2">
+
+    <figure>
+      <img src="../../Projects/windows-service-remote-creation/evidence/screenshots/02-Executable-Installer.png">
+      <figcaption>sc.exe create TelemetrySvc — service creation.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="../../Projects/windows-service-remote-creation/evidence/screenshots/03-Registry-Modification.png">
+      <figcaption>Registry ImagePath modification.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="../../Projects/windows-service-remote-creation/evidence/screenshots/04-Service-TelemetrySvc-Installed.png">
+      <figcaption>Security log confirming service installation.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="../../Projects/windows-service-remote-creation/evidence/screenshots/07-updater-exe-executed.png">
+      <figcaption>Payload execution from ProgramData.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  © Bobo Nikolov — EchoPurple
+</footer>
+
+</body>
+</html>

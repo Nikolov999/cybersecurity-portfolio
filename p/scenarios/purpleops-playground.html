@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PurpleOps Playground — EchoPurple</title>
+  <meta name="description" content="Isolated attacker ↔ victim purple-team lab: recon, initial access, execution, persistence, privilege escalation, with Wazuh + Wireshark defender play-by-play." />
+  <style>
+    :root{
+      --bg0:#07040d;
+      --bg1:#0b0614;
+      --bg2:#100a1e;
+
+      --stroke:rgba(255,255,255,0.10);
+      --stroke2:rgba(255,255,255,0.14);
+
+      --text:#f5f1ff;
+      --muted:rgba(245,241,255,0.72);
+
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
+
+      --radius:18px;
+      --header-h: 98px;
+
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img,video{max-width:100%;height:auto}
+
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      line-height:1.65;
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+    }
+
+    body::before{
+      content:"";
+      position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      opacity:.07;
+      mix-blend-mode:overlay;
+    }
+
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px;
+      min-height:var(--header-h);
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25)),
+        radial-gradient(900px 160px at 20% 40%, rgba(255,255,255,0.08), transparent 55%);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    header::after{
+      content:"";
+      position:absolute;left:0;right:0;bottom:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
+
+    .brand{display:flex; gap:16px; align-items:center; position:relative; z-index:1}
+    .logo{
+      height:calc(var(--header-h) - 10px);
+      display:flex; align-items:center; justify-content:center;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      border-radius:0;
+      overflow:visible;
+    }
+    .logo img{
+      height:100%;
+      width:auto;
+      object-fit:contain;
+      object-position:left center;
+      display:block;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
+    }
+
+    .subtitle{color:rgba(255,255,255,0.78);font-size:13px}
+
+    nav{display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1}
+    .btn{
+      background:transparent; border:none; color:#fff; text-decoration:none;
+      font-size:14px; font-weight:700; line-height:1; opacity:.9;
+      transition:opacity .2s ease, transform .2s ease;
+      padding:0;
+      letter-spacing:.2px;
+    }
+    .btn:hover, .btn:focus-visible{opacity:1; transform:translateY(-1px)}
+
+    .menu-toggle{
+      display:none;
+      background:rgba(0,0,0,0.20);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.22);
+      padding:10px 12px; border-radius:12px; font-size:18px; cursor:pointer;
+      box-shadow:0 10px 20px rgba(0,0,0,0.30);
+    }
+
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      padding:calc(var(--header-h) + 16px) 40px 32px;
+      position:relative;
+      z-index:1;
+    }
+
+    .section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .section:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow);
+      border-color:rgba(255,255,255,0.14);
+    }
+
+    h1{font-size:28px;letter-spacing:.2px;margin-bottom:6px}
+    h2{font-size:18px;letter-spacing:.2px;margin-bottom:10px}
+    h3{font-size:15px;letter-spacing:.2px;margin-bottom:8px}
+    p{color:var(--muted)}
+    strong{color:var(--text)}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .pillbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .pill{
+      background:rgba(34,211,238,0.08);
+      border:1px solid rgba(34,211,238,0.18);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(245,241,255,0.88);
+      box-shadow:0 8px 18px rgba(0,0,0,0.22);
+      white-space:nowrap;
+    }
+    .pill.primary{
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.75));
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+    }
+
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      margin:14px 0 0;
+      opacity:.9;
+    }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 170px 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .k{color:rgba(245,241,255,0.86);font-weight:800;font-size:13px}
+    .v{color:var(--muted);font-size:13px}
+
+    ul{margin-top:10px;padding-left:18px;color:var(--muted)}
+    li{margin:7px 0}
+
+    a.link{
+      color:rgba(245,241,255,0.95);
+      text-decoration:none;
+      font-weight:800;
+      position:relative;
+    }
+    a.link::after{
+      content:"";
+      position:absolute;left:0;right:0;bottom:-3px;height:2px;border-radius:2px;
+      background:linear-gradient(90deg, var(--p2), var(--p1), rgba(34,211,238,0.7));
+      transform:scaleX(0);
+      transform-origin:left center;
+      transition:transform .22s ease;
+      opacity:.9;
+    }
+    a.link:hover::after,a.link:focus-visible::after{transform:scaleX(1)}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+
+    .btn-solid{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.78));
+      box-shadow:0 14px 26px rgba(0,0,0,0.34);
+      transition:transform .18s ease, filter .18s ease;
+    }
+    .btn-solid:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+    .btn-ghost{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+      color:rgba(245,241,255,0.95);
+      background:rgba(0,0,0,0.14);
+      box-shadow:0 14px 26px rgba(0,0,0,0.24);
+      transition:transform .18s ease, background .18s ease;
+    }
+    .btn-ghost:hover{transform:translateY(-1px);background:rgba(0,0,0,0.20)}
+
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+
+    figure{
+      margin:0;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(0,0,0,0.18);
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+    figure img{display:block;width:100%;height:auto}
+    figcaption{
+      padding:10px 12px;
+      font-size:12px;
+      color:rgba(245,241,255,0.80);
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    footer{
+      text-align:center;
+      color:rgba(255,255,255,0.78);
+      font-size:13px;
+      padding:22px 18px;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88) 45%, rgba(34,211,238,0.20)),
+        radial-gradient(900px 160px at 50% 0%, rgba(255,255,255,0.10), transparent 60%);
+      border-top:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 -10px 36px rgba(0,0,0,0.45);
+      position:relative;
+      z-index:1;
+    }
+    footer::before{
+      content:"";
+      position:absolute;left:0;right:0;top:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
+
+    @media(max-width:1050px){
+      .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:900px){
+      main{padding:calc(var(--header-h) + 14px) 20px 24px}
+      .section{padding:20px}
+      .hero{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      :root{ --header-h: 82px; }
+      header{padding:0 16px; flex-wrap:wrap; gap:12px}
+      .menu-toggle{display:block}
+      nav{width:100%; display:none; flex-direction:column; gap:10px; padding-top:8px;}
+      body.nav-open nav{display:flex}
+      .logo{height:calc(var(--header-h) - 10px)}
+      .logo img{height:100%;width:auto}
+      main{padding:calc(var(--header-h) + 12px) 16px 18px}
+      .kv{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+      <div class="subtitle">PurpleOps Playground</div>
+    </div>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav>
+      <a class="btn" href="../../projects.html">← Projects</a>
+      <a class="btn" href="../../index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="card">
+        <h1>PurpleOps Playground</h1>
+        <p>
+          An isolated attacker ↔ victim lab built to simulate a full single-host attack chain and document it as a defender play-by-play.
+          Telemetry is captured through Wazuh alerts and Wireshark evidence, with reproducibility ensured via snapshots and an internal-only network.
+        </p>
+
+        <div class="pillbar">
+          <span class="pill primary">Purple Team</span>
+          <span class="pill">Blue Team Play-by-Play</span>
+          <span class="pill">Wazuh</span>
+          <span class="pill">Wireshark</span>
+          <span class="pill">Internal Labnet</span>
+          <span class="pill">MITRE ATT&CK</span>
+          <span class="pill">Linux Telemetry</span>
+          <span class="pill">Reverse Shell</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin-top:14px">Objectives</h2>
+        <ul>
+          <li>Run a controlled attack chain end-to-end (recon → initial access → execution → persistence → privilege escalation).</li>
+          <li>Capture high-signal defender artifacts (alerts + network traces) and document detection gaps.</li>
+          <li>Keep the lab isolated and repeatable with snapshots and an internal network.</li>
+        </ul>
+
+        <div class="actions">
+          <a class="btn-solid" href="../../Projects/PurpleOps-playground/Report/PurpleOps-Playground_Report.pdf" target="_blank" rel="noopener">Open Report (PDF)</a>
+          <a class="btn-ghost" href="../../Projects/PurpleOps-playground/README.md" target="_blank" rel="noopener">Project README</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lab Snapshot</h2>
+        <div class="kv">
+          <div class="k">Attacker</div><div class="v">Kali Linux — 10.10.10.10 (labnet)</div>
+          <div class="k">Victim</div><div class="v">Ubuntu Desktop — 10.10.10.20 (labnet)</div>
+          <div class="k">Network</div><div class="v">Isolated internal network (no internet)</div>
+          <div class="k">Defender Stack</div><div class="v">Wazuh agent + Wireshark captures on victim</div>
+          <div class="k">Reproducibility</div><div class="v">Snapshots taken before testing and reverted after</div>
+          <div class="k">Scope</div><div class="v">Single-host chain with proof-of-visibility for key tactics</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin-top:14px">Repository</h2>
+        <div class="actions">
+          <a class="btn-solid" href="https://github.com/Nikolov999/cybersecurity-portfolio/tree/main/Projects/PurpleOps-playground" target="_blank" rel="noopener">View Repository</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Attack Chain</h2>
+
+      <div class="grid3" style="margin-top:14px">
+        <div class="card">
+          <h3>Reconnaissance</h3>
+          <p class="muted">
+            Active scanning against the victim to identify reachable services and confirm target responsiveness in the internal labnet.
+          </p>
+          <ul>
+            <li>MITRE: T1595</li>
+            <li>Evidence: scanning artifacts in Wazuh and Wireshark</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Initial Access</h3>
+          <p class="muted">
+            Payload retrieval over HTTP and operator-driven execution flow, captured as network and host artifacts.
+          </p>
+          <ul>
+            <li>MITRE: T1204 (User Execution)</li>
+            <li>Evidence: file download observed in Wireshark</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Execution</h3>
+          <p class="muted">
+            Remote session established, followed by observable malicious behaviors including brute-force and injection attempts.
+          </p>
+          <ul>
+            <li>MITRE: T1059</li>
+            <li>Evidence: Wazuh alerts + network traces</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Persistence</h3>
+          <p class="muted">
+            Backdoor user creation and privilege modifications designed to survive session loss and enable repeated access.
+          </p>
+          <ul>
+            <li>MITRE: T1136</li>
+            <li>Evidence: user creation, sudoers modifications, password changes</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Privilege Escalation</h3>
+          <p class="muted">
+            Escalation path validated with clear post-escalation confirmation. Telemetry focused on suspicious sudo flows.
+          </p>
+          <ul>
+            <li>MITRE: T1548</li>
+            <li>Evidence: escalation alerting and traceability</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Detection Gaps</h3>
+          <p class="muted">
+            Notes on what was not visible by default, where correlation was required, and what additional instrumentation would improve coverage.
+          </p>
+          <ul>
+            <li>Example: file-creation logging gaps in /tmp flows</li>
+            <li>Action: add stronger host instrumentation where required</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Evidence Gallery</h2>
+      <p class="muted">Selected screenshots from Wazuh and Wireshark captures produced during the lab execution.</p>
+
+      <div class="grid3" style="margin-top:14px">
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wazuh/2025-11-06_22-28-54_Nmap_Wazuh.png" alt="Recon: Nmap detected in Wazuh" />
+          <figcaption>Recon: Nmap activity surfaced in Wazuh telemetry.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Recon/Wireshark/2025-11-06_22-29-00_Nmap-Recon_Wireshark.png" alt="Recon: Nmap seen in Wireshark" />
+          <figcaption>Recon: network scanning behavior visible in Wireshark.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Initial-Access/Wireshark/2025-11-06_22-40-55_Initial-Access_Unknown-File-Downloaded.png" alt="Initial access: payload download" />
+          <figcaption>Initial Access: unknown file download captured in Wireshark.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wazuh/2025-11-06_22-40-13_Attempted-Brute-Force-Attack_Wazuh_Overview.png" alt="Execution: brute force surfaced in Wazuh" />
+          <figcaption>Execution: brute-force behavior surfaced via Wazuh alerting.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wireshark/2025-11-06_22-40-13_Attempted-Brute-Force-Attack_Wireshark_Overview.png" alt="Execution: brute force visible in Wireshark" />
+          <figcaption>Execution: brute-force traffic patterns visible in Wireshark.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Execution/Wireshark/2025-11-06_22-41-59_File-Executed.png" alt="Execution: file executed" />
+          <figcaption>Execution: file execution flow visible as network/host artifacts.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-45-07_Persistance_Backdoor-User-Created.png" alt="Persistence: backdoor user created" />
+          <figcaption>Persistence: backdoor user creation captured in Wazuh.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Persistance/Wazuh/2025-11-06_22-50-19_Persistance_Added-New-User-Sudoers.png" alt="Persistence: sudoers modified" />
+          <figcaption>Persistence: sudoers modifications surfaced in Wazuh telemetry.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../Projects/PurpleOps-playground/Screenshots/Screenshots/Privilege-Escalation/Wazuh/2025-11-06_22-43-06_Privilege-Escalation.png" alt="Privilege escalation evidence" />
+          <figcaption>Privilege Escalation: elevation behavior captured through defender telemetry.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© Bobo Nikolov</p>
+  </footer>
+
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    if(menuBtn){
+      menuBtn.addEventListener('click', ()=>{
+        const open = document.body.classList.toggle('nav-open');
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+  </script>
+</body>
+</html>
