@@ -51,6 +51,24 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
+    /* Logo placement like index.html */
+    .brand{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
+    .logo{
+      height:calc(var(--header-h) - 10px);
+      display:flex;align-items:center;justify-content:center;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      border-radius:0;
+    }
+    .logo img{
+      height:100%;
+      width:auto;
+      object-fit:contain;
+      display:block;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
+    }
+
     nav{display:flex;gap:18px;flex-wrap:wrap}
     .btn{
       background:transparent;border:none;color:#fff;text-decoration:none;
@@ -143,6 +161,37 @@
     }
     #content a{ color:rgba(245,241,255,0.92); }
 
+    /* Markdown tables */
+    #content table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin:14px 0;
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(0,0,0,0.14);
+      box-shadow:0 10px 24px rgba(0,0,0,0.22);
+    }
+    #content thead th{
+      text-align:left;
+      font-size:13px;
+      color:rgba(245,241,255,0.92);
+      background:linear-gradient(90deg, rgba(109,40,217,0.30), rgba(168,85,247,0.18), rgba(34,211,238,0.10));
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      padding:10px 12px;
+      vertical-align:top;
+    }
+    #content tbody td{
+      font-size:13px;
+      color:rgba(245,241,255,0.78);
+      padding:10px 12px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      vertical-align:top;
+    }
+    #content tbody tr:last-child td{border-bottom:none}
+    #content tbody tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+
     .err{
       margin-top:10px;
       padding:14px;
@@ -161,7 +210,9 @@
 </head>
 <body>
   <header>
-    <div style="font-weight:900;letter-spacing:.2px">EchoPurple</div>
+    <div class="brand">
+      <div class="logo"><img src="Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+    </div>
     <nav>
       <a class="btn" href="index.html">Home</a>
       <a class="btn" href="projects.html">Projects</a>
@@ -192,7 +243,21 @@
         .replaceAll("'","&#039;");
     }
 
-    // Minimal markdown renderer (enough for portfolio docs)
+    function splitTableRow(line){
+      let s = String(line || '').trim();
+      if(s.startsWith('|')) s = s.slice(1);
+      if(s.endsWith('|')) s = s.slice(0, -1);
+      return s.split('|').map(c => c.trim());
+    }
+
+    function isTableSeparator(line){
+      // Accept: |---|---|, ---|---, |:---|---:| etc
+      const cells = splitTableRow(line);
+      if(cells.length < 2) return false;
+      return cells.every(c => /^:?-{3,}:?$/.test(c));
+    }
+
+    // Minimal markdown renderer (enough for portfolio docs) + tables
     function mdToHtml(md){
       const lines = String(md || '').replaceAll('\r\n','\n').split('\n');
       let html = '';
@@ -255,6 +320,49 @@
         if(bq){
           flushList();
           html += `<blockquote>${inline(bq[1] || '')}</blockquote>`;
+          continue;
+        }
+
+        // tables (GFM-style)
+        // header row must contain '|' and next row must be a separator
+        if(line.includes('|') && (i + 1) < lines.length && isTableSeparator(lines[i + 1])){
+          flushList();
+
+          const headers = splitTableRow(line);
+          const aligns = splitTableRow(lines[i + 1]).map(c => {
+            const left = c.startsWith(':');
+            const right = c.endsWith(':');
+            if(left && right) return 'center';
+            if(right) return 'right';
+            if(left) return 'left';
+            return 'left';
+          });
+
+          let thead = '<thead><tr>';
+          for(let c=0;c<headers.length;c++){
+            const a = aligns[c] || 'left';
+            thead += `<th style="text-align:${a}">${inline(headers[c])}</th>`;
+          }
+          thead += '</tr></thead>';
+
+          let tbody = '<tbody>';
+          i += 2; // skip header + separator; move to first body row
+          for(; i < lines.length; i++){
+            const rowLine = lines[i];
+            if(!rowLine.includes('|') || /^\s*$/.test(rowLine)) { i--; break; }
+
+            const cells = splitTableRow(rowLine);
+            tbody += '<tr>';
+            for(let c=0;c<headers.length;c++){
+              const a = aligns[c] || 'left';
+              const val = (cells[c] == null) ? '' : cells[c];
+              tbody += `<td style="text-align:${a}">${inline(val)}</td>`;
+            }
+            tbody += '</tr>';
+          }
+          tbody += '</tbody>';
+
+          html += `<table>${thead}${tbody}</table>`;
           continue;
         }
 
