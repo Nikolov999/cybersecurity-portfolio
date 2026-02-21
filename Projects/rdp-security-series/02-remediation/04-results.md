@@ -1,42 +1,20 @@
-\# RDP Security Series – 02 Remediation  
+# RDP Security Series – 02 Remediation  
 
-\## 04 – Results
-
-
-
-\### Testing Methodology
+## 04 – Results
 
 
 
-\- Brute-force simulation from attacker VM
-
-\- Credential spray attempt
-
-\- Privileged RDP session test
-
-\- Log validation via EchoSentinel
+### Testing Methodology
 
 
 
----
+- Brute-force simulation from attacker VM
 
+- Credential spray attempt
 
+- Privileged RDP session test
 
-\## Observed Improvements
-
-
-
-\### Before Hardening
-
-
-
-\- Unlimited login attempts
-
-\- Broad firewall exposure
-
-\- Default admin account active
-
-\- No account lockout enforcement
+- Log validation via EchoSentinel
 
 
 
@@ -44,7 +22,29 @@
 
 
 
-\### After Hardening
+## Observed Improvements
+
+
+
+### Before Hardening
+
+
+
+- Unlimited login attempts
+
+- Broad firewall exposure
+
+- Default admin account active
+
+- No account lockout enforcement
+
+
+
+---
+
+
+
+### After Hardening
 
 
 
@@ -68,37 +68,19 @@
 
 
 
-\## Detection Improvements (EchoSentinel)
+## Detection Improvements (EchoSentinel)
 
 
 
 Events Observed:
 
-\- 4625 spikes during brute force
+- 4625 spikes during brute force
 
-\- 4740 (Account Lockout)
+- 4740 (Account Lockout)
 
-\- 1149 connection attempts
+- 1149 connection attempts
 
-\- Correlated source IP detection
-
-
-
----
-
-
-
-\## Risk Reduction
-
-
-
-\- Brute force viability reduced
-
-\- Credential spray effectiveness minimized
-
-\- Lateral movement contained
-
-\- Logging visibility improved
+- Correlated source IP detection
 
 
 
@@ -106,7 +88,25 @@ Events Observed:
 
 
 
-\## Overall Assessment
+## Risk Reduction
+
+
+
+- Brute force viability reduced
+
+- Credential spray effectiveness minimized
+
+- Lateral movement contained
+
+- Logging visibility improved
+
+
+
+---
+
+
+
+## Overall Assessment
 
 
 
@@ -119,4 +119,5 @@ Detection Capability: Enhanced
 
 
 Hardening successful.
+
 
