@@ -346,7 +346,7 @@
 
         <div class="actions">
           <a class="btn-solid" href="../../Projects/attack-defend-lab/Report/Attack-Defend-Lab_Attack-Report.pdf" target="_blank" rel="noopener">Open Attack Report (PDF)</a>
-          <a class="btn-ghost" href="../../Projects/attack-defend-lab/README.md" target="_blank" rel="noopener">Project README</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/attack-defend-lab/README.md" target="_blank" rel="noopener">Project README</a>
         </div>
       </div>
 
@@ -467,33 +467,23 @@
         </figure>
 
         <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_13-54-PM_Handler_Execution.png" alt="Handler execution evidence" />
-          <figcaption>Execution: handler running for callback.</figcaption>
+          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_15-48-34_Handler_Waiting_Execution.png" alt="Handler waiting evidence" />
+          <figcaption>Execution: handler waiting for callback.</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_15-47-45_Exploit_Run_And_Waiting_Initial_Access_Execution.png" alt="Exploit running evidence" />
-          <figcaption>Execution: exploit run and waiting.</figcaption>
+          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_15-53-50_Successful_Session_Execution.png" alt="Successful session evidence" />
+          <figcaption>Execution: successful session confirmed.</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_15-55-57_Victim-Ran-Payload_Initial-Access-Execution.png" alt="Victim ran payload evidence" />
-          <figcaption>Execution: victim ran payload.</figcaption>
+          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_16-07-00_Creating_Persistence_User_Persistence.png" alt="Persistence user evidence" />
+          <figcaption>Persistence: new user created for continued access.</figcaption>
         </figure>
 
         <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_15-58-31_Successful-Execution_Initial-Access-Execution.png" alt="Successful execution evidence" />
-          <figcaption>Execution: successful session confirmation.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_17-59-25_Persistance-New-User_Persistance.png" alt="Persistence evidence" />
-          <figcaption>Persistence: new user created.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_18-49-33_Privilege-Escalation.png" alt="Privilege escalation evidence" />
-          <figcaption>Privilege Escalation: elevation proof.</figcaption>
+          <img src="../../Projects/attack-defend-lab/Evidence/2025-10-27_16-22-00_Privilege_Escalation_Proof.png" alt="Privilege escalation evidence" />
+          <figcaption>Privilege escalation: escalation proof captured.</figcaption>
         </figure>
       </div>
     </section>
@@ -511,6 +501,14 @@
         menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
     }
+
+    // Hide broken images automatically
+    document.querySelectorAll('figure img').forEach(img=>{
+      img.addEventListener('error', ()=>{
+        const fig = img.closest('figure');
+        if(fig) fig.style.display = 'none';
+      });
+    });
   </script>
 </body>
 </html>
