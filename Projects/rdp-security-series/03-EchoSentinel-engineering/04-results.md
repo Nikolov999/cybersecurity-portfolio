@@ -1,6 +1,4 @@
-\# RDP Security Series – 03 Detection Engineering  
-
-\## 04 – Results
+# Results
 
 
 
@@ -8,19 +6,19 @@
 
 
 
-\# Test Scenarios
+# Test Scenarios
 
 
 
-1\. RDP brute force from Kali
+1. RDP brute force from Kali
 
-2\. Password spray across multiple users
+2. Password spray across multiple users
 
-3\. Successful login after brute
+3. Successful login after brute
 
-4\. Admin lateral RDP
+4. Admin lateral RDP
 
-5\. First-seen workstation
+5. First-seen workstation
 
 
 
@@ -28,7 +26,7 @@
 
 
 
-\# Detection Coverage
+# Detection Coverage
 
 
 
@@ -52,7 +50,7 @@
 
 
 
-\# Scoring Impact
+# Scoring Impact
 
 
 
@@ -60,13 +58,13 @@ Risk computation leveraged:
 
 
 
-\- severity\_to\_score() :contentReference\[oaicite:23]{index=23}
+- severity_to_score() :contentReference[oaicite:23]{index=23}
 
-\- compute\_risk() :contentReference\[oaicite:24]{index=24}
+- compute_risk() :contentReference[oaicite:24]{index=24}
 
 
 
-High-value server compromise generated risk\_score > 85.
+High-value server compromise generated risk_score > 85.
 
 
 
@@ -74,7 +72,7 @@ High-value server compromise generated risk\_score > 85.
 
 
 
-\# Overall Outcome
+# Overall Outcome
 
 
 
@@ -91,6 +89,7 @@ EchoSentinel successfully validated against controlled RDP attack simulation.
 
 
 ---
+
 
 
 
