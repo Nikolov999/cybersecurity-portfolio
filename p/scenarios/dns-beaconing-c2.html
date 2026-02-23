@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DNS Beaconing Detection (C2) — EchoPurple</title>
+<meta name="description" content="DNS beaconing simulation → EchoSentinel detection engineering → frequency analysis → validation. Evidence screenshots included."/>
+
+<style>
+/* ---------- SAME STYLE SYSTEM AS TEMPLATE ---------- */
+:root{
+--bg0:#07040d;--bg1:#0b0614;--bg2:#100a1e;
+--stroke:rgba(255,255,255,0.10);
+--text:#f5f1ff;--muted:rgba(245,241,255,0.72);
+--p1:#6d28d9;--p2:#a855f7;--p3:#22d3ee;
+--radius:18px;--header-h:98px;
+--shadow:0 18px 60px rgba(0,0,0,.55);
+--shadow-soft:0 10px 30px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Inter,system-ui;
+color:var(--text);
+background:
+radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,.24), transparent 60%),
+radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,.14), transparent 55%),
+linear-gradient(180deg,var(--bg0),var(--bg1) 30%,var(--bg2));
+min-height:100vh;display:flex;flex-direction:column;
+}
+
+header{
+position:fixed;top:0;left:0;right:0;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 40px;min-height:var(--header-h);
+background:linear-gradient(90deg,rgba(109,40,217,.95),rgba(168,85,247,.9) 45%,rgba(34,211,238,.25));
+border-bottom:1px solid rgba(255,255,255,.12);
+box-shadow:0 12px 40px rgba(0,0,0,.55);
+z-index:1000;
+}
+
+.logo img{height:70px}
+.subtitle{font-size:13px;color:rgba(255,255,255,.8)}
+nav a{color:#fff;text-decoration:none;font-weight:700;margin-left:20px}
+
+main{
+padding:calc(var(--header-h) + 20px) 40px 40px;
+display:flex;flex-direction:column;gap:20px;flex:1;
+}
+
+.section{
+background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+border-radius:var(--radius);
+padding:26px;
+border:1px solid var(--stroke);
+box-shadow:var(--shadow-soft);
+}
+
+h1{font-size:28px;margin-bottom:8px}
+h2{font-size:20px;margin-bottom:12px}
+p{color:var(--muted);line-height:1.7}
+ul{margin-top:10px;padding-left:18px;color:var(--muted)}
+li{margin:6px 0}
+
+.pillbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pill{
+padding:6px 12px;border-radius:999px;
+font-size:12px;
+background:rgba(34,211,238,.08);
+border:1px solid rgba(34,211,238,.18);
+}
+.pill.primary{
+background:linear-gradient(135deg,var(--p1),var(--p2));
+border:1px solid rgba(255,255,255,.15);
+color:#fff;
+}
+
+.actions{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+padding:10px 14px;
+border-radius:12px;
+text-decoration:none;
+font-weight:800;
+font-size:13px;
+border:1px solid rgba(255,255,255,.14);
+}
+.btn-solid{
+background:linear-gradient(135deg,var(--p1),var(--p2));
+color:#fff;
+}
+.btn-ghost{
+background:rgba(0,0,0,.2);
+color:var(--text);
+}
+
+/* ---------- Gallery ---------- */
+
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+figure{cursor:pointer;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+figure img{width:100%;display:block}
+figcaption{padding:8px;font-size:12px;color:rgba(245,241,255,.85);background:rgba(0,0,0,.2)}
+
+.lightbox{
+position:fixed;inset:0;
+background:rgba(0,0,0,.85);
+display:flex;align-items:center;justify-content:center;
+opacity:0;pointer-events:none;
+transition:.25s;
+z-index:2000;
+}
+.lightbox.active{opacity:1;pointer-events:auto}
+.lightbox img{
+max-width:90%;
+max-height:90%;
+border-radius:14px;
+box-shadow:0 0 60px rgba(0,0,0,.8);
+}
+
+footer{
+text-align:center;
+padding:20px;
+background:linear-gradient(90deg,var(--p1),var(--p2) 45%,rgba(34,211,238,.25));
+color:#fff;
+}
+
+@media(max-width:900px){
+.gallery{grid-template-columns:1fr}
+main{padding:calc(var(--header-h) + 20px) 20px 40px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div>
+<div class="logo"><img src="../../Logo/Portfolio_Logo.png.png"></div>
+<div class="subtitle">DNS Beaconing Detection (C2)</div>
+</div>
+<nav>
+<a href="../../projects.html">← Projects</a>
+<a href="../../index.html">Home</a>
+</nav>
+</header>
+
+<main>
+
+<section class="section">
+<h1>DNS Beaconing & Suspicious Resolution Analysis</h1>
+<p>
+Controlled DNS beacon simulation performed against <strong>echopentest.com</strong> using repeated resolution cycles.
+Telemetry collected via Microsoft-Windows-DNS-Client/Operational and ingested into EchoSentinel.
+Detection engineered around frequency anomalies and repetitive query patterns.
+</p>
+
+<div class="pillbar">
+<span class="pill primary">Purple Team</span>
+<span class="pill">DNS C2 Simulation</span>
+<span class="pill">Event IDs 3006/3008/3010/3018</span>
+<span class="pill">EchoSentinel</span>
+<span class="pill">Frequency Analysis</span>
+<span class="pill">Detection Engineering</span>
+<span class="pill">MITRE T1071.004</span>
+</div>
+
+<div class="actions">
+<a class="btn btn-solid" href="../../viewer.html?src=Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/README.md">Project README</a>
+<a class="btn btn-ghost" href="../../viewer.html?src=Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/detection-analysis.md">Detection Analysis</a>
+<a class="btn btn-ghost" href="../../viewer.html?src=Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/lab-commands.md">Lab Commands</a>
+</div>
+</section>
+
+<section class="section">
+<h2>Detection Logic</h2>
+<ul>
+<li>Repeated DNS queries at 5–10 second intervals</li>
+<li>Single domain repeatedly resolved</li>
+<li>Consistent DNS server (8.8.8.8)</li>
+<li>Mixed success / failure events</li>
+<li>Stable periodic timestamps</li>
+</ul>
+<p>
+This behavior strongly resembles DNS-based command-and-control beaconing,
+where malware maintains periodic communication through DNS resolution.
+</p>
+</section>
+
+<section class="section">
+<h2>Evidence Gallery</h2>
+
+<div class="gallery">
+
+<figure>
+<img src="../../Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/evidence/01-3006-beacon-table.png">
+<figcaption>EventID 3006 – Repeated DNS queries (Beacon Pattern)</figcaption>
+</figure>
+
+<figure>
+<img src="../../Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/evidence/02-3008-success-detail.png">
+<figcaption>EventID 3008 – Successful Resolution</figcaption>
+</figure>
+
+<figure>
+<img src="../../Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/evidence/03-3010-failure-detail.png">
+<figcaption>EventID 3010 – Query Failure</figcaption>
+</figure>
+
+<figure>
+<img src="../../Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/evidence/04-3018-timeout-detail.png">
+<figcaption>EventID 3018 – Timeout / Status Variation</figcaption>
+</figure>
+
+<figure>
+<img src="../../Projects/DNS-Beaconing-Suspicious-Resolution-Analysis-C2/evidence/05-interval-pattern.png">
+<figcaption>Timestamp Interval Consistency (~10s)</figcaption>
+</figure>
+
+</div>
+</section>
+
+</main>
+
+<footer>
+© Bobo Nikolov
+</footer>
+
+<div class="lightbox" id="lightbox">
+<img src="">
+</div>
+
+<script>
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+
+document.querySelectorAll('.gallery img').forEach(img=>{
+img.addEventListener('click',()=>{
+lightbox.classList.add('active');
+lightboxImg.src = img.src;
+});
+});
+
+lightbox.addEventListener('click',()=>lightbox.classList.remove('active'));
+document.addEventListener('keydown',e=>{
+if(e.key === "Escape") lightbox.classList.remove('active');
+});
+
+// Hide broken images
+document.querySelectorAll('.gallery img').forEach(img=>{
+img.onerror = ()=> img.closest('figure').style.display="none";
+});
+</script>
+
+</body>
+</html>
