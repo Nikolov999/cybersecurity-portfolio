@@ -223,6 +223,12 @@
     </section>
 
     <section class="section">
+      <h2>Data Exfiltration Series</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Scenario-style projects: simulate + detect + document.</p>
+      <div id="exfiltrationList" class="list"></div>
+    </section>
+
+    <section class="section">
       <h2>Tools</h2>
       <p style="color:var(--muted);font-size:13px;margin-top:6px">Security tooling projects (apps, automation, platforms).</p>
       <div id="toolList" class="list"></div>
@@ -314,6 +320,16 @@
         summary:"Multi-VM lab environment used for repeatable purple-team experiments.",
         href:"p/scenarios/purpleops-playground.html"
       }
+    ];
+
+    const exfiltration = [
+      {
+        title:"Pre-Exfiltration Initial Access, Staging and Commpression",
+        status:"Listed",
+        tags:["WinRM","Windows Events","EchoSentinel","exfiltration"],
+        summary:"Pre-Exfiltration Initial Access, Staging and Commpression.",
+        href:"p/exfiltration/pre-exfiltration.html"
+      },
     ];
 
     const tools = [
@@ -433,6 +449,7 @@
 
     function render(){
       document.getElementById('scenarioList').innerHTML = scenarios.map(itemHTML).join('');
+      document.getElementById('exfiltrationList').innerHTML = exfiltration.map(itemHTML).join('');
       document.getElementById('toolList').innerHTML = tools.map(itemHTML).join('');
       document.getElementById('packList').innerHTML = packs.map(itemHTML).join('');   // NEW
       document.getElementById('otherList').innerHTML = others.map(itemHTML).join('');
