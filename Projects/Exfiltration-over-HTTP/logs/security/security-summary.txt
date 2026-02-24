@@ -1,0 +1,19 @@
+EventID: 4688
+New Process Created
+
+Account:
+LAB-WIN-CLIENT\vagrant
+
+Token Elevation:
+%%1936
+%%1938
+
+Privileged Object Access:
+SeTakeOwnershipPrivilege
+
+Registry Target:
+\REGISTRY\MACHINE\SYSTEM\ControlSet001\Services\WinSock2\Parameters
+
+Successful Logon:
+Logon Type: 3
+Source Address: 192.168.1.13

