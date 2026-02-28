@@ -1,0 +1,89 @@
+{
+  "hunt": {
+    "id": "6d587fce387838_19ca092062d",
+    "name": "Hunt 1",
+    "q": "event_id:4624 OR event_id:4672 OR event_id:4719 OR event_id:4688 OR event_id:4689 OR event_id:7036 OR event_id:7040 OR event_id:5007 OR event_id:5001 OR event_id:1",
+    "compiled": "event_id:4624 OR event_id:4672 OR event_id:4719 OR event_id:4688 OR event_id:4689 OR event_id:7036 OR event_id:7040 OR event_id:5007 OR event_id:5001 OR event_id:1",
+    "from": "2026-02-21T11:12:54.230Z",
+    "to": "2026-02-28T11:12:54.230Z"
+  },
+  "selected": [
+    {
+      "id": 1974,
+      "timestamp": "2026-02-28T10:27:54",
+      "hostname": "lab-win-client",
+      "event_id": 1,
+      "username": null,
+      "source_ip": null,
+      "channel": "System",
+      "record_id": 3596,
+      "raw": "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-FilterManager' Guid='{f3c5e28e-63f6-49c7-a204-e48a1bc4b09d}'/><EventID>1</EventID><Version>0</Version><Level>4</Level><Task>0</Task><Opcode>0</Opcode><Keywords>0x8000000000000000</Keywords><TimeCreated SystemTime='2026-02-28T10:27:54.5532235Z'/><EventRecordID>3596</EventRecordID><Correlation/><Execution ProcessID='4' ThreadID='7032'/><Channel>System</Channel><Computer>lab-win-client</Computer><Security UserID='S-1-5-18'/></System><EventData><Data Name='FinalStatus'>0x0</Data><Data Name='DeviceVersionMajor'>0</Data><Data Name='DeviceVersionMinor'>0</Data><Data Name='DeviceNameLength'>9</Data><Data Name='DeviceName'>SysmonDrv</Data><Data Name='DeviceTime'>2024-07-22T15:29:55.0000000Z</Data></EventData></Event>"
+    },
+    {
+      "id": 1849,
+      "timestamp": "2026-02-28T10:26:49",
+      "hostname": "lab-win-client",
+      "event_id": 5001,
+      "username": null,
+      "source_ip": null,
+      "channel": "Microsoft-Windows-Windows Defender/Operational",
+      "record_id": 1155,
+      "raw": "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-Windows Defender' Guid='{11cd958a-c507-4ef3-b3f2-5fd9dfbd2c78}'/><EventID>5001</EventID><Version>0</Version><Level>4</Level><Task>0</Task><Opcode>0</Opcode><Keywords>0x8000000000000000</Keywords><TimeCreated SystemTime='2026-02-28T10:26:49.8283243Z'/><EventRecordID>1155</EventRecordID><Correlation/><Execution ProcessID='3284' ThreadID='8188'/><Channel>Microsoft-Windows-Windows Defender/Operational</Channel><Computer>lab-win-client</Computer><Security UserID='S-1-5-18'/></System><EventData><Data Name='Product Name'>Microsoft Defender Antivirus</Data><Data Name='Product Version'>4.18.26010.5</Data></EventData></Event>"
+    },
+    {
+      "id": 1796,
+      "timestamp": "2026-02-28T10:26:13",
+      "hostname": "lab-win-client",
+      "event_id": 4719,
+      "username": "vagrant",
+      "source_ip": null,
+      "channel": "Security",
+      "record_id": 59682,
+      "raw": "System audit policy was changed.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-21-1649468141-1962353099-2465532493-1000\r\n\tAccount Name:\t\tvagrant\r\n\tAccount Domain:\t\tLAB-WIN-CLIENT\r\n\tLogon ID:\t\t0x325a76\r\n\r\nAudit Policy Change:\r\n\tCategory:\t\t%%8272\r\n\tSubcategory:\t\t%%12288\r\n\tSubcategory GUID:\t{0cce9210-69ae-11d9-bed3-505054503030}\r\n\tChanges:\t\t%%8448\r\n\n\n---\nStringInserts:\nS-1-5-21-1649468141-1962353099-2465532493-1000\nvagrant\nLAB-WIN-CLIENT\n0x325a76\n%%8272\n%%12288\n{0cce9210-69ae-11d9-bed3-505054503030}\n%%8448\n10248\n12103423998558724"
+    },
+    {
+      "id": 1609,
+      "timestamp": "2026-02-28T10:25:13",
+      "hostname": "lab-win-client",
+      "event_id": 5007,
+      "username": null,
+      "source_ip": null,
+      "channel": "Microsoft-Windows-Windows Defender/Operational",
+      "record_id": 1154,
+      "raw": "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-Windows Defender' Guid='{11cd958a-c507-4ef3-b3f2-5fd9dfbd2c78}'/><EventID>5007</EventID><Version>0</Version><Level>4</Level><Task>0</Task><Opcode>0</Opcode><Keywords>0x8000000000000000</Keywords><TimeCreated SystemTime='2026-02-28T10:25:13.9719226Z'/><EventRecordID>1154</EventRecordID><Correlation/><Execution ProcessID='3284' ThreadID='5332'/><Channel>Microsoft-Windows-Windows Defender/Operational</Channel><Computer>lab-win-client</Computer><Security UserID='S-1-5-18'/></System><EventData><Data Name='Product Name'>Microsoft Defender Antivirus</Data><Data Name='Product Version'>4.18.26010.5</Data><Data Name='Old Value'>HKLM\\SOFTWARE\\Microsoft\\Windows Defender\\CoreService\\WdConfigHash = 0x90C8C35</Data><Data Name='New Value'>HKLM\\SOFTWARE\\Microsoft\\Windows Defender\\CoreService\\WdConfigHash = 0x7C124880</Data></EventData></Event>"
+    },
+    {
+      "id": 1191,
+      "timestamp": "2026-02-28T10:23:51",
+      "hostname": "lab-win-client",
+      "event_id": 4688,
+      "username": "LAB-WIN-CLIENT$",
+      "source_ip": null,
+      "channel": "Security",
+      "record_id": 58974,
+      "raw": "A new process has been created.\r\n\r\nCreator Subject:\r\n\tSecurity ID:\t\tS-1-5-18\r\n\tAccount Name:\t\tLAB-WIN-CLIENT$\r\n\tAccount Domain:\t\tWORKGROUP\r\n\tLogon ID:\t\t0x3e7\r\n\r\nTarget Subject:\r\n\tSecurity ID:\t\tS-1-5-21-1649468141-1962353099-2465532493-1000\r\n\tAccount Name:\t\tvagrant\r\n\tAccount Domain:\t\tLAB-WIN-CLIENT\r\n\tLogon ID:\t\t0x76954\r\n\r\nProcess Information:\r\n\tNew Process ID:\t\t0x2b7c\r\n\tNew Process Name:\tC\r\n\tToken Elevation Type:\t%%1938\r\n\tMandatory Label:\t\tS-1-16-4096\r\n\tCreator Process ID:\t0x334\r\n\tCreator Process Name:\tC\r\n\tProcess Command Line:\t\r\n\r\nToken Elevation Type indicates the type of token that was assigned to the new process in accordance with User Account Control policy.\r\n\r\nType 1 is a full token with no privileges removed or groups disabled.  A full token is only used if User Account Control is disabled or if the user is the built-in Administrator account or a service account.\r\n\r\nType 2 is an elevated token with no privileges removed or groups disabled.  An elevated token is used when User Account Control is enabled and the user chooses to start the program using Run as administrator.  An elevated token is also used when an application is configured to always require administrative privilege or to always require maximum privilege, and the user is a member of the Administrators group.\r\n\r\nType 3 is a limited token with administrative privileges removed and administrative groups disabled.  The limited token is used when User Account Control is enabled, the application does not require administrative privilege, and the user does not choose to start the program using Run as administrator.\r\n\n\n---\nStringInserts:\nS-1-5-18\nLAB-WIN-CLIENT$\nWORKGROUP\n0x3e7\n0x2b7c\nC:\\Windows\\System32\\backgroundTaskHost.exe\n%%1938\n0x334\n\nS-1-5-21-1649468141-1962353099-2465532493-1000\nvagrant\nLAB-WIN-CLIENT\n0x76954\nC:\\Windows\\System32\\svchost.exe\nS-1-16-4096"
+    },
+    {
+      "id": 1178,
+      "timestamp": "2026-02-28T10:23:51",
+      "hostname": "lab-win-client",
+      "event_id": 4624,
+      "username": "S-1-0-0",
+      "source_ip": "192.168.1.13",
+      "channel": "Security",
+      "record_id": 58960,
+      "raw": "An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tVirtual Account:\t\t%%1843\r\n\tElevated Token:\t\t%%1842\r\n\r\nImpersonation Level:\t\t%%1833\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1649468141-1962353099-2465532493-1000\r\n\tAccount Name:\t\tvagrant\r\n\tAccount Domain:\t\tLAB-WIN-CLIENT\r\n\tLogon ID:\t\t0x3a1cd3\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x0\r\n\tProcess Name:\t\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\t-\r\n\tSource Network Address:\t192.168.1.13\r\n\tSource Port:\t\t54226\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tNtLmSsp \r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\tNTLM V2\r\n\tKey Length:\t\t128\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.\r\n\n\n---\nStringInserts:\nS-1-0-0\n-\n-\n0x0\nS-1-5-21-1649468141-1962353099-2465532493-1000\nvagrant\nLAB-WIN-CLIENT\n0x3a1cd3\n3\nNtLmSsp \nNTLM\n-\n{00000000-0000-0000-0000-000000000000}\n-\nNTLM V2\n128\n0x0\n-\n192.168.1.13\n54226\n%%1833\n-\n-\n-\n%%1843\n0x0\n%%1842"
+    },
+    {
+      "id": 1177,
+      "timestamp": "2026-02-28T10:23:51",
+      "hostname": "lab-win-client",
+      "event_id": 4672,
+      "username": "vagrant",
+      "source_ip": null,
+      "channel": "Security",
+      "record_id": 58959,
+      "raw": "Special privileges assigned to new logon.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-21-1649468141-1962353099-2465532493-1000\r\n\tAccount Name:\t\tvagrant\r\n\tAccount Domain:\t\tLAB-WIN-CLIENT\r\n\tLogon ID:\t\t0x3a1cd3\r\n\r\nPrivileges:\t\tSeSecurityPrivilege\r\n\t\t\tSeBackupPrivilege\r\n\t\t\tSeRestorePrivilege\r\n\t\t\tSeTakeOwnershipPrivilege\r\n\t\t\tSeDebugPrivilege\r\n\t\t\tSeSystemEnvironmentPrivilege\r\n\t\t\tSeLoadDriverPrivilege\r\n\t\t\tSeImpersonatePrivilege\r\n\t\t\tSeDelegateSessionUserImpersonatePrivilege\r\n\n\n---\nStringInserts:\nS-1-5-21-1649468141-1962353099-2465532493-1000\nvagrant\nLAB-WIN-CLIENT\n0x3a1cd3\nSeSecurityPrivilege\r\n\t\t\tSeBackupPrivilege\r\n\t\t\tSeRestorePrivilege\r\n\t\t\tSeTakeOwnershipPrivilege\r\n\t\t\tSeDebugPrivilege\r\n\t\t\tSeSystemEnvironmentPrivilege\r\n\t\t\tSeLoadDriverPrivilege\r\n\t\t\tSeImpersonatePrivilege\r\n\t\t\tSeDelegateSessionUserImpersonatePrivilege"
+    }
+  ]
+}
