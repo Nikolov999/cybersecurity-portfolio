@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Coordinated Defense Evasion & Log Tampering — EchoPurple</title>
+  <meta name="description" content="Defender-view validation of coordinated defense impairment via WinRM remote access: privileged logon context (4624/4672), Microsoft Defender tampering (5007/5001), audit policy changes (4719), and Sysmon driver unload (System 1). Evidence screenshots and hunt JSON included." />
+
+  <style>
+    :root{
+      --bg0:#07040d; --bg1:#0b0614; --bg2:#100a1e;
+      --stroke:rgba(255,255,255,0.10); --stroke2:rgba(255,255,255,0.14);
+      --text:#f5f1ff; --muted:rgba(245,241,255,0.72);
+      --p1:#6d28d9; --p2:#a855f7; --p3:#22d3ee;
+      --radius:18px; --header-h: 98px;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img{max-width:100%;height:auto}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      min-height:100vh; display:flex; flex-direction:column;
+      overflow-x:hidden; line-height:1.65;
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+    }
+    body::before{
+      content:""; position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      opacity:.07; mix-blend-mode:overlay;
+    }
+
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px; min-height:var(--header-h); color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25)),
+        radial-gradient(900px 160px at 20% 40%, rgba(255,255,255,0.08), transparent 55%);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    header::after{
+      content:""; position:absolute;left:0;right:0;bottom:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
+    .brand{display:flex; gap:16px; align-items:center; position:relative; z-index:1}
+    .logo{
+      height:calc(var(--header-h) - 10px);
+      display:flex; align-items:center; justify-content:center;
+      background:transparent; border:none; box-shadow:none; border-radius:0; overflow:visible;
+    }
+    .logo img{
+      height:100%; width:auto; object-fit:contain; object-position:left center;
+      display:block; filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
+    }
+    nav{display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1}
+    .btn{
+      background:transparent; border:none; color:#fff; text-decoration:none;
+      font-size:14px; font-weight:700; line-height:1;
+      opacity:.9; transition:opacity .2s ease, transform .2s ease;
+      padding:0; letter-spacing:.2px;
+    }
+    .btn:hover, .btn:focus-visible{opacity:1; transform:translateY(-1px)}
+    .menu-toggle{
+      display:none;
+      background:rgba(0,0,0,0.20); color:#fff;
+      border:1px solid rgba(255,255,255,0.22);
+      padding:10px 12px; border-radius:12px;
+      font-size:18px; cursor:pointer;
+      box-shadow:0 10px 20px rgba(0,0,0,0.30);
+    }
+
+    main{
+      flex:1; display:flex; flex-direction:column; gap:18px;
+      padding:calc(var(--header-h) + 16px) 40px 32px;
+      position:relative; z-index:1;
+    }
+    .section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .section:hover{ transform:translateY(-2px); box-shadow:var(--shadow); border-color:rgba(255,255,255,0.14); }
+    h1{font-size:28px;letter-spacing:.2px;margin-bottom:6px}
+    h2{font-size:18px;letter-spacing:.2px;margin-bottom:10px}
+    h3{font-size:15px;letter-spacing:.2px;margin-bottom:8px}
+    p{color:var(--muted)}
+    strong{color:var(--text)}
+
+    .hero{ display:grid; grid-template-columns: 1.25fr .75fr; gap:14px; align-items:stretch; }
+    .card{
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .pillbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .pill{
+      background:rgba(34,211,238,0.08);
+      border:1px solid rgba(34,211,238,0.18);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(245,241,255,0.88);
+      box-shadow:0 8px 18px rgba(0,0,0,0.22);
+      white-space:nowrap;
+    }
+    .pill.primary{
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.75));
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+    }
+
+    .divider{ height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent); margin:14px 0 0; opacity:.9; }
+
+    .kv{ display:grid; grid-template-columns: 170px 1fr; gap:10px; margin-top:10px; }
+    .k{color:rgba(245,241,255,0.86);font-weight:800;font-size:13px}
+    .v{color:var(--muted);font-size:13px}
+
+    ul{margin-top:10px;padding-left:18px;color:var(--muted)}
+    li{margin:7px 0}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+
+    .btn-solid{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none; font-weight:900; font-size:13px;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.78));
+      box-shadow:0 14px 26px rgba(0,0,0,0.34);
+      transition:transform .18s ease, filter .18s ease;
+    }
+    .btn-solid:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+    .btn-ghost{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none; font-weight:900; font-size:13px;
+      color:rgba(245,241,255,0.95);
+      background:rgba(0,0,0,0.14);
+      box-shadow:0 14px 26px rgba(0,0,0,0.24);
+      transition:transform .18s ease, background .18s ease;
+    }
+    .btn-ghost:hover{transform:translateY(-1px);background:rgba(0,0,0,0.20)}
+
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+
+    figure{
+      margin:0;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(0,0,0,0.18);
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+      cursor: zoom-in;
+    }
+    figure img{display:block;width:100%;height:auto}
+    figcaption{
+      padding:10px 12px;
+      font-size:12px;
+      color:rgba(245,241,255,0.80);
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      cursor: default;
+    }
+
+    .note{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.16);
+      color:rgba(245,241,255,0.84);
+      font-size:13px;
+    }
+
+    footer{
+      text-align:center;
+      color:rgba(255,255,255,0.78);
+      font-size:13px;
+      padding:22px 18px;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88) 45%, rgba(34,211,238,0.20)),
+        radial-gradient(900px 160px at 50% 0%, rgba(255,255,255,0.10), transparent 60%);
+      border-top:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 -10px 36px rgba(0,0,0,0.45);
+      position:relative;
+      z-index:1;
+    }
+    footer::before{
+      content:"";
+      position:absolute;left:0;right:0;top:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; z-index:2000;
+      display:none; align-items:center; justify-content:center;
+      padding:26px;
+      background:rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      cursor: zoom-out;
+    }
+    body.lightbox-open{overflow:hidden}
+    .lightbox.open{display:flex}
+    .lightbox .frame{
+      width:min(1200px, 96vw);
+      max-height:92vh;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.18);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.65);
+      cursor: default;
+    }
+    .lightbox img{
+      display:block;
+      width:100%; height:auto; max-height:92vh;
+      object-fit:contain;
+      background:#000;
+    }
+    .lightbox .bar{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:linear-gradient(90deg, rgba(109,40,217,0.45), rgba(168,85,247,0.30) 45%, rgba(34,211,238,0.12));
+      color:rgba(245,241,255,0.90);
+      font-size:12px;
+    }
+    .lightbox .x{
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.18);
+      color:#fff;
+      padding:6px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+    }
+
+    @media(max-width:1050px){
+      .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:900px){
+      main{padding:calc(var(--header-h) + 14px) 20px 24px}
+      .section{padding:20px}
+      .hero{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      :root{ --header-h: 82px; }
+      header{padding:0 16px; flex-wrap:wrap; gap:12px}
+      .menu-toggle{display:block}
+      nav{width:100%; display:none; flex-direction:column; gap:10px; padding-top:8px;}
+      body.nav-open nav{display:flex}
+      .logo{height:calc(var(--header-h) - 10px)}
+      .logo img{height:100%;width:auto}
+      main{padding:calc(var(--header-h) + 12px) 16px 18px}
+      .kv{grid-template-columns:1fr}
+      .lightbox{padding:14px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+  </div>
+
+  <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+
+  <nav>
+    <a class="btn" href="../../projects.html">← Projects</a>
+    <a class="btn" href="../../index.html">Home</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section hero">
+    <div class="card">
+      <h1>Defense Evasion & Log Tampering Case Study</h1>
+      <p>
+        A defender-view validation of coordinated security impairment following <strong>WinRM remote access</strong>.
+        The evidence focuses on correlating authentication context with subsequent changes that reduce visibility:
+        <strong>Microsoft Defender tampering</strong>, <strong>audit policy modification</strong>, and <strong>Sysmon driver unload</strong>.
+        Supporting artifacts include an <strong>EchoSentinel hunt JSON</strong> capturing the full event set.
+      </p>
+
+      <div class="pillbar">
+        <span class="pill primary">Purple Team</span>
+        <span class="pill">Defense Evasion</span>
+        <span class="pill">WinRM</span>
+        <span class="pill">Security: 4624</span>
+        <span class="pill">Security: 4672</span>
+        <span class="pill">Defender: 5007</span>
+        <span class="pill">Defender: 5001</span>
+        <span class="pill">Security: 4719</span>
+        <span class="pill">System: 1</span>
+        <span class="pill">Rule: ES-DE-001</span>
+        <span class="pill">EchoSentinel</span>
+        <span class="pill">MITRE ATT&CK</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 style="margin-top:14px">Key Findings</h2>
+      <ul>
+        <li><strong>Remote access anchor:</strong> Security <strong>4624</strong> with network logon context followed immediately by <strong>4672</strong> privileged token assignment.</li>
+        <li><strong>Defender impairment:</strong> Defender operational events show a configuration change (<strong>5007</strong>) and a protection state change (<strong>5001</strong>).</li>
+        <li><strong>Audit reduction:</strong> Security <strong>4719</strong> indicates system audit policy modification (visibility downgrade risk).</li>
+        <li><strong>Telemetry degradation:</strong> System event <strong>1</strong> captures Sysmon driver unload (coverage loss during the execution window).</li>
+        <li><strong>Behavioral correlation:</strong> ES-DE-001 validates that sequencing and proximity across these events is higher-signal than any single event.</li>
+      </ul>
+
+      <div class="actions">
+        <a class="btn-solid" href="../../viewer.html?src=Projects/Defense-Evasion/README.md">Project README</a>
+        <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/CASE_REPORT.md">Case Report</a>
+        <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/analysis/TIMELINE.md">Timeline</a>
+        <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/detection/ES-DE-001.md">Detection Rule</a>
+        <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/remediation/REMEDIATION.md">Remediation</a>
+        <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/evidence/Defense-Evasion-Hunt-json-file/Hunt_Defense-Evasion.json">Hunt JSON (All Events)</a>
+      </div>
+
+      <div class="note">
+        Repo paths used on this page: <strong>../../Projects/Defense-Evasion/</strong><br/>
+        Evidence gallery expects: <strong>../../Projects/Defense-Evasion/evidence/screenshots/</strong><br/>
+        Hunt JSON is served from: <strong>../../Projects/Defense-Evasion/evidence/Defense-Evasion-Hunt-json-file/</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Project Snapshot</h2>
+      <div class="kv">
+        <div class="k">Scenario</div><div class="v">WinRM remote access → privileged context → Defender tampering + audit policy changes → Sysmon driver unload → correlated detection</div>
+        <div class="k">Environment</div><div class="v">Windows host with Windows Security logging, Defender Operational logs, and Sysmon coverage</div>
+        <div class="k">Approach</div><div class="v">Anchor on 4624/4672 session context → align time-proximate impairment signals (5007/5001/4719/System 1)</div>
+        <div class="k">Signals</div><div class="v">Security 4624/4672, Defender 5007/5001, Security 4719, System 1 (SysmonDrv unload)</div>
+        <div class="k">Evidence</div><div class="v">Screenshots for each key event plus hunt JSON capturing the query and results</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 style="margin-top:14px">Deliverables</h2>
+      <ul>
+        <li>Case report documenting the coordinated impairment sequence</li>
+        <li>Timeline analysis mapping the event chain</li>
+        <li>ES-DE-001 behavioral correlation rule</li>
+        <li>Remediation guidance aligned to observed changes</li>
+        <li>Hunt JSON containing the full event set reference</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Labs</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3>Phase 00 — Overview</h3>
+        <p class="muted">
+          Scope and objectives: validate detection of coordinated defense impairment using sequencing and multi-source evidence.
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/README.md">Overview</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/CASE_REPORT.md">Case Report</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Phase 01 — Access Context</h3>
+        <p class="muted">
+          Confirm remote session establishment and privileged context assignment (authentication anchor for the chain).
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="#evidence">Logon Evidence</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/analysis/TIMELINE.md">Timeline</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Phase 02 — Defender Tampering Signals</h3>
+        <p class="muted">
+          Validate configuration and state change events in Defender Operational logs and align them to the session window.
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="#evidence">Defender Screens</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/evidence/Defense-Evasion-Hunt-json-file/Hunt_Defense-Evasion.json">Hunt JSON</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Phase 03 — Audit Policy Modification</h3>
+        <p class="muted">
+          Confirm Security 4719 audit policy change and treat it as a visibility-reduction indicator requiring escalation.
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="#evidence">4719 Evidence</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/detection/ES-DE-001.md">ES-DE-001</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Phase 04 — Sysmon Coverage Loss</h3>
+        <p class="muted">
+          Validate Sysmon driver unload (System 1) as telemetry degradation and correlate to the same execution burst.
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="#evidence">Sysmon Screen</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/analysis/TIMELINE.md">Sequence</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Phase 05 — Detection & Response Pack</h3>
+        <p class="muted">
+          Operationalize correlation with ES-DE-001 and map response steps to revert impairment and restore logging coverage.
+        </p>
+        <div class="actions">
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/detection/ES-DE-001.md">Detection Rule</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/remediation/REMEDIATION.md">Remediation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Detection Design</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>Signal Chain (High Confidence)</h3>
+        <p class="muted">
+          Confidence comes from temporal proximity and intent inference: authenticated privileged access followed by multiple independent visibility-reduction indicators.
+        </p>
+        <ul>
+          <li><strong>Security 4624</strong> — remote logon anchor (network logon)</li>
+          <li><strong>Security 4672</strong> — privileged token assignment (admin context)</li>
+          <li><strong>Defender 5007/5001</strong> — tamper/state change indicators</li>
+          <li><strong>Security 4719</strong> — audit policy modifications</li>
+          <li><strong>System 1</strong> — Sysmon driver unload (coverage loss)</li>
+        </ul>
+        <div class="actions">
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/detection/ES-DE-001.md">ES-DE-001 Logic</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/evidence/Defense-Evasion-Hunt-json-file/Hunt_Defense-Evasion.json">Hunt JSON</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>What To Alert On</h3>
+        <ul>
+          <li>Privileged remote session context (<strong>4624</strong> + <strong>4672</strong>) followed by impairment signals inside a tight time window</li>
+          <li>Defender configuration or state changes (<strong>5007</strong>, <strong>5001</strong>) that reduce protections or alter enforcement posture</li>
+          <li>Audit policy changes (<strong>4719</strong>) that affect event capture fidelity</li>
+          <li>Telemetry degradation (<strong>System 1</strong> SysmonDrv unload) with no approved change record</li>
+        </ul>
+        <div class="actions">
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/CASE_REPORT.md">Case Narrative</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Defense-Evasion/remediation/REMEDIATION.md">Response Steps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="evidence">
+    <h2>Evidence Gallery</h2>
+    <p class="muted">
+      Click any image to zoom. Click anywhere outside the image (or press ESC) to close.
+      Broken images are automatically hidden.
+    </p>
+
+    <div class="grid3" style="margin-top:14px">
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/01-WinRM-Logon.png" alt="WinRM logon context" />
+        <figcaption>01-WinRM-Logon.png — Remote logon evidence establishing the session anchor.</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/02-Process-Created.png" alt="Process created evidence" />
+        <figcaption>02-Process-Created.png — Process creation evidence aligned to the impairment window.</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/03-Privileges-Assigned.png" alt="Privileges assigned evidence" />
+        <figcaption>03-Privileges-Assigned.png — Privileged token assignment confirming elevated context.</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/04-5007-win-defender.png" alt="Defender configuration changed (5007)" />
+        <figcaption>04-5007-win-defender.png — Microsoft Defender configuration change indicator (Event ID 5007).</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/05-audit-change-security-4719.png" alt="Audit policy modified (4719)" />
+        <figcaption>05-audit-change-security-4719.png — Security audit policy modification (Event ID 4719).</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/06-5001-win-defender.png" alt="Defender state change (5001)" />
+        <figcaption>06-5001-win-defender.png — Microsoft Defender state change indicator (Event ID 5001).</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/07-silence-1-system.png" alt="Sysmon driver unload (System 1)" />
+        <figcaption>07-silence-1-system.png — Sysmon driver unload / telemetry degradation (System Event 1).</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/08-case-opened-echosentinel.png" alt="EchoSentinel case opened" />
+        <figcaption>08-case-opened-echosentinel.png — Case creation and triage workflow evidence in EchoSentinel.</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/09-evidence-and-reporting-echosentinel.png" alt="EchoSentinel evidence and reporting" />
+        <figcaption>09-evidence-and-reporting-echosentinel.png — Evidence collection and reporting view in EchoSentinel.</figcaption>
+      </figure>
+
+      <figure data-zoom>
+        <img src="../../Projects/Defense-Evasion/evidence/screenshots/10-remediation-tactic.png" alt="Remediation tactic" />
+        <figcaption>10-remediation-tactic.png — Remediation steps mapped to impairment signals.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© Bobo Nikolov</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="frame" role="dialog" aria-label="Image preview">
+    <img id="lightboxImg" alt="Expanded evidence" />
+    <div class="bar">
+      <div id="lightboxCap">Evidence</div>
+      <button class="x" id="lightboxClose" aria-label="Close">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const menuBtn = document.querySelector('.menu-toggle');
+  if(menuBtn){
+    menuBtn.addEventListener('click', ()=>{
+      const open = document.body.classList.toggle('nav-open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // Hide broken images automatically
+  document.querySelectorAll('figure img').forEach(img=>{
+    img.addEventListener('error', ()=>{
+      const fig = img.closest('figure');
+      if(fig) fig.style.display = 'none';
+    });
+  });
+
+  // Lightbox zoom (click image to expand, click outside / ESC to close)
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbCap = document.getElementById('lightboxCap');
+  const lbClose = document.getElementById('lightboxClose');
+
+  function openLightbox(src, cap){
+    lbImg.src = src;
+    lbCap.textContent = cap || "Evidence";
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeLightbox(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lightbox-open');
+    lbImg.src = "";
+  }
+
+  document.querySelectorAll('figure[data-zoom]').forEach(fig=>{
+    const img = fig.querySelector('img');
+    const cap = fig.querySelector('figcaption');
+    if(!img) return;
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openLightbox(img.getAttribute('src'), cap ? cap.textContent : "");
+    });
+  });
+
+  // Click outside image closes (clicking the dark overlay)
+  lb.addEventListener('click', (e)=>{
+    const frame = e.target.closest('.frame');
+    if(!frame) closeLightbox();
+  });
+
+  if(lbClose){
+    lbClose.addEventListener('click', (e)=>{
+      e.preventDefault();
+      closeLightbox();
+    });
+  }
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === "Escape" && lb.classList.contains('open')){
+      closeLightbox();
+    }
+  });
+</script>
+</body>
+</html>
