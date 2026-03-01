@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Active Directory Kerberoasting — EchoPurple</title>
+
+<style>
+/* ======= YOUR ORIGINAL STYLE SYSTEM (UNCHANGED) ======= */
+:root{
+  --bg0:#07040d;
+  --bg1:#0b0614;
+  --bg2:#100a1e;
+  --stroke:rgba(255,255,255,0.10);
+  --text:#f5f1ff;
+  --muted:rgba(245,241,255,0.72);
+  --p1:#6d28d9;
+  --p2:#a855f7;
+  --p3:#22d3ee;
+  --radius:18px;
+  --header-h:98px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Inter,system-ui;
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+    radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+    linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+}
+header{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;min-height:var(--header-h);
+  background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90));
+  border-bottom:1px solid rgba(255,255,255,0.12);
+}
+.btn-solid{
+  padding:10px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.14);
+  font-weight:900;font-size:13px;color:#fff;
+  background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.78));
+  cursor:pointer;
+}
+main{
+  padding:calc(var(--header-h) + 20px) 40px 40px;
+  display:flex;flex-direction:column;gap:24px;
+}
+.section{
+  background:rgba(255,255,255,0.05);
+  border-radius:var(--radius);
+  padding:24px;
+  border:1px solid var(--stroke);
+}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.card{background:rgba(0,0,0,0.2);padding:18px;border-radius:14px}
+h1{font-size:28px;margin-bottom:10px}
+h2{margin-bottom:10px}
+p{color:var(--muted);line-height:1.6}
+ul{margin-top:10px;padding-left:18px;color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+figure{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+figure img{width:100%;display:block}
+figcaption{padding:10px;font-size:12px;background:rgba(0,0,0,0.2)}
+footer{
+  text-align:center;
+  padding:20px;
+  background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88));
+}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="font-weight:900;font-size:18px;">Active Directory Kerberoasting</div>
+  <button class="btn-solid" id="toggleView">Switch to Defender View</button>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="section hero">
+  <div class="card">
+    <h1 id="pageTitle">Kerberoasting — Attacker Perspective</h1>
+    <p id="pageIntro">
+      Authenticated domain user leveraged Kerberos service ticket requests to extract TGS hashes 
+      for offline password cracking using Impacket and Hashcat.
+    </p>
+
+    <h2 style="margin-top:16px;">Execution Flow</h2>
+    <ul id="executionList">
+      <li>Enumerated SPN-enabled accounts using GetUserSPNs.</li>
+      <li>Requested service tickets (-request flag).</li>
+      <li>Extracted RC4 TGS hash (etype 23).</li>
+      <li>Cracked service account password offline (hashcat -m 13100).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Project Snapshot</h2>
+    <ul>
+      <li><strong>Domain:</strong> LAB.LOCAL</li>
+      <li><strong>Tooling:</strong> Impacket + Hashcat</li>
+      <li><strong>Primary Signal:</strong> Event ID 4769</li>
+      <li><strong>Encryption Abuse:</strong> RC4 (0x17)</li>
+      <li><strong>Detection Platform:</strong> EchoSentinel</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ANALYSIS -->
+<section class="section">
+  <h2 id="analysisTitle">Technical Breakdown (Attacker)</h2>
+  <ul id="analysisContent">
+    <li>Kerberos TGS-REP hash extracted without needing admin privileges.</li>
+    <li>Attack works because service accounts often use weak passwords.</li>
+    <li>No exploit required — abuse of legitimate Kerberos behavior.</li>
+    <li>Offline cracking avoids detection during password guessing.</li>
+  </ul>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section">
+  <h2 id="evidenceTitle">Attacker Evidence</h2>
+
+  <div class="grid3 attacker-view">
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/attack/attack-01.png">
+      <figcaption>SPN Enumeration (GetUserSPNs).</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/attack/attack-02.png">
+      <figcaption>TGS Request (-request).</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/attack/attack-03.png">
+      <figcaption>Hashcat cracking result (mode 13100).</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid3 defender-view" style="display:none;">
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/detection/detection-4769.png">
+      <figcaption>Event 4769 — Service Ticket Request.</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/detection/detection-rc4.png">
+      <figcaption>TicketEncryptionType 0x17 (RC4).</figcaption>
+    </figure>
+    <figure>
+      <img src="../../Projects/Active-Directory-Kerberoasting/screenshots/detection/detection-correlation.png">
+      <figcaption>4624 → 4768 → 4769 burst correlation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<footer>
+© Bobo Nikolov — EchoPurple
+</footer>
+
+<script>
+const toggleBtn = document.getElementById("toggleView");
+const attackerView = document.querySelector(".attacker-view");
+const defenderView = document.querySelector(".defender-view");
+const pageTitle = document.getElementById("pageTitle");
+const pageIntro = document.getElementById("pageIntro");
+const executionList = document.getElementById("executionList");
+const analysisTitle = document.getElementById("analysisTitle");
+const analysisContent = document.getElementById("analysisContent");
+const evidenceTitle = document.getElementById("evidenceTitle");
+
+let attackerMode = true;
+
+toggleBtn.addEventListener("click", () => {
+  attackerMode = !attackerMode;
+
+  if (!attackerMode) {
+    attackerView.style.display = "none";
+    defenderView.style.display = "grid";
+
+    pageTitle.textContent = "Kerberoasting — Defender Perspective";
+    pageIntro.textContent = "Detection engineering analysis of Kerberos service ticket abuse using Windows Security telemetry.";
+
+    executionList.innerHTML = `
+      <li>Collected Event ID 4769 from Domain Controller.</li>
+      <li>Detected RC4 encryption type (0x17).</li>
+      <li>Identified abnormal volume of SPN ticket requests.</li>
+      <li>Correlated 4624 → 4768 → 4769 sequence.</li>
+    `;
+
+    analysisTitle.textContent = "Detection Logic (Defender)";
+    analysisContent.innerHTML = `
+      <li>Primary indicator: 4769 with TicketEncryptionType 0x17.</li>
+      <li>Volume anomaly: multiple SPNs in short timeframe.</li>
+      <li>Source IP correlation across logon chain.</li>
+      <li>Exclude krbtgt service requests to reduce noise.</li>
+    `;
+
+    evidenceTitle.textContent = "Defender Evidence";
+    toggleBtn.textContent = "Switch to Attacker View";
+
+  } else {
+    attackerView.style.display = "grid";
+    defenderView.style.display = "none";
+
+    pageTitle.textContent = "Kerberoasting — Attacker Perspective";
+    pageIntro.textContent = "Authenticated domain user leveraged Kerberos service ticket requests to extract TGS hashes for offline cracking.";
+
+    executionList.innerHTML = `
+      <li>Enumerated SPN-enabled accounts using GetUserSPNs.</li>
+      <li>Requested service tickets (-request flag).</li>
+      <li>Extracted RC4 TGS hash (etype 23).</li>
+      <li>Cracked service account password offline (hashcat -m 13100).</li>
+    `;
+
+    analysisTitle.textContent = "Technical Breakdown (Attacker)";
+    analysisContent.innerHTML = `
+      <li>Kerberos TGS-REP hash extracted without admin privileges.</li>
+      <li>Weak service account passwords enable compromise.</li>
+      <li>Legitimate Kerberos behavior abused.</li>
+      <li>Offline cracking avoids live brute-force detection.</li>
+    `;
+
+    evidenceTitle.textContent = "Attacker Evidence";
+    toggleBtn.textContent = "Switch to Defender View";
+  }
+});
+</script>
+
+</body>
+</html>
