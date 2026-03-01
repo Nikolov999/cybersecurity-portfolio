@@ -108,6 +108,33 @@ footer{
 .lightbox.open{display:flex}
 .lightbox img{max-width:95vw;max-height:90vh}
 
+/* ===== Button reset: black buttons, no underline ===== */
+.actions a.btn-solid,
+.actions a.btn-ghost{
+  background:#000 !important;
+  border:1px solid rgba(255,255,255,0.18) !important;
+  box-shadow:none !important;
+  color:#fff !important;
+
+  text-decoration:none !important;
+  text-decoration-thickness:0 !important;
+  text-underline-offset:0 !important;
+
+  font-weight:800 !important;
+}
+
+.actions a.btn-solid:hover,
+.actions a.btn-ghost:hover{
+  transform:none !important;
+  filter:none !important;
+  background:#0a0a0a !important;
+}
+
+/* In case underline is coming from generic link styles */
+a, a:visited, a:hover, a:active{
+  text-decoration:none;
+}
+
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}
   .grid3{grid-template-columns:1fr}
