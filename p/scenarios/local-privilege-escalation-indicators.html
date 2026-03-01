@@ -1,350 +1,696 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Active Directory Kerberoasting — EchoPurple</title>
-<meta name="description" content="Active Directory Kerberoasting attack and detection engineering case study. Full attacker and defender perspectives with evidence screenshots." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Local Privilege Escalation Indicators — EchoPurple</title>
+  <meta name="description" content="Post-lateral movement privilege escalation indicators (behavior-focused): local admin group changes, elevated token issuance, privileged service/object activity. Evidence screenshots included." />
+  <style>
+    :root{
+      --bg0:#07040d;
+      --bg1:#0b0614;
+      --bg2:#100a1e;
 
-<style>
-:root{
-  --bg0:#07040d;
-  --bg1:#0b0614;
-  --bg2:#100a1e;
-  --stroke:rgba(255,255,255,0.10);
-  --stroke2:rgba(255,255,255,0.14);
-  --text:#f5f1ff;
-  --muted:rgba(245,241,255,0.72);
-  --p1:#6d28d9;
-  --p2:#a855f7;
-  --p3:#22d3ee;
-  --radius:18px;
-  --header-h:98px;
-  --shadow:0 18px 60px rgba(0,0,0,0.55);
-  --shadow-soft:0 10px 30px rgba(0,0,0,0.35);
-}
+      --stroke:rgba(255,255,255,0.10);
+      --stroke2:rgba(255,255,255,0.14);
 
-*{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word}
-img{max-width:100%;height:auto}
+      --text:#f5f1ff;
+      --muted:rgba(245,241,255,0.72);
 
-body{
-  font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto;
-  color:var(--text);
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  background:
-    radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
-    radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
-    radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
-    linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
-}
+      --p1:#6d28d9;
+      --p2:#a855f7;
+      --p3:#22d3ee;
 
-header{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;
-  min-height:var(--header-h);
-  background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25));
-  border-bottom:1px solid rgba(255,255,255,0.12);
-  box-shadow:0 12px 40px rgba(0,0,0,0.55);
-}
+      --radius:18px;
+      --header-h: 98px;
 
-.brand{display:flex;gap:16px;align-items:center}
-.logo{height:calc(var(--header-h) - 10px)}
-.logo img{height:100%;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(0,0,0,0.35))}
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+    }
 
-nav{display:flex;gap:16px}
-.btn{
-  background:transparent;border:none;color:#fff;text-decoration:none;
-  font-size:14px;font-weight:700;opacity:.9;
-}
-.btn:hover{opacity:1}
+    *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;overflow-wrap:anywhere}
+    img{max-width:100%;height:auto}
 
-.btn-solid{
-  padding:10px 12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.14);
-  font-weight:900;
-  font-size:13px;
-  color:#fff;
-  background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.78));
-  cursor:pointer;
-}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      line-height:1.65;
+      background:
+        radial-gradient(900px 520px at 16% -10%, rgba(168,85,247,0.24), transparent 60%),
+        radial-gradient(860px 520px at 88% 0%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(109,40,217,0.18), transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 30%, var(--bg2));
+    }
 
-main{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  padding:calc(var(--header-h) + 16px) 40px 32px;
-}
+    body::before{
+      content:"";
+      position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      opacity:.07;
+      mix-blend-mode:overlay;
+    }
 
-.section{
-  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-  border-radius:var(--radius);
-  padding:24px;
-  box-shadow:var(--shadow-soft);
-  border:1px solid var(--stroke);
-}
+    header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px;
+      min-height:var(--header-h);
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.90) 45%, rgba(34,211,238,0.25)),
+        radial-gradient(900px 160px at 20% 40%, rgba(255,255,255,0.08), transparent 55%);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 12px 40px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    header::after{
+      content:"";
+      position:absolute;left:0;right:0;bottom:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
 
-.hero{
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:14px;
-}
+    .brand{display:flex; gap:16px; align-items:center; position:relative; z-index:1}
+    .logo{
+      height:calc(var(--header-h) - 10px);
+      display:flex; align-items:center; justify-content:center;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      border-radius:0;
+      overflow:visible;
+    }
+    .logo img{
+      height:100%;
+      width:auto;
+      object-fit:contain;
+      object-position:left center;
+      display:block;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,0.35));
+    }
 
-.card{
-  background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:14px;
-  padding:16px;
-}
+    .subtitle{color:rgba(255,255,255,0.78);font-size:13px}
 
-h1{font-size:28px;margin-bottom:8px}
-h2{font-size:18px;margin-bottom:10px}
-h3{font-size:15px;margin-bottom:8px}
-p{color:var(--muted)}
-ul{margin-top:10px;padding-left:18px;color:var(--muted)}
-li{margin:6px 0}
+    nav{display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1}
+    .btn{
+      background:transparent; border:none; color:#fff; text-decoration:none;
+      font-size:14px; font-weight:700; line-height:1; opacity:.9;
+      transition:opacity .2s ease, transform .2s ease;
+      padding:0;
+      letter-spacing:.2px;
+    }
+    .btn:hover, .btn:focus-visible{opacity:1; transform:translateY(-1px)}
 
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .menu-toggle{
+      display:none;
+      background:rgba(0,0,0,0.20);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.22);
+      padding:10px 12px; border-radius:12px; font-size:18px; cursor:pointer;
+      box-shadow:0 10px 20px rgba(0,0,0,0.30);
+    }
 
-figure{
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.10);
-  background:rgba(0,0,0,0.18);
-  cursor:zoom-in;
-}
-figure img{display:block;width:100%}
-figcaption{
-  padding:10px 12px;
-  font-size:12px;
-  background:rgba(0,0,0,0.25);
-}
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      padding:calc(var(--header-h) + 16px) 40px 32px;
+      position:relative;
+      z-index:1;
+    }
 
-footer{
-  text-align:center;
-  padding:22px;
-  background:linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88) 45%, rgba(34,211,238,0.20));
-}
+    .section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--stroke);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .section:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow);
+      border-color:rgba(255,255,255,0.14);
+    }
 
-/* LIGHTBOX */
-.lightbox{
-  position:fixed;inset:0;z-index:2000;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0.75);
-}
-.lightbox.open{display:flex}
-.lightbox img{
-  max-width:95vw;
-  max-height:90vh;
-}
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-  .grid3{grid-template-columns:1fr}
-}
-</style>
+    h1{font-size:28px;letter-spacing:.2px;margin-bottom:6px}
+    h2{font-size:18px;letter-spacing:.2px;margin-bottom:10px}
+    h3{font-size:15px;letter-spacing:.2px;margin-bottom:8px}
+    p{color:var(--muted)}
+    strong{color:var(--text)}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .pillbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .pill{
+      background:rgba(34,211,238,0.08);
+      border:1px solid rgba(34,211,238,0.18);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(245,241,255,0.88);
+      box-shadow:0 8px 18px rgba(0,0,0,0.22);
+      white-space:nowrap;
+    }
+    .pill.primary{
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.75));
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+    }
+
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      margin:14px 0 0;
+      opacity:.9;
+    }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 170px 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .k{color:rgba(245,241,255,0.86);font-weight:800;font-size:13px}
+    .v{color:var(--muted);font-size:13px}
+
+    ul{margin-top:10px;padding-left:18px;color:var(--muted)}
+    li{margin:7px 0}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+
+    .btn-solid{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(109,40,217,0.95), rgba(168,85,247,0.78));
+      box-shadow:0 14px 26px rgba(0,0,0,0.34);
+      transition:transform .18s ease, filter .18s ease;
+    }
+    .btn-solid:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+    .btn-ghost{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+      color:rgba(245,241,255,0.95);
+      background:rgba(0,0,0,0.14);
+      box-shadow:0 14px 26px rgba(0,0,0,0.24);
+      transition:transform .18s ease, background .18s ease;
+    }
+    .btn-ghost:hover{transform:translateY(-1px);background:rgba(0,0,0,0.20)}
+
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+
+    figure{
+      margin:0;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(0,0,0,0.18);
+      box-shadow:0 10px 24px rgba(0,0,0,0.28);
+      cursor: zoom-in;
+    }
+    figure img{display:block;width:100%;height:auto}
+    figcaption{
+      padding:10px 12px;
+      font-size:12px;
+      color:rgba(245,241,255,0.80);
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      cursor: default;
+    }
+
+    .note{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.16);
+      color:rgba(245,241,255,0.84);
+      font-size:13px;
+    }
+
+    footer{
+      text-align:center;
+      color:rgba(255,255,255,0.78);
+      font-size:13px;
+      padding:22px 18px;
+      background:
+        linear-gradient(90deg, rgba(109,40,217,0.95), rgba(168,85,247,0.88) 45%, rgba(34,211,238,0.20)),
+        radial-gradient(900px 160px at 50% 0%, rgba(255,255,255,0.10), transparent 60%);
+      border-top:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 -10px 36px rgba(0,0,0,0.45);
+      position:relative;
+      z-index:1;
+    }
+    footer::before{
+      content:"";
+      position:absolute;left:0;right:0;top:-1px;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      opacity:.45;
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; z-index:2000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:26px;
+      background:rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      cursor: zoom-out;
+    }
+    body.lightbox-open{overflow:hidden}
+    .lightbox.open{display:flex}
+    .lightbox .frame{
+      width:min(1200px, 96vw);
+      max-height:92vh;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.18);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.65);
+      cursor: default;
+    }
+    .lightbox img{
+      display:block;
+      width:100%;
+      height:auto;
+      max-height:92vh;
+      object-fit:contain;
+      background:#000;
+    }
+    .lightbox .bar{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:linear-gradient(90deg, rgba(109,40,217,0.45), rgba(168,85,247,0.30) 45%, rgba(34,211,238,0.12));
+      color:rgba(245,241,255,0.90);
+      font-size:12px;
+    }
+    .lightbox .x{
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.18);
+      color:#fff;
+      padding:6px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+    }
+
+    @media(max-width:1050px){
+      .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:900px){
+      main{padding:calc(var(--header-h) + 14px) 20px 24px}
+      .section{padding:20px}
+      .hero{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      :root{ --header-h: 82px; }
+      header{padding:0 16px; flex-wrap:wrap; gap:12px}
+      .menu-toggle{display:block}
+      nav{width:100%; display:none; flex-direction:column; gap:10px; padding-top:8px;}
+      body.nav-open nav{display:flex}
+      .logo{height:calc(var(--header-h) - 10px)}
+      .logo img{height:100%;width:auto}
+      main{padding:calc(var(--header-h) + 12px) 16px 18px}
+      .kv{grid-template-columns:1fr}
+      .lightbox{padding:14px}
+    }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="brand">
+      <div class="logo"><img src="../../Logo/Portfolio_Logo.png.png" alt="Logo"></div>
+      <div class="subtitle">Local Privilege Escalation Indicators</div>
+    </div>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav>
+      <a class="btn" href="../../projects.html">← Projects</a>
+      <a class="btn" href="../../index.html">Home</a>
+    </nav>
+  </header>
 
-<header>
-  <div class="brand">
-    <div class="logo">
-      <img src="../../Logo/Portfolio_Logo.png.png" alt="Logo">
+  <main>
+    <section class="section hero">
+      <div class="card">
+        <h1>Local Privilege Escalation Indicators (Post-WinRM) Case Study</h1>
+        <p>
+          A behavior-focused continuation of the SMB credential abuse → WinRM lateral movement sequence.
+          This phase validates how privilege escalation looks from the defender side: local admin group changes,
+          elevated token issuance, and the immediate burst of privileged service/object activity that follows.
+        </p>
+
+        <div class="pillbar">
+          <span class="pill primary">Purple Team</span>
+          <span class="pill">Post-Lateral Movement</span>
+          <span class="pill">Privilege Consolidation</span>
+          <span class="pill">Local Administrators</span>
+          <span class="pill">4672 / 4673 / 4674</span>
+          <span class="pill">4732</span>
+          <span class="pill">EchoSentinel</span>
+          <span class="pill">Windows Security Log</span>
+          <span class="pill">MITRE ATT&CK</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin-top:14px">Key Findings</h2>
+        <ul>
+          <li><strong>What changed:</strong> a remote session pivoted into durable admin control by modifying the local Administrators group (<strong>4732</strong>).</li>
+          <li><strong>Proof of elevation:</strong> the next session received an elevated token (<strong>4672</strong>), confirming privilege materialization.</li>
+          <li><strong>Behavioral confirmation:</strong> privileged service calls (<strong>4673</strong>) and privileged object access (<strong>4674</strong>) appeared immediately after elevation.</li>
+          <li><strong>Analyst workflow:</strong> alert → pivot to raw event fields (Logon ID, subject, process) → correlate across the same session.</li>
+        </ul>
+
+        <div class="actions">
+          <a class="btn-solid" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/README.md">Series README</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/detections/detection-pack.md">Detection Pack</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/remediation/remediation.md">Remediation</a>
+          <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/docs/timeline.md">Timeline Notes</a>
+        </div>
+
+        <div class="note">
+          Repo paths used on this page:
+          <strong>../../Projects/Local-Privilege-Escalation-Indicators/</strong><br/>
+          Evidence gallery expects:
+          <strong>../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/</strong>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Project Snapshot</h2>
+        <div class="kv">
+          <div class="k">Scenario</div><div class="v">WinRM session → local admin group change → token refresh → privileged usage signals</div>
+          <div class="k">Environment</div><div class="v">EchoSentinel on host, Kali attacker, Windows target (Security logs ingested)</div>
+          <div class="k">Approach</div><div class="v">Baseline identity → escalate group → validate 4672 → enrich with 4673/4674</div>
+          <div class="k">Signals</div><div class="v">Security: 4732, 4672, 4673, 4674 + session correlation by Logon ID</div>
+          <div class="k">Evidence</div><div class="v">Kali WinRM proof + Windows Security events + EchoSentinel pivots</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin-top:14px">Deliverables</h2>
+        <ul>
+          <li>Threat model placement: post-lateral movement privilege consolidation</li>
+          <li>Attack execution: controlled admin group modification</li>
+          <li>Detection design: high-signal correlation and baselines</li>
+          <li>Evidence: events + process context + session correlation</li>
+          <li>Remediation: remove unauthorized admin + harden access</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Labs</h2>
+
+      <div class="grid3">
+        <div class="card">
+          <h3>Phase 00 — Overview</h3>
+          <p class="muted">
+            Places local privilege escalation indicators in a realistic intrusion flow (credential abuse → remote access → privilege consolidation).
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/README.md">Overview</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/docs/timeline.md">Timeline</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase 01 — Baseline</h3>
+          <p class="muted">
+            Capture pre-escalation identity, groups, and privileges from the remote session to establish “before” state.
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="#evidence">Baseline Screens</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/README.md">Method</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase 02 — Privilege Consolidation</h3>
+          <p class="muted">
+            Add the compromised account to local Administrators and validate the group membership change (defender expects 4732).
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/detections/detection-pack.md">Detection Logic</a>
+            <a class="btn-ghost" href="#evidence">Escalation Screens</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase 03 — Token Materialization</h3>
+          <p class="muted">
+            Re-logon to force token refresh. Confirm elevation via 4672, then pivot on Logon ID for context.
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="#evidence">4672 Evidence</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/docs/timeline.md">Correlation Notes</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase 04 — Post-Elevation Behavior</h3>
+          <p class="muted">
+            Validate active use of elevated rights: privileged service calls (4673) and privileged object access (4674).
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="#evidence">4673 / 4674 Evidence</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/detections/detection-pack.md">Enrichment</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase 05 — Remediation</h3>
+          <p class="muted">
+            Remove unauthorized local admin membership and keep alerting on future admin group changes.
+          </p>
+          <div class="actions">
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/remediation/remediation.md">Steps</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/README.md">Outcome</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Detection Design</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Signal Chain (High Confidence)</h3>
+          <p class="muted">
+            Each event type can occur during legitimate admin work. Confidence comes from chaining them after a remote session.
+          </p>
+          <ul>
+            <li><strong>4732</strong> — local Administrators membership change</li>
+            <li><strong>4672</strong> — elevated token issued after refresh</li>
+            <li><strong>4673</strong> — privileged service calls (token actively used)</li>
+            <li><strong>4674</strong> — privileged object access (protected objects touched)</li>
+          </ul>
+          <div class="actions">
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/detections/detection-pack.md">Detection Pack</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/docs/timeline.md">Logon ID Correlation</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Why This Works</h3>
+          <ul>
+            <li>Detects privilege consolidation without exploit signatures.</li>
+            <li>Anchors investigations on <strong>Logon ID</strong> to handle out-of-order timestamps.</li>
+            <li>Uses 4673/4674 as strong enrichment: “elevated token is being used.”</li>
+            <li>Remediation is measurable: group removal + recurrence alerting.</li>
+          </ul>
+          <div class="actions">
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/remediation/remediation.md">Hardening</a>
+            <a class="btn-ghost" href="../../viewer.html?src=Projects/Local-Privilege-Escalation-Indicators/README.md">Narrative</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <h2>Evidence Gallery</h2>
+      <p class="muted">
+        Click any image to zoom. Click anywhere outside the image (or press ESC) to close. Broken images are automatically hidden.
+      </p>
+
+      <div class="grid3" style="margin-top:14px">
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/01-winrm-logon.png" alt="WinRM session established" />
+          <figcaption>WinRM session established (post-lateral movement starting point).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/03-whoami.png" alt="Baseline identity" />
+          <figcaption>Baseline identity captured from remote session (whoami).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/05-whoami-groups.png" alt="Baseline groups" />
+          <figcaption>Baseline group memberships (whoami /groups).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/06-whoami-priv.png" alt="Baseline privileges" />
+          <figcaption>Baseline token privileges (whoami /priv).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/07-add-to-local-admins.png" alt="Add to local Administrators" />
+          <figcaption>Privilege consolidation: add compromised account to local Administrators.</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/08-verify-local-admins.png" alt="Verify local Administrators membership" />
+          <figcaption>Verification: local Administrators membership after change.</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/12-event-4673-privileged-service-called.png" alt="Event 4673 privileged service called" />
+          <figcaption>Security 4673: privileged service called (post-elevation service usage).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/11-event-4674-privileged-object-access.png" alt="Event 4674 privileged object access" />
+          <figcaption>Security 4674: privileged object access (protected object interaction).</figcaption>
+        </figure>
+
+        <figure data-zoom>
+          <img src="../../Projects/Local-Privilege-Escalation-Indicators/evidence/screenshots/99-extra-01.png" alt="Extra evidence" />
+          <figcaption>Additional evidence (auto-included if present in your screenshots folder).</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© Bobo Nikolov</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="frame" role="dialog" aria-label="Image preview">
+      <img id="lightboxImg" alt="Expanded evidence" />
+      <div class="bar">
+        <div id="lightboxCap">Evidence</div>
+        <button class="x" id="lightboxClose" aria-label="Close">Close</button>
+      </div>
     </div>
   </div>
 
-  <nav>
-    <a class="btn" href="../../projects.html">← Projects</a>
-    <a class="btn" href="../../index.html">Home</a>
-  </nav>
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    if(menuBtn){
+      menuBtn.addEventListener('click', ()=>{
+        const open = document.body.classList.toggle('nav-open');
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
 
-  <button class="btn-solid" id="toggleView">Switch to Defender View</button>
-</header>
+    // Hide broken images automatically
+    document.querySelectorAll('figure img').forEach(img=>{
+      img.addEventListener('error', ()=>{
+        const fig = img.closest('figure');
+        if(fig) fig.style.display = 'none';
+      });
+    });
 
-<main>
+    // Lightbox zoom (click image to expand, click outside / ESC to close)
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCap = document.getElementById('lightboxCap');
+    const lbClose = document.getElementById('lightboxClose');
 
-<section class="section hero">
-  <div class="card">
-    <h1 id="pageTitle">Active Directory Kerberoasting — Attacker Perspective</h1>
-    <p id="pageIntro">
-      Authenticated domain user abused Kerberos service ticket requests to extract TGS hashes
-      for offline cracking via Impacket and Hashcat.
-    </p>
+    function openLightbox(src, cap){
+      lbImg.src = src;
+      lbCap.textContent = cap || "Evidence";
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('lightbox-open');
+    }
 
-    <h2 style="margin-top:14px">Execution Flow</h2>
-    <ul id="flowList">
-      <li>Enumerated SPN-enabled accounts (GetUserSPNs).</li>
-      <li>Requested TGS tickets using -request flag.</li>
-      <li>Extracted RC4 (etype 23) service ticket hash.</li>
-      <li>Cracked password offline (hashcat mode 13100).</li>
-    </ul>
+    function closeLightbox(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('lightbox-open');
+      lbImg.src = "";
+    }
 
-    <div style="margin-top:16px;">
-      <a class="btn-solid" href="../../viewer.html?src=Projects/active-directory-kerberoasting/README.md">Project README</a>
-      <a class="btn-solid" href="../../viewer.html?src=Projects/active-directory-kerberoasting/attack/01-enumeration.md">Attack Steps</a>
-      <a class="btn-solid" href="../../viewer.html?src=Projects/active-directory-kerberoasting/detection/03-detection-logic.md">Detection Logic</a>
-    </div>
-  </div>
+    document.querySelectorAll('figure[data-zoom]').forEach(fig=>{
+      const img = fig.querySelector('img');
+      const cap = fig.querySelector('figcaption');
+      if(!img) return;
 
-  <div class="card">
-    <h2>Project Snapshot</h2>
-    <ul>
-      <li><strong>Domain:</strong> LAB.LOCAL</li>
-      <li><strong>Tooling:</strong> Impacket, Hashcat</li>
-      <li><strong>Primary Event:</strong> 4769</li>
-      <li><strong>Encryption Indicator:</strong> RC4 (0x17)</li>
-      <li><strong>Correlation:</strong> 4624 → 4768 → 4769</li>
-    </ul>
-  </div>
-</section>
+      img.style.cursor = 'zoom-in';
 
-<section class="section">
-  <h2 id="analysisTitle">Technical Breakdown (Attacker)</h2>
-  <ul id="analysisList">
-    <li>Kerberos allows any authenticated user to request service tickets.</li>
-    <li>TGS encrypted with service account NTLM hash.</li>
-    <li>Weak passwords enable offline cracking.</li>
-    <li>No exploit required — protocol abuse.</li>
-  </ul>
-</section>
+      img.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openLightbox(img.getAttribute('src'), cap ? cap.textContent : "");
+      });
+    });
 
-<section class="section">
-  <h2 id="evidenceTitle">Attacker Evidence</h2>
+    // Click outside image closes (clicking the dark overlay)
+    lb.addEventListener('click', (e)=>{
+      const frame = e.target.closest('.frame');
+      if(!frame) closeLightbox();
+    });
 
-  <div class="grid3 attacker-view">
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/attack/attack-01.png">
-      <figcaption>SPN Enumeration via GetUserSPNs.</figcaption>
-    </figure>
+    if(lbClose){
+      lbClose.addEventListener('click', (e)=>{
+        e.preventDefault();
+        closeLightbox();
+      });
+    }
 
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/attack/attack-02.png">
-      <figcaption>TGS Request (-request flag).</figcaption>
-    </figure>
-
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/attack/attack-03.png">
-      <figcaption>Hashcat cracking result (mode 13100).</figcaption>
-    </figure>
-  </div>
-
-  <div class="grid3 defender-view" style="display:none;">
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/detection/detection-4769.png">
-      <figcaption>Event 4769 — Service Ticket Request.</figcaption>
-    </figure>
-
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/detection/detection-rc4.png">
-      <figcaption>TicketEncryptionType 0x17 (RC4).</figcaption>
-    </figure>
-
-    <figure data-zoom>
-      <img src="../../Projects/active-directory-kerberoasting/screenshots/detection/detection-correlation.png">
-      <figcaption>Correlation: 4624 → 4768 → 4769 burst.</figcaption>
-    </figure>
-  </div>
-</section>
-
-</main>
-
-<footer>
-© Bobo Nikolov — EchoPurple
-</footer>
-
-<div class="lightbox" id="lightbox">
-  <img id="lightboxImg">
-</div>
-
-<script>
-const toggleBtn = document.getElementById("toggleView");
-const attackerView = document.querySelector(".attacker-view");
-const defenderView = document.querySelector(".defender-view");
-const pageTitle = document.getElementById("pageTitle");
-const pageIntro = document.getElementById("pageIntro");
-const flowList = document.getElementById("flowList");
-const analysisTitle = document.getElementById("analysisTitle");
-const analysisList = document.getElementById("analysisList");
-const evidenceTitle = document.getElementById("evidenceTitle");
-
-let attackerMode = true;
-
-toggleBtn.addEventListener("click", ()=>{
-  attackerMode = !attackerMode;
-
-  if(!attackerMode){
-    attackerView.style.display="none";
-    defenderView.style.display="grid";
-
-    pageTitle.textContent="Active Directory Kerberoasting — Defender Perspective";
-    pageIntro.textContent="Detection engineering analysis of Kerberos service ticket abuse using Windows Security telemetry.";
-
-    flowList.innerHTML=`
-      <li>Collected 4769 events from Domain Controller.</li>
-      <li>Filtered TicketEncryptionType = 0x17.</li>
-      <li>Identified abnormal SPN request volume.</li>
-      <li>Correlated 4624 → 4768 → 4769 chain.</li>
-    `;
-
-    analysisTitle.textContent="Detection Logic (Defender)";
-    analysisList.innerHTML=`
-      <li>Primary signal: 4769 + RC4 encryption.</li>
-      <li>Volume anomaly per user/IP.</li>
-      <li>Exclude krbtgt requests.</li>
-      <li>Correlate Logon ID for accuracy.</li>
-    `;
-
-    evidenceTitle.textContent="Defender Evidence";
-    toggleBtn.textContent="Switch to Attacker View";
-
-  } else {
-    attackerView.style.display="grid";
-    defenderView.style.display="none";
-
-    pageTitle.textContent="Active Directory Kerberoasting — Attacker Perspective";
-    pageIntro.textContent="Authenticated domain user abused Kerberos service ticket requests to extract TGS hashes for offline cracking.";
-
-    flowList.innerHTML=`
-      <li>Enumerated SPN-enabled accounts (GetUserSPNs).</li>
-      <li>Requested TGS tickets.</li>
-      <li>Extracted RC4 hash.</li>
-      <li>Cracked offline with hashcat.</li>
-    `;
-
-    analysisTitle.textContent="Technical Breakdown (Attacker)";
-    analysisList.innerHTML=`
-      <li>Kerberos TGS encrypted with service NTLM hash.</li>
-      <li>Offline cracking avoids live brute detection.</li>
-      <li>No exploit required.</li>
-      <li>Weak service passwords enable compromise.</li>
-    `;
-
-    evidenceTitle.textContent="Attacker Evidence";
-    toggleBtn.textContent="Switch to Defender View";
-  }
-});
-
-/* LIGHTBOX */
-const lb=document.getElementById("lightbox");
-const lbImg=document.getElementById("lightboxImg");
-
-document.querySelectorAll("figure[data-zoom]").forEach(fig=>{
-  const img=fig.querySelector("img");
-  img.addEventListener("click",()=>{
-    lbImg.src=img.src;
-    lb.classList.add("open");
-  });
-});
-
-lb.addEventListener("click",()=>lb.classList.remove("open"));
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape") lb.classList.remove("open");
-});
-</script>
-
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === "Escape" && lb.classList.contains('open')){
+        closeLightbox();
+      }
+    });
+  </script>
 </body>
 </html>
