@@ -75,6 +75,22 @@ main{
 .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
 .card{background:rgba(0,0,0,0.2);padding:16px;border-radius:14px}
 
+.view-switch{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:12px;
+}
+.view-switch .btn-solid{
+  background:#000;
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:none;
+}
+.view-switch .btn-solid:hover{
+  background:#0a0a0a;
+  transform:none;
+  filter:none;
+}
+  
 h1{font-size:28px;margin-bottom:8px}
 h2{font-size:18px;margin-bottom:10px}
 p{color:var(--muted)}
@@ -156,11 +172,14 @@ a, a:visited, a:hover, a:active{
     <a class="btn" href="../../index.html">Home</a>
   </nav>
 
-  <button class="btn-solid" id="toggleView">Switch to Defender View</button>
+ 
 </header>
 
 <main>
-
+  
+<div class="view-switch">
+  <button class="btn-solid" id="toggleView" type="button">Switch to Defender View</button>
+</div>
 <section class="section hero">
   <div class="card">
     <h1 id="pageTitle">Active Directory Kerberoasting — Attacker Perspective</h1>
