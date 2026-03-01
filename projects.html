@@ -217,6 +217,12 @@
 
   <main>
     <section class="section">
+      <h2>Active Directory Purple Team Projects</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Security tooling projects (apps, automation, platforms).</p>
+      <div id="activedirectoryList" class="list"></div>
+    </section>
+    
+    <section class="section">
       <h2>Purple Team Scenarios</h2>
       <p style="color:var(--muted);font-size:13px;margin-top:6px">Scenario-style projects: simulate + detect + document.</p>
       <div id="scenarioList" class="list"></div>
@@ -256,6 +262,17 @@
     // NOTE: href targets are placeholders.
     // We will create these pages later under /p/... without changing this styling.
 
+
+    const activedirectory = [
+      {
+        title:"Active Directory Kerberoasting",
+        status:"Listed",
+        tags:["impacket","AD","EchoSentinel", "SPNs","Attack Perspective", "Defende Perspective"],
+        summary:"Coordinated defense impairment chain where WinRM session establishes privileged context, then Defender tampering, audit policy changes, Sysmon driver unload reduce visibility and validated and correlated into a single high-confidence detection.",
+        href:"p/activedirectory/active-directory-kerberoasting.html"
+      },
+      
+    ];
     const scenarios = [
       {
         title:"Defense Evasion and Log Tampering",
@@ -463,6 +480,7 @@
 
     function render(){
       document.getElementById('scenarioList').innerHTML = scenarios.map(itemHTML).join('');
+      document.getElementById('activedirectoryList').innerHTML = scenarios.map(itemHTML).join('');
       document.getElementById('exfiltrationList').innerHTML = exfiltration.map(itemHTML).join('');
       document.getElementById('toolList').innerHTML = tools.map(itemHTML).join('');
       document.getElementById('packList').innerHTML = packs.map(itemHTML).join('');   // NEW
