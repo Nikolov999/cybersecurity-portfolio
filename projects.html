@@ -271,8 +271,8 @@
         summary:"Coordinated defense impairment chain where WinRM session establishes privileged context, then Defender tampering, audit policy changes, Sysmon driver unload reduce visibility and validated and correlated into a single high-confidence detection.",
         href:"p/activedirectory/active-directory-kerberoasting.html"
       },
-      
     ];
+    
     const scenarios = [
       {
         title:"Defense Evasion and Log Tampering",
@@ -480,7 +480,7 @@
 
     function render(){
       document.getElementById('scenarioList').innerHTML = scenarios.map(itemHTML).join('');
-      document.getElementById('activedirectoryList').innerHTML = scenarios.map(itemHTML).join('');
+      document.getElementById('activedirectoryList').innerHTML = activedirectory.map(itemHTML).join('');
       document.getElementById('exfiltrationList').innerHTML = exfiltration.map(itemHTML).join('');
       document.getElementById('toolList').innerHTML = tools.map(itemHTML).join('');
       document.getElementById('packList').innerHTML = packs.map(itemHTML).join('');   // NEW
