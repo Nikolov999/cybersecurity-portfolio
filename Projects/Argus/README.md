@@ -8,7 +8,7 @@
 ## Quick Install 
 
 Please view the original repository at:
-[https://github.com/Nikolov999/argus]https://github.com/Nikolov999/argus
+https://github.com/Nikolov999/argus
 
 ---
 
