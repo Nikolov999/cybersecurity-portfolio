@@ -18,6 +18,7 @@ audit modules
 report engine
       ↓
 CLI interface
+```
 
 ---
 
